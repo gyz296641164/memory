@@ -3,7 +3,6 @@ import theme from "./theme.js";
 
 export default defineUserConfig({
   base: '/memory/',
-  dest: "public",
   locales: {
     "/": {
       lang: "en-US",
