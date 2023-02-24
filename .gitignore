@@ -1,0 +1,6 @@
+/node_modules
+src/.vuepress/dist
+**/.cache
+**/.temp
+/public
+/.idea
