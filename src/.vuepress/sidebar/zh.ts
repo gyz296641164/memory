@@ -27,5 +27,33 @@ export const zhSidebar = sidebar({
       collapsible: true, //侧边栏折叠 
       children: "structure",
     },
-  ],
+    {
+      text: "JVM",
+      icon: "note",
+      prefix: "notes/JVM/",
+      collapsible: true,
+      children: [
+        {
+          text: "1_JVM发展史和Java体系结构",
+          prefix: "01-JVM-devlopment/",
+          icon: "star",
+          collapsible: true,
+          // children: [
+          //   "README",
+          // ],
+          children: "structure",
+        },
+        {
+          text: "2_内存结构",
+          prefix: "02-JVM-memory/",
+          icon: "star",
+          collapsible: true,
+          // children: [
+          //   "README",
+          // ],
+          children: "structure",
+        },
+      ],
+    },
+  ]
 });

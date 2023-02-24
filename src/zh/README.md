@@ -1,34 +1,37 @@
 ---
 home: true
-layout: BlogHome
+title: 主页
 icon: home
-title: 博客主页
-heroImage: /logo.svg
-heroText: Memory's blog
-heroFullScreen: true
-tagline: ✊不积跬步，无以至千里；不积小流，无以成江海！
-projects:
-  - icon: project
-    name: 项目名称
-    desc: 项目详细描述
-    link: https://你的项目链接
+heroImage: /logo2.svg
+heroText: Memory's notes
+tagline: 不积跬步，无以至千里；不积小流，无以成江海✊
+actions:
+  - text: 开始阅读 🧭
+    link: /zh/notes/  
+    type: primary
 
-  - icon: book
-    name: 书籍名称
-    desc: 书籍详细描述
-    link: https://你的书籍链接
+  - text: 博客主页 💡
+    link: /zh/BlogHome.md
 
-  - icon: article
-    name: 文章名称
-    desc: 文章详细描述
-    link: https://你的文章链接
+features:
+  - title: Markdown 增强
+    icon: fab fa-markdown
+    details: 新增文字对齐、上下角标、脚注、标记、任务列表、数学公式、流程图、图表与幻灯片支持
+    link: /zh/demo/markdown
 
-  - icon: /logo.svg
-    name: 自定义项目
-    desc: 自定义详细介绍
-    link: https://你的自定义链接
+  - title: 幻灯片页面
+    icon: person-chalkboard
+    details: 添加幻灯片页面以显示你喜欢的内容
+    link: /zh/slides
 
-footer: 自定义你的页脚文字
+  - title: 页面配置
+    icon: object-group
+    details: 添加路径导航、页脚、改进的导航栏、改进的页面导航等。
+    link: /zh/demo/page
 ---
+
+
+
+
 
 
