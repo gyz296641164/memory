@@ -38,9 +38,6 @@ export const zhSidebar = sidebar({
           prefix: "01-JVM-devlopment/",
           icon: "star",
           collapsible: true,
-          // children: [
-          //   "README",
-          // ],
           children: "structure",
         },
         {
@@ -48,9 +45,27 @@ export const zhSidebar = sidebar({
           prefix: "02-JVM-memory/",
           icon: "star",
           collapsible: true,
-          // children: [
-          //   "README",
-          // ],
+          children: "structure",
+        },
+        {
+          text: "3_垃圾回收",
+          prefix: "03-JVM-garbage-collection/",
+          icon: "star",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "4_类加载与字节码技术",
+          prefix: "04-ClassLoader-ByteCode/",
+          icon: "star",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "5_细节补充",
+          prefix: "05-JVM-detail-analyse/",
+          icon: "star",
+          collapsible: true,
           children: "structure",
         },
       ],

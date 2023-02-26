@@ -2,11 +2,12 @@
 home: true
 layout: BlogHome
 icon: home
+bgImage: /222.jpeg
 title: 博客主页
 heroImage: /logo.svg
 heroText: Memory's blog
 heroFullScreen: true
-tagline: ✊不积跬步，无以至千里；不积小流，无以成江海！
+tagline: 不积跬步，无以至千里；不积小流，无以成江海✊
 projects:
   - icon: project
     name: 项目名称

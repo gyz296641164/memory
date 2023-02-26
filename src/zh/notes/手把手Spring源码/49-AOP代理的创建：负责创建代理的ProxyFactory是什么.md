@@ -2,7 +2,12 @@
 title: 49_AOP代理的创建：负责创建代理的ProxyFactory是什么？
 category:
   - Spring源码
+star: true
+sticky: true
+date: 2023-02-26
 ---
+
+<!-- more -->
 
 # 开篇
 

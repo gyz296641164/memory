@@ -1,5 +1,12 @@
-<h1 align="center" style="color:orange">内存结构</h1>
+---
+title: 内存结构
+order: 2
+category:
+  - JVM
+date: 2023-02-26
+---
 
+<!-- more -->
 
 
 

@@ -1,4 +1,11 @@
-<h1 align="center">垃圾回收</h1>
+---
+title: 垃圾回收
+category:
+  - JVM
+date: 2023-02-26
+---
+
+<!-- more -->
 
 # 1、如何判断对象是否可以被回收
 

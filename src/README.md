@@ -1,48 +1,32 @@
 ---
 home: true
-layout: BlogHome
+title: 主页
 icon: home
-title: Blog Home
-heroImage: /logo.svg
-heroText: The name of your blog
-tagline: You can put your slogan here
-heroFullScreen: true
-projects:
-  - icon: project
-    name: project name
-    desc: project detailed description
-    link: https://your.project.link
+# bgImage: /222.jpeg
+heroImage: /logo2.svg
+heroText: Memory's notes
+tagline: 不积跬步，无以至千里；不积小流，无以成江海✊
+actions:
+  - text: 开始阅读 🧭
+    link: /zh/notes/  
+    type: primary
 
-  - icon: link
-    name: link name
-    desc: link detailed description
-    link: https://link.address
+  - text: 博客主页 💡
+    link: /zh/BlogHome.md
 
-  - icon: book
-    name: book name
-    desc: Detailed description of the book
-    link: https://link.to.your.book
+features:
+  - title: Markdown 增强
+    icon: fab fa-markdown
+    details: 新增文字对齐、上下角标、脚注、标记、任务列表、数学公式、流程图、图表与幻灯片支持
+    link: /zh/demo/markdown
 
-  - icon: article
-    name: article name
-    desc: Detailed description of the article
-    link: https://link.to.your.article
+  - title: 幻灯片页面
+    icon: person-chalkboard
+    details: 添加幻灯片页面以显示你喜欢的内容
+    link: /zh/slides
 
-  - icon: friend
-    name: friend name
-    desc: Detailed description of friend
-    link: https://link.to.your.friend
-
-  - icon: /logo.svg
-    name: custom item
-    desc: Detailed description of this custom item
-    link: https://link.to.your.friend
-
-footer: customize your footer text
+  - title: 页面配置
+    icon: object-group
+    details: 添加路径导航、页脚、改进的导航栏、改进的页面导航等。
+    link: /zh/demo/page
 ---
-
-This is a blog home page demo.
-
-To use this layout, you should set both `layout: BlogHome` and `home: true` in the page front matter.
-
-For related configuration docs, please see [blog homepage](https://theme-hope.vuejs.vuepress/guide/blog/home/).

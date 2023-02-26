@@ -1,3 +1,13 @@
+---
+title: JDK和JRE
+order: 1
+category:
+  - JVM
+date: 2023-02-26
+---
+
+<!-- more -->
+
 # JDK和JRE
 
 - **JDK**：我们可以把**java程序设计语言**、**Java虚拟机**、**Java类库**这三部分统称为JDK(Java Development Kit)。JDK是支持Java开发的最小环境。
