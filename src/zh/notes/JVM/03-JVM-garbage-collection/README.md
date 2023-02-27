@@ -1,5 +1,6 @@
 ---
 title: 垃圾回收
+order: 3
 category:
   - JVM
 date: 2023-02-26
