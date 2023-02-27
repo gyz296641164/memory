@@ -509,7 +509,7 @@ MySql索引数据结构对经典的B+Tree进行了优化。在原B+Tree的基础
 
 ### 6.2.1 Explain之id介绍
 
-**（一）id相同，执行顺序由上至下**
+**（一）id相同，执行顺序由上至下**"derive2"
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/mysql/other/202207151320399.png" alt="image-20210609172631617" />
 
@@ -529,11 +529,11 @@ MySql索引数据结构对经典的B+Tree进行了优化。在原B+Tree的基础
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/mysql/other/202207151320401.png" alt="image-20210609172831901" />
 
-以上SQL执行顺序为： t3、<derive2>、t2
+以上SQL执行顺序为： t3、"derive2"、t2
 
-1. 限制性括号里面的（优先级最高 | id 值最大【2】），执行完毕后为一个续表，使用<derive2>表示
+1. 限制性括号里面的（优先级最高 | id 值最大【2】），执行完毕后为一个续表，使用"derive2"表示
 
-2. 由于<derive2>和t2表的id都是1，一样，所以按照顺序执行，则为 <derive2>、t2
+2. 由于"derive2"和t2表的id都是1，一样，所以按照顺序执行，则为 "derive2"、t2
 
 
 
