@@ -21,11 +21,73 @@ export const zhSidebar = sidebar({
     },
     "slides",
     {
+      text: "JAVA",
+      icon: "note",
+      prefix: "notes/JAVA/",
+      collapsible: true,
+      children: [
+        {
+          text: "JAVA8",
+          prefix: "JAVA8/",
+          collapsible: true,
+          children: [
+            {
+              text: "第一部分-基础知识",
+              prefix: "第一部分-基础知识/",
+              collapsible: true,
+              children: "structure",
+            },
+            {
+              text: "第二部分-函数式数据处理",
+              prefix: "第二部分-函数式数据处理/",
+              collapsible: true,
+              children: "structure",
+            },
+            {
+              text: "第三部分-高效Java8编程",
+              prefix: "第三部分-高效Java8编程/",
+              collapsible: true,
+              children: "structure",
+            },
+            {
+              text: "总结",
+              prefix: "总结/",
+              collapsible: true,
+              children: "structure",
+            },
+          ],
+        },
+      ],
+    },
+    {
       text: "Spring源码",
       icon: "note",
       prefix: "notes/手把手Spring源码/",
       collapsible: true, //侧边栏折叠 
       children: "structure",
+    },
+    {
+      text: "Spring Cloud",
+      icon: "note",
+      prefix: "notes/Spring Cloud/",
+      collapsible: true,
+      children: [
+        {
+          text: "Spring Cloud - Hoxton.SR1(上)",
+          icon: "star",
+          link: "01-Spring Cloud - Hoxton.SR1.md",
+        },
+        {
+          text: "Spring Cloud - Hoxton.SR1(下)",
+          icon: "star",
+          link: "02-Spring Cloud - Hoxton.SR1.md",
+        },
+        {
+          text: "Spring Cloud Alibaba",
+          icon: "star",
+          link: "03-Spring Cloud Alibaba.md",
+        },
+      ],
     },
     {
       text: "JVM",
@@ -57,6 +119,44 @@ export const zhSidebar = sidebar({
           text: "5_细节补充",
           icon: "star",
           link: "05-JVM-detail-analyse/README.md",
+        },
+      ],
+    },
+    {
+      text: "Docker",
+      icon: "note",
+      prefix: "notes/Docker/",
+      collapsible: true,
+      children: [
+        {
+          text: "Docker简介 & 安装 & 常用命令",
+          icon: "star",
+          link: "01-docker-base1",
+        },
+        {
+          text: "Docker镜像",
+          icon: "star",
+          link: "02-docker-base2",
+        },
+        {
+          text: "本地镜像发布&容器数据卷",
+          icon: "star",
+          link: "03-docker-base3",
+        },
+        {
+          text: "Docker复杂安装详说",
+          icon: "star",
+          link: "04-docker-high1",
+        },
+        {
+          text: "DockerFile & 网络",
+          icon: "star",
+          link: "05-docker-high2",
+        },
+        {
+          text: "Docker-compose & 可视化工具",
+          icon: "star",
+          link: "06-docker-high3",
         },
       ],
     },
@@ -114,6 +214,59 @@ export const zhSidebar = sidebar({
               children: "structure",
             },
           ],
+        },
+      ],
+    },
+    {
+      text: "Redis",
+      icon: "note",
+      prefix: "notes/Redis/",
+      collapsible: true,
+      children: [
+        {
+          text: "初识Redis",
+          icon: "star",
+          link: "01-redis-start",
+        },
+        {
+          text: "Redis持久化",
+          icon: "star",
+          link: "02-redis-persistence",
+        },
+        {
+          text: "Redis事务",
+          icon: "star",
+          link: "03-redis-transaction",
+        },
+        {
+          text: "复制",
+          icon: "star",
+          link: "04-redis-copy",
+        },
+        {
+          text: "哨兵",
+          icon: "star",
+          link: "05-redis-sentinel",
+        },
+        {
+          text: "缓存设计",
+          icon: "star",
+          link: "06-redis-cache-design",
+        },
+        {
+          text: "Redis分布式锁",
+          icon: "star",
+          link: "07-redis-distributed-lock",
+        },
+        {
+          text: "JAVA操作Redis",
+          icon: "star",
+          link: "08-redis-operate-byjava",
+        },
+        {
+          text: "Redis常见面试题",
+          icon: "star",
+          link: "09-redis-interview",
         },
       ],
     },

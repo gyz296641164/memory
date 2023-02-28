@@ -12,7 +12,7 @@ export default hopeTheme({
 
   iconAssets: "iconfont",
 
-  logo: "/logo.svg",
+  logo: "/logo2.svg",
 
   repo: "https://github.com/gyz296641164/memory",
 
