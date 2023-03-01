@@ -6,42 +6,25 @@ export const zhNavbar = navbar([
   {
     text: "博文",
     icon: "edit",
-    prefix: "/zh/posts/",
+    prefix: "/zh/notes/",
     children: [
       {
-        text: "苹果",
+        text: "JVM",
         icon: "edit",
-        prefix: "apple/",
+        prefix: "JVM/",
         children: [
-          { text: "苹果1", icon: "edit", link: "1" },
-          { text: "苹果2", icon: "edit", link: "2" },
-          "3",
-          "4",
+          { text: "1_JVM发展史和Java体系结构", icon: "edit", link: "01-JVM-devlopment/README.md" },
+          { text: "2_内存结构", icon: "edit", link: "02-JVM-memory/README.md" },
+          { text: "3_垃圾回收", icon: "edit", link: "03-JVM-garbage-collection/README.md" },
+          { text: "4_类加载与字节码技术", icon: "edit", link: "04-ClassLoader-ByteCode/README.md" },
+          { text: "5_细节补充", icon: "edit", link: "05-JVM-detail-analyse/README.md" },
         ],
       },
       {
-        text: "香蕉",
+        text: "Linux常用命令",
         icon: "edit",
-        prefix: "banana/",
-        children: [
-          {
-            text: "香蕉 1",
-            icon: "edit",
-            link: "1",
-          },
-          {
-            text: "香蕉 2",
-            icon: "edit",
-            link: "2",
-          },
-          "3",
-          "4",
-        ],
+        link: "Linux",
       },
-      { text: "樱桃", icon: "edit", link: "cherry" },
-      { text: "火龙果", icon: "edit", link: "dragonfruit" },
-      "tomato",
-      "strawberry",
     ],
   },
   {

@@ -10,13 +10,13 @@ heroFullScreen: true
 tagline: 不积跬步，无以至千里；不积小流，无以成江海✊
 projects:
   - icon: project
-    name: 项目名称
-    desc: 项目详细描述
+    name: 谷粒商城
+    desc: 内容持续更新中！
     link: https://你的项目链接
 
   - icon: book
-    name: 书籍名称
-    desc: 书籍详细描述
+    name: 书籍收集
+    desc: 日常学习书籍！
     link: https://你的书籍链接
 
   - icon: article
@@ -29,5 +29,5 @@ projects:
     desc: 自定义详细介绍
     link: https://你的自定义链接
 
-footer: 自定义你的页脚文字
+footer: 做好自己的事
 ---

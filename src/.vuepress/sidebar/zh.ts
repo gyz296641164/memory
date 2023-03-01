@@ -51,20 +51,35 @@ export const zhSidebar = sidebar({
             },
             {
               text: "总结",
-              prefix: "总结/",
-              collapsible: true,
-              children: "structure",
+              icon: "star",
+              link: "总结/README"
+
             },
           ],
+        },
+        {
+          text: "JAVA集合",
+          icon: "star",
+          prefix: "JAVASE/",
+          collapsible: true,
+          children: "structure",
         },
       ],
     },
     {
-      text: "Spring源码",
+      text: "Spring",
       icon: "note",
-      prefix: "notes/手把手Spring源码/",
+      prefix: "notes/Spring/",
       collapsible: true, //侧边栏折叠 
-      children: "structure",
+      children: [
+        {
+          text: "深入学习Spring源码",
+          icon: "star",
+          prefix: "01-spring-source-code-deeply/",
+          collapsible: true,
+          children: "structure", //自动生成侧边栏
+        },
+      ],
     },
     {
       text: "Spring Cloud",
@@ -98,7 +113,7 @@ export const zhSidebar = sidebar({
         {
           text: "1_JVM发展史和Java体系结构",
           icon: "star",
-          link: "01-JVM-devlopment/README.md",
+          link: "01-JVM-devlopment/README.md", //后缀.md不写也可，默认识别
         },
         {
           text: "2_内存结构",
@@ -269,6 +284,13 @@ export const zhSidebar = sidebar({
           link: "09-redis-interview",
         },
       ],
+    },
+    {
+      text: "并发编程",
+      icon: "note",
+      prefix: "notes/Concurrent_Programming/",
+      collapsible: true,
+      children: "structure",
     },
   ]
 });
