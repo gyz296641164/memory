@@ -8,9 +8,9 @@ date: 2023-03-01
 
 <!-- more -->
 
-# 问题提出
+## 问题提出
 
-## 使用`synchronized`保证线程安全
+### 使用`synchronized`保证线程安全
 
 有如下需求，保证`account.withdraw`取款方法的线程安全, 下面使用`synchronized`保证线程安全：
 
@@ -105,7 +105,7 @@ public class AccountUnsafe implements Account {
 
 
 
-## 使用无锁来保证安全
+### 使用无锁来保证安全
 
 ```java
 package com.gyz.nonelock;
@@ -162,11 +162,11 @@ public class AccountCas implements Account {
 
 ***
 
-# CAS 与 volatile  
+## CAS 与 volatile  
 
 使用原子操作来保证线程访问共享资源的安全性, CAS+重试的机制来确保(乐观锁思想)，相对于悲观锁思想的`synchronized`，`reentrantLock`来说，CAS的方式效率会更好！
 
-## CAS + 重试 原理
+### CAS + 重试 原理
 
 前面看到的`AtomicInteger`的解决方法，内部并`没有用锁`来保护`共享变量`的线程安全。那么它是如何实现的呢？
 
@@ -219,7 +219,7 @@ public class AccountCas implements Account {
 
 
 
-## volatile的作用
+### volatile的作用
 
 - 在上面代码中的`AtomicInteger类`，**保存值的`value属性`使用了`volatile 修饰`**。获取共享变量时，为了`保证该变量的可见性`，需要使用 **volatile 修饰**。
 - volatile可以用来修饰 **成员变量和静态成员变量**，他可以避免线程从自己的工作缓存中查找变量的值，必须到主存中获取它的值，线程操作 volatile 变量都是直接操作主存。**即一个线程对 volatile 变量的修改，对另一个线程可见。**
@@ -228,7 +228,7 @@ public class AccountCas implements Account {
 
  
 
-## 为什么无锁效率高  
+### 为什么无锁效率高  
 
 - 使用CAS+重试---无锁情况下，即使`重试失败`，线程始终在高速运行，没有停歇，而 `synchronized`会让线程在没有获得锁的时候，`发生上下文切换，进入阻塞`。
   - 打个比喻：线程就好像高速跑道上的赛车，高速运行时，速度超快，一旦发生上下文切换，就好比赛车要减速、熄火，等被唤醒又得重新打火、启动、加速… 恢复到高速运行，代价比较大!
@@ -236,7 +236,7 @@ public class AccountCas implements Account {
 
 
 
-## CAS 的特点 
+### CAS 的特点 
 
 结合 CAS 和 volatile 可以实现无锁并发，适用于线程数少、多核 CPU 的场景下。  
 
@@ -254,14 +254,14 @@ public class AccountCas implements Account {
 
 ***
 
-# CAS原理
+## CAS原理
 
-## 什么是CAS？
+### 什么是CAS？
 
 - CAS：Compare and Swap，即比较再交换；
 - jdk5增加了并发包`java.util.concurrent.*`，其下面的类使用CAS算法实现了区别于synchronouse同步锁的一种乐观锁。JDK 5之前Java语言是靠synchronized关键字保证同步的，这是一种独占锁，也是是悲观锁。
 
-## CAS算法理解
+### CAS算法理解
 
 - 对CAS的理解，CAS是一种无锁算法，CAS有3个操作数：`内存值V`，`旧的预期值A`，`要修改的新值B`。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。
 
@@ -291,11 +291,11 @@ public class AccountCas implements Account {
 
   
 
-## CAS开销
+### CAS开销
 
 前面说过了，`CAS（比较并交换）`是CPU指令级的操作，只有一步原子操作，所以非常快。而且CAS避免了请求操作系统来裁定锁的问题，不用麻烦操作系统，直接在CPU内部就搞定了。但CAS就没有开销了吗？不！有`cache miss`情况。这个问题比较复杂，首先需要了解CPU的硬件体系结构。自行查阅！
 
-## CAS 的问题
+### CAS 的问题
 
 - **CAS 容易造成 ABA 问题**
 
@@ -311,7 +311,7 @@ public class AccountCas implements Account {
 
 ---
 
-# 原子整数
+## 原子整数
 
 J.U.C 并发包提供了：
 
@@ -355,7 +355,7 @@ public class Test1 {
 }
 ```
 
-# 原子引用
+## 原子引用
 
 为什么需要原子引用类型？保证引用类型的共享变量是线程安全的（确保这个原子引用没有引用过别人）。
 
@@ -401,7 +401,7 @@ public interface DecimalAccount {
 
 试着提供不同的 DecimalAccount 实现，实现安全的取款操作。
 
-## 不安全的实现
+### 不安全的实现
 
 ```java
 class DecimalAccountUnsafe implements DecimalAccount {
@@ -421,7 +421,7 @@ class DecimalAccountUnsafe implements DecimalAccount {
 }
 ```
 
-## 安全实现-使用 CAS
+### 安全实现-使用 CAS
 
 ```java
 class DecimalAccountCas implements DecimalAccount {
@@ -450,15 +450,15 @@ class DecimalAccountCas implements DecimalAccount {
 }
 ```
 
-## 测试代码
+### 测试代码
 
 ```java
 DecimalAccount.demo(new DecimalAccountSafeCas(new BigDecimal("10000")));
 ```
 
-## ABA 问题及解决
+### ABA 问题及解决
 
-### ABA 问题
+#### ABA 问题
 
 ```java
     static AtomicReference<String> ref = new AtomicReference<>("A");
@@ -499,7 +499,7 @@ DecimalAccount.demo(new DecimalAccountSafeCas(new BigDecimal("10000")));
 
 只要有其它线程【动过了】共享变量，那么自己的 cas 就算失败，这时，仅比较值是不够的，需要再加一个版本号。使用`AtomicStampedReference`来解决。
 
-### AtomicStampedReference
+#### AtomicStampedReference
 
 ```java
     static AtomicStampedReference<String> ref = new AtomicStampedReference<>("A", 0);
@@ -547,7 +547,7 @@ DecimalAccount.demo(new DecimalAccountSafeCas(new BigDecimal("10000")));
 
 ![image-20220811234825148](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent20220811234825.png)
 
-### AtomicMarkableReference
+#### AtomicMarkableReference
 
 ```java
 public class Test38 {
@@ -607,7 +607,7 @@ class GarbageBag {
 
 ---
 
-# 原子数组
+## 原子数组
 
 使用原子的方式更新数组里的某个元素
 
@@ -656,7 +656,7 @@ class GarbageBag {
     }
 ```
 
-## 不安全的数组
+### 不安全的数组
 
 测试方法：
 
@@ -675,7 +675,7 @@ class GarbageBag {
 [9870, 9862, 9774, 9697, 9683, 9678, 9679, 9668, 9680, 9698]
 ```
 
-## 安全的数组
+### 安全的数组
 
 测试方法：
 
@@ -696,7 +696,7 @@ class GarbageBag {
 
 ---
 
-# 字段更新器
+## 字段更新器
 
 AtomicReferenceFieldUpdater // 域 字段
 
@@ -741,9 +741,9 @@ class Student {
 
 ---
 
-# 原子累加器
+## 原子累加器
 
-## 累加器性能比较
+### 累加器性能比较
 
 测试代码
 
@@ -813,7 +813,7 @@ public class Test41 {
 
 性能提升的原因很简单，就是在有竞争时，设置多个累加单元，Therad-0 累加 Cell[0]，而 Thread-1 累加Cell[1]... 最后将结果汇总。这样它们在累加时操作的不同的 Cell 变量，因此减少了 CAS 重试失败，从而提高性能。
 
-## 源码之 LongAdder
+### 源码之 LongAdder
 
 LongAdder 是并发大师 @author Doug Lea （大哥李）的作品，设计的非常精巧
 
@@ -828,7 +828,7 @@ transient volatile long base;
 transient volatile int cellsBusy;
 ```
 
-### cas 锁
+#### cas 锁
 
 测试代码：
 
@@ -888,7 +888,7 @@ public class LockCas {
 22:20:02.967 c.Test42 [Thread-1] - unlock...
 ```
 
-### * 原理之伪共享
+#### * 原理之伪共享
 
 其中 Cell 即为累加单元
 
@@ -937,7 +937,7 @@ public class LockCas {
 
 ![image-20220818223728405](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220818223728.png)
 
-### LongAdder源码-add
+#### LongAdder源码-add
 
 累加主要调用下面的方法:
 
@@ -975,7 +975,7 @@ add 流程图
 
 ![image-20220818230221502](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220818230221.png)
 
-### LongAdder源码-longAccumulate
+#### LongAdder源码-longAccumulate
 
 ```java
     final void longAccumulate(long x, LongBinaryOperator fn,
@@ -1045,7 +1045,7 @@ longAccumulate 流程图
 
 ![image-20220818230422641](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220818230422.png)
 
-### LongAdder源码-sum
+#### LongAdder源码-sum
 
 获取最终结果通过 sum 方法
 
@@ -1066,9 +1066,9 @@ longAccumulate 流程图
 
 ---
 
-# Unsafe
+## Unsafe
 
-## Unsafe 对象-获取
+### Unsafe 对象-获取
 
 Unsafe 对象提供了非常底层的，操作内存、线程的方法，Unsafe 对象不能直接调用，只能通过反射获得
 
@@ -1090,7 +1090,7 @@ Unsafe 对象提供了非常底层的，操作内存、线程的方法，Unsafe 
     }
 ```
 
-## Unsafe CAS 操作
+### Unsafe CAS 操作
 
 ```java
     @Data
@@ -1120,7 +1120,7 @@ Unsafe 对象提供了非常底层的，操作内存、线程的方法，Unsafe 
 Student(id=20, name=张三)
 ```
 
-## Unsafe 对象-模拟实现原子整数
+### Unsafe 对象-模拟实现原子整数
 
 使用自定义的 AtomicData 实现之前线程安全的原子整数 Account 实现
 

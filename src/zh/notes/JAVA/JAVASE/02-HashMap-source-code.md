@@ -9,19 +9,19 @@ date: 2023-03-01
 
 <!-- more -->
 
-# HashMap底层原理
+## HashMap底层原理
 
 文章来源：https://thinkwon.blog.csdn.net/article/details/104588551
 
 ---
 
-# JAVA集合框架图示
+## JAVA集合框架图示
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/others/202210191446887.png)
 
 ---
 
-# 说一下 HashMap 的实现原理？
+## 说一下 HashMap 的实现原理？
 
 HashMap概述： HashMap是基于哈希表的Map接口的非同步实现。此实现提供所有可选的映射操作，并允许使用null值和null键。此类不保证映射的顺序，特别是它不保证该顺序恒久不变。
 
@@ -38,23 +38,23 @@ HashMap 基于 Hash 算法实现的：
 
 ---
 
-# HashMap在JDK1.7和JDK1.8中有哪些不同？
+## HashMap在JDK1.7和JDK1.8中有哪些不同？
 
 在Java中，保存数据有两种比较简单的数据结构：数组和链表。**数组的特点是：寻址容易，插入和删除困难；链表的特点是：寻址困难，但插入和删除容易；\**所以我们将数组和链表结合在一起，发挥两者各自的优势，使用一种叫做\**拉链法**的方式可以解决哈希冲突。
 
-## JDK1.8之前
+### JDK1.8之前
 
 JDK1.8之前采用的是拉链法。**拉链法**：将链表和数组相结合。也就是说创建一个链表数组，数组中每一格就是一个链表。若遇到哈希冲突，则将冲突的值加到链表中即可。
 
 ![jdk1.7中HashMap数据结构](https://studyimages.oss-cn-beijing.aliyuncs.com/others/202210191516407.png)
 
-## JDK1.8之后
+### JDK1.8之后
 
 相比于之前的版本，jdk1.8在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为8）时，将链表转化为红黑树，以减少搜索时间。
 
 ![jdk1.8中HashMap数据结构](https://studyimages.oss-cn-beijing.aliyuncs.com/others/202210191516311.png)
 
-## JDK1.7 VS JDK1.8 比较
+### JDK1.7 VS JDK1.8 比较
 
 JDK1.8主要解决或优化了一下问题：
 
@@ -73,7 +73,7 @@ JDK1.8主要解决或优化了一下问题：
 
 ---
 
-# HashMap的put方法的具体流程？
+## HashMap的put方法的具体流程？
 
 当我们put的时候，首先计算 `key`的`hash`值，这里调用了 `hash`方法，hash方法实际是让`key.hashCode()`与`key.hashCode()>>>16`进行异或操作，高16bit补0，一个数和0异或不变，所以 hash 函数大概的作用就是：高16bit不变，低16bit和高16bit做了一个异或，目的是减少碰撞。按照函数注释，因为bucket数组大小是2的幂，计算下标`index = (table.length - 1) & hash`，如果不做 hash 处理，相当于散列生效的只有几个低 bit 位，为了减少散列的碰撞，设计者综合考虑了速度、作用、质量之后，使用高16bit和低16bit异或来简单处理减少碰撞，而且JDK8中用了复杂度 O（logn）的树结构来提升碰撞下的性能。
 
@@ -183,7 +183,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
 
 ---
 
-# HashMap的扩容操作是怎么实现的？
+## HashMap的扩容操作是怎么实现的？
 
 在jdk1.8中，resize方法是在hashmap中的键值对大于阀值时或者初始化时，就调用resize方法进行扩容；
 
@@ -296,19 +296,19 @@ final Node<K,V>[] resize() {
 
 ---
 
-# HashMap是怎么解决哈希冲突的？
+## HashMap是怎么解决哈希冲突的？
 
-## 什么是哈希？
+### 什么是哈希？
 
 Hash，一般翻译为“散列”，也有直接音译为“哈希”的，这就是把任意长度的输入通过散列算法，变换成固定长度的输出，该输出就是散列值（哈希值）；这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。
 
 所有散列函数都有如下一个基本特性：**根据同一散列函数计算出的散列值如果不同，那么输入值肯定也不同。但是，根据同一散列函数计算出的散列值如果相同，输入值不一定相同**。
 
-## 什么是哈希冲突？
+### 什么是哈希冲突？
 
 当两个不同的输入值，根据同一散列函数计算出相同的散列值的现象，我们就把它叫做碰撞（哈希碰撞）。
 
-## HashMap的数据结构
+### HashMap的数据结构
 
 在Java中，保存数据有两种比较简单的数据结构：数组和链表。**数组的特点是：寻址容易，插入和删除困难；链表的特点是：寻址困难，但插入和删除容易**；所以我们将数组和链表结合在一起，发挥两者各自的优势，使用一种叫做**链地址法**的方式可以解决哈希冲突：
 
@@ -316,7 +316,7 @@ Hash，一般翻译为“散列”，也有直接音译为“哈希”的，这�
 
 这样我们就可以将拥有相同哈希值的对象组织成一个链表放在hash值所对应的bucket下，但相比于hashCode返回的int类型，我们HashMap初始的容量大小`DEFAULT_INITIAL_CAPACITY = 1 << 4`（即2的四次方16）要远小于int类型的范围，所以我们如果只是单纯的用hashCode取余来获取对应的bucket这将会大大增加哈希碰撞的概率，并且最坏情况下还会将HashMap变成一个单链表，所以我们还需要对hashCode作一定的优化。
 
-## hash()函数
+### hash()函数
 
 上面提到的问题，主要是因为如果使用hashCode取余，那么相当于参与运算的只有hashCode的低位，高位是没有起到任何作用的，所以我们的思路就是让hashCode取值出的高位也参与运算，进一步降低hash碰撞的概率，使得数据分布更平均，我们把这样的操作称为扰动，在JDK 1.8中的hash()函数如下：
 
@@ -329,7 +329,7 @@ static final int hash(Object key) {
 
 这比在**JDK 1.7**中，更为简洁，**相比在1.7中的4次位运算，5次异或运算（9次扰动），在1.8中，只进行了1次位运算和1次异或运算（2次扰动）**；
 
-## JDK1.8新增红黑树
+### JDK1.8新增红黑树
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/others/202210191809737.png)
 
@@ -337,7 +337,7 @@ static final int hash(Object key) {
 
 ---
 
-# 总结
+## 总结
 
 简单总结一下HashMap是使用了哪些方法来有效解决哈希冲突的：
 
@@ -347,7 +347,7 @@ static final int hash(Object key) {
 
 ---
 
-# 能否使用任何类作为 Map 的 key？
+## 能否使用任何类作为 Map 的 key？
 
 可以使用任何类作为 Map 的 key，然而在使用之前，需要考虑以下几点：
 
@@ -358,7 +358,7 @@ static final int hash(Object key) {
 
 ---
 
-# 为什么HashMap中String、Integer这样的包装类适合作为K？
+## 为什么HashMap中String、Integer这样的包装类适合作为K？
 
 答：String、Integer等包装类的特性能够保证Hash值的不可更改性和计算准确性，能够有效的减少Hash碰撞的几率
 
@@ -367,7 +367,7 @@ static final int hash(Object key) {
 
 ---
 
-# 如果使用Object作为HashMap的Key，应该怎么办呢？
+## 如果使用Object作为HashMap的Key，应该怎么办呢？
 
 答：重写hashCode()和equals()方法
 
@@ -376,7 +376,7 @@ static final int hash(Object key) {
 
 ---
 
-# HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？
+## HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？
 
 答：hashCode()方法返回的是int整数类型，其范围为-(2 ^ 31)~(2 ^ 31 - 1)，约有40亿个映射空间，而HashMap的容量范围是在16（初始化默认值）~2 ^ 30，HashMap通常情况下是取不到最大值的，并且设备上也难以提供这么多的存储空间，从而导致通过hashCode()计算出的哈希值可能不在数组大小范围内，进而无法匹配存储位置；
 
@@ -387,7 +387,7 @@ static final int hash(Object key) {
 
 ---
 
-# HashMap 的长度为什么是2的幂次方
+## HashMap 的长度为什么是2的幂次方
 
 为了能让 HashMap 存取高效，尽量较少碰撞，也就是要尽量把数据分配均匀，每个链表/红黑树长度大致相同。这个实现就是把数据存到哪个链表/红黑树中的算法。
 

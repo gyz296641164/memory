@@ -8,9 +8,9 @@ date: 2023-03-01
 
 <!-- more -->
 
-# 1、共享带来的问题
+## 1、共享带来的问题
 
-## 1.1 小故事  
+### 1.1 小故事  
 
 - 老王（操作系统）有一个功能强大的算盘（CPU），现在想把它租出去，赚一点外快 ；
 
@@ -52,7 +52,7 @@ date: 2023-03-01
 
 
 
-## 1.2 Java 的体现  
+### 1.2 Java 的体现  
 
 > 两个线程对初始值为 0 的静态变量一个做自增，一个做自减，各做 5000 次，结果是 0 吗？  
 
@@ -147,7 +147,7 @@ public class Test17 {
 
 
 
-## 1.3 临界区 Critical Section  
+### 1.3 临界区 Critical Section  
 
 - 一个程序运行多个线程本身是没有问题的。
 
@@ -178,7 +178,7 @@ public class Test17 {
 
     
 
-## 1.4 竞态条件 Race Condition  
+### 1.4 竞态条件 Race Condition  
 
 多个线程在临界区内执行，由于代码的**执行序列不同**而导致结果无法预测，称之为发生了**竞态条件**  。
 
@@ -186,9 +186,9 @@ public class Test17 {
 
 ***
 
-# 2、synchronized 解决方案  
+## 2、synchronized 解决方案  
 
-## 2.1 *应用之互斥  
+### 2.1 *应用之互斥  
 
 > 为了避免临界区的竞态条件发生，有多种手段可以达到目的：
 
@@ -206,7 +206,7 @@ public class Test17 {
 
 
 
-## 2.2 synchronized 语法
+### 2.2 synchronized 语法
 
 语法 ：
 
@@ -288,7 +288,7 @@ public class Test17 {
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151754799.png" />
 
-## 2.3 思考  
+### 2.3 思考  
 
 synchronized 实际是用**对象锁**保证了**临界区内代码的原子性**，临界区内的代码对外是不可分割的，不会被线程切换所打断。  
 
@@ -300,7 +300,7 @@ synchronized 实际是用**对象锁**保证了**临界区内代码的原子性*
 
 
 
-## 2.4 面向对象改进  
+### 2.4 面向对象改进  
 
 把需要保护的共享变量放入一个类  :
 
@@ -377,9 +377,9 @@ class Zoom {
 
 ***
 
-# 3、方法上的 synchronized  
+## 3、方法上的 synchronized  
 
-## 2.1 语法：
+### 2.1 语法：
 
 ```java
 class Test{
@@ -419,13 +419,13 @@ class Test{
 
 
 
-## 2.2 不加 synchronized 的方法
+### 2.2 不加 synchronized 的方法
 
 不加 synchronzied 的方法（无法保证原子性）就好比不遵守规则的人，不去老实排队（好比翻窗户进去的）。 
 
 
 
-## 2.3 所谓的“线程八锁”  
+### 2.3 所谓的“线程八锁”  
 
 **其实就是考察 synchronized 锁住的是哪个对象**  。
 
@@ -909,9 +909,9 @@ class Test{
 
 ***
 
-# 4、变量的线程安全分析  
+## 4、变量的线程安全分析  
 
-## 4.1 成员变量和静态变量是否线程安全？  
+### 4.1 成员变量和静态变量是否线程安全？  
 
 - 如果它们没有共享，则线程安全。
 - 如果它们被共享了，根据它们的状态是否能够改变，又分两种情况：
@@ -920,7 +920,7 @@ class Test{
 
 
 
-## 4.2 局部变量是否线程安全？  
+### 4.2 局部变量是否线程安全？  
 
 - 局部变量是线程安全的。
 - 但局部变量引用的对象则未必：
@@ -975,7 +975,7 @@ public class Demo1_17 {
 
 
 
-## 4.3 局部变量线程安全分析  
+### 4.3 局部变量线程安全分析  
 
 > **栈是线程私有得，栈帧是栈得基本存储结构，而局部变量表又存在于栈帧中**
 
@@ -1211,9 +1211,9 @@ public class ThreadUnsafe {
 
 
 
-## 4.4 常见线程安全类  
+### 4.4 常见线程安全类  
 
-### 4.4.1  线程安全类  
+#### 4.4.1  线程安全类  
 
 - String
 - Integer
@@ -1242,7 +1242,7 @@ Hashtable table = new Hashtable();
 
 
 
-### 4.4.2 线程安全类方法的组合  
+#### 4.4.2 线程安全类方法的组合  
 
 分析下面代码是否线程安全？  
 
@@ -1259,7 +1259,7 @@ Hashtable table = new Hashtable();
 这里只能是get方法内部是线程安全的, put方法内部是线程安全的. 组合起来使用还是会受到`上下文切换`的影响。当线程 1 执行完 get(“key”) ，这是一个原子操作没出问题，但是在 get(“key”) == null 比较时，如果线程1的时间片用完了，线程 2 获取时间片执行了 get(“key”) == null 操作，然后进行 put(“key”, “v2”) 操作，结束后，线程 1 被分配 cpu 时间片继续执行，执行 put 操作就会出现线程安全问题。
 
 
-### 4.4.3 不可变类线程安全性  
+#### 4.4.3 不可变类线程安全性  
 
 String、Integer 等都是不可变类，因为其内部的状态不可以改变，因此它们的方法都是线程安全的。但是String 有 `replace`，`substring` 等方法【可以】改变值啊，那么这些方法又是如何保证线程安全的呢？    
 
@@ -1286,7 +1286,7 @@ String、Integer 等都是不可变类，因为其内部的状态不可以改变
 
   
 
-## 4.5 实例分析  
+### 4.5 实例分析  
 
 **示例一**：
 
@@ -1521,9 +1521,9 @@ public void foo(SimpleDateFormat sdf) {
 
 ***
 
-# 5、习题  
+## 5、习题  
 
-## 5.1 卖票练习  
+### 5.1 卖票练习  
 
 > **存在线程安全问题举例**
 
@@ -1721,7 +1721,7 @@ class TicketWindow {
 
 
 
-## 5.2 转账练习  
+### 5.2 转账练习  
 
 > 举例分析
 
@@ -1903,7 +1903,7 @@ class Account {
 
 ***
 
-# 6、Monitor （管程/监视器）
+## 6、Monitor （管程/监视器）
 
 [概念引用](https://zhuanlan.zhihu.com/p/85812140)
 
@@ -1912,7 +1912,7 @@ class Account {
 - 管程使用锁（lock）确保了在任何情况下管程中只有一个活跃的线程，即确保线程互斥访问临界区。
 - 管程使用条件变量（Condition Variable）提供的等待队列（Waiting Set）实现线程间协作，当线程暂时不能获得所需资源时，进入队列等待，当线程可以获得所需资源时，从等待队列中唤醒。
 
-## 6.1 * Java 对象头  
+### 6.1 * Java 对象头  
 
 > **对象头包含两部分**：`运行时元数据（Mark Word）`和`类型指针（Klass Word）`。
 
@@ -1959,7 +1959,7 @@ class Account {
 
 
 
-## 6.2 * 原理之 Monitor(锁)  
+### 6.2 * 原理之 Monitor(锁)  
 
 > 
 >
@@ -1988,7 +1988,7 @@ JDK6对Synchronized的优先状态：`偏向锁–>轻量级锁–>重量级锁`
 
 **More**：[更详细参考:监视器（Monitor）](https://www.cnblogs.com/aspirant/p/11470858.html)
 
-## 6.3 * 原理之synchronized（字节码角度）
+### 6.3 * 原理之synchronized（字节码角度）
 
 示例代码：
 
@@ -2014,11 +2014,11 @@ public static void main(String[] args) {
 
 ***
 
-# 7、synchronized原理进阶（重点）
+## 7、synchronized原理进阶（重点）
 
 下文将会探索synchronized的基本使用、实现机制、Java是如何对它进行了优化、锁优化机制、锁的存储结构等升级过程。[参考文章](https://www.cnblogs.com/aspirant/p/11470858.html)
 
-## 7.1 基本使用
+### 7.1 基本使用
 
 > Synchronized是Java中解决并发问题的一种最常用的方法，也是最简单的一种方法。Synchronized的作用主要有三个：
 
@@ -2040,7 +2040,7 @@ synchronized 内置锁 是一种 对象锁（锁的是对象而非引用变量�
 
 
 
-## 7.2 同步原理
+### 7.2 同步原理
 
 > **数据同步需要依赖锁，那锁的同步又依赖谁？**
 
@@ -2174,9 +2174,9 @@ public synchronized void method();
 
 
 
-## 7.3 同步概念
+### 7.3 同步概念
 
-### 7.3.1 Java对象头（详细）
+#### 7.3.1 Java对象头（详细）
 
 在JVM中，**对象**在内存中的布局分为三块区域：`对象头`、`实例数据`和`对齐填充`。如下图所示：
 
@@ -2246,7 +2246,7 @@ Java对象头**无锁状态**下Mark Word部分的存储结构（32位虚拟机�
 
 
 
-### 7.3.2 对象头中Mark Word与线程中Lock Record
+#### 7.3.2 对象头中Mark Word与线程中Lock Record
 
 在线程进入同步代码块的时候，如果此同步对象没有被锁定，即它的锁标志位是01，则虚拟机首先在当前线程的栈中创建我们称之为“锁记录（**Lock Record**）”的空间，用于存储锁对象的Mark Word的拷贝，官方把这个拷贝称为`Displaced Mark Word`。整个Mark Word及其拷贝至关重要。
 
@@ -2265,7 +2265,7 @@ Java对象头**无锁状态**下Mark Word部分的存储结构（32位虚拟机�
 
 ***
 
-# 8、锁的优化
+## 8、锁的优化
 
 - 从JDK6开始，就对synchronized的实现机制进行了较大调整，包括使用JDK5引进的CAS自旋之外，还增加了`自适应的CAS自旋`、`锁消除`、`锁粗化`、`偏向锁`、`轻量级锁`这些优化策略。由于此关键字的优化使得性能极大提高，同时语义清晰，操作简单，无需手动关闭，所以推荐在允许的情况下尽量使用此关键字，同时在性能上此关键字还有优化的空间。
 - 锁主要存在四种状态，依次是：**无锁状态**、**偏向锁状态**、**轻量级锁状态**、**重量级锁状态**，锁可以从偏向锁升级到轻量级锁，再升级到重量级锁。但是锁的升级是单向的，也就是说只能从低级到高级，不会出现锁的降级。
@@ -2273,17 +2273,17 @@ Java对象头**无锁状态**下Mark Word部分的存储结构（32位虚拟机�
 
 
 
-## 8.1 * 自旋锁 
+### 8.1 * 自旋锁 
 
-### 8.1.1 引入自旋锁前提
+#### 8.1.1 引入自旋锁前提
 
 线程的阻塞和唤醒需要CPU从用户态转为核心态，频繁的阻塞和唤醒对CPU来说是一件负担很重的工作，势必会给系统的并发性能带来很大的压力。同时我们发现在许多应用上面，对象锁的锁状态只会持续很短一段时间，为了这一段很短的时间频繁地阻塞和唤醒线程是非常不值得的，所以引入`自旋锁`。
 
-### 8.1.2 何谓自旋锁？
+#### 8.1.2 何谓自旋锁？
 
 所谓自旋锁，就是指当一个线程尝试获取某个锁时，如果该锁已被其他线程占用，就一直循环检测是否被释放，而不是进入线程挂起或睡眠状态。
 
-### 8.1.3 自旋锁等待时间/次数有限度
+#### 8.1.3 自旋锁等待时间/次数有限度
 
 - 自旋锁适用于锁保护的临界区很小的情况，临界区很小的话，所占用的时间就很短。自旋等待不能替代阻塞，虽然它可以避免线程切换带来的开销，但是它占用了CPU处理器的时间。如果持有锁的线程很快就释放了锁，那么自旋的效率就非常好，反之，自旋的线程就会白白消耗处理的资源，他不会做任何有意义的工作，典型的占着茅坑不拉屎，这样反而会带来性能上的浪费。所以说，自选等待的时间（自旋的次数）必须有一个限度，如果自旋超过了定义的时间仍然没有获取到锁，则应该被挂起。
 - 自旋锁在JDK1.4.2中引入，默认关闭，但是可以使用`-XX:+UseSpinning`开启，在JDK1.6中默认开启，JDK1.7中，去掉此参数，改为内置实现，换言之，JDK1.7 以后无法通过参数指定。**同时自旋的默认次数为10次**，可以通过参数`-XX:PreBlockSpin`来调整。
@@ -2291,7 +2291,7 @@ Java对象头**无锁状态**下Mark Word部分的存储结构（32位虚拟机�
 
 
 
-## 8.2 适应性自旋锁
+### 8.2 适应性自旋锁
 
 JDK 1.6引入了更加聪明的自旋锁，即自适应自旋锁。所谓自适应就意味着自旋的次数不再是固定的，它是**由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定**。那它如何进行适应性自旋呢？ 
 
@@ -2301,7 +2301,7 @@ JDK 1.6引入了更加聪明的自旋锁，即自适应自旋锁。所谓自适�
 
 
 
-## 8.3 锁消除
+### 8.3 锁消除
 
 为了保证数据的完整性，在进行操作时需要对这部分操作进行同步控制，但是在有些情况下，JVM检测到**不可能存在共享数据竞争**，这时JVM会对这些同步锁进行**锁消除**。
 
@@ -2353,7 +2353,7 @@ public void vectorTest(){
 
 
 
-## 8.4 锁粗化
+### 8.4 锁粗化
 
 - 在使用同步锁的时候，需要让同步块的作用范围尽可能小—仅在共享数据的实际作用域中才进行同步，这样做的目的是 为了使需要同步的操作数量尽可能缩小，如果存在锁竞争，那么等待锁的线程也能尽快拿到锁。
 
@@ -2367,7 +2367,7 @@ public void vectorTest(){
 
     
 
-## 8.5 * 偏向锁 
+### 8.5 * 偏向锁 
 
 偏向锁是JDK6中的重要引进，因为HotSpot作者经过研究实践发现，在大多数情况下，锁不仅不存在多线程竞争，而且**总是由同一线程多次获得**，为了让线程获得锁的代价更低，引进了**偏向锁**。
 
@@ -2443,7 +2443,7 @@ public void vectorTest(){
 
 
 
-## 8.6 偏向锁状态
+### 8.6 偏向锁状态
 
 `运行时元数据（Mark Word）`的结构如下:
 
@@ -2456,14 +2456,14 @@ public void vectorTest(){
 
 
 
-## 8.7 偏向锁批量重偏向
+### 8.7 偏向锁批量重偏向
 
 - 如果对象被多个线程访问，但是没有竞争 ( 一个线程执行完, 另一个线程再来执行, 没有竞争)，这时偏向Thread1的对象仍有机会重新偏向Thread2，重偏向会重置Thread ID；
 - 当撤销偏向锁 101 升级为 轻量级锁00超过20次后（超过阈值），JVM会觉得是不是偏向错了，这时会在给对象加锁时，重新偏向至加锁线程 (Thread2)。
 
 
 
-## 8.8 轻量级锁
+### 8.8 轻量级锁
 
 > **引入轻量级锁的主要目的**
 
@@ -2555,7 +2555,7 @@ public void vectorTest(){
 
 
 
-## 8.9 锁膨胀
+### 8.9 锁膨胀
 
 - 如果在尝试`加轻量级锁`的过程中，cas替换操作无法成功，这是有一种情况就是其它线程已经为这个对象加上了轻量级锁，这是就要进行`锁膨胀(有竞争)`，将`轻量级锁变成重量级锁`。
 
@@ -2573,13 +2573,13 @@ public void vectorTest(){
   
   
 
-## 8.10 重量级锁
+### 8.10 重量级锁
 
 Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来实现的。但是监视器锁本质又是依赖于底层的操作系统的 `Mutex Lock` 来实现的。而操作系统实现线程之间的切换这就需要从用户态转换到核心态，这个成本非常高，状态之间的转换需要相对比较长的时间，这就是为什么Synchronized效率低的原因。因此，**这种依赖于操作系统Mutex Lock所实现的锁我们称之为 “重量级锁”**。
 
 
 
-## 8.11 偏向锁、轻量级锁和重量级锁转换
+### 8.11 偏向锁、轻量级锁和重量级锁转换
 
 图示一：
 
@@ -2593,7 +2593,7 @@ Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来�
 
 
 
-## 8.12 锁的优劣
+### 8.12 锁的优劣
 
 各种锁并不是相互代替的，而是在不同场景下的不同选择，绝对不是说重量级锁就是不合适的。每种锁是只能升级，不能降级，即由偏向锁->轻量级锁->重量级锁，而这个过程就是开销逐渐加大的过程。
 
@@ -2611,7 +2611,7 @@ Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来�
 
 
 
-## 8.12 总结
+### 8.12 总结
 
 > 对于 synchronized 锁来说，**锁的升级主要是通过 Mark Word 中的锁标记位与是否是偏向锁标记为来达成的**；synchronized 关键字所对象的锁都是先**从偏向锁开始**，随着锁竞争的不断升级，逐步演化至轻量级锁，最后变成了重量级锁。
 
@@ -2644,9 +2644,9 @@ Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来�
 
 ***
 
-# 9、Park & Unpark  
+## 9、Park & Unpark  
 
-## 9.1 基本使用
+### 9.1 基本使用
 
 它们是 LockSupport 类中的方法  ：
 
@@ -2748,7 +2748,7 @@ public class TestMultiLock2 {
 
 
 
-## 9.2 park、unpark 原理
+### 9.2 park、unpark 原理
 
 > 每个线程都有自己的一个 `Parker 对象`，由三部分组成： **_counter**， **_cond** 和  **_mutex** 。
 
@@ -2798,9 +2798,9 @@ public class TestMultiLock2 {
 
 ***
 
-# 10、深入线程状态转换 
+## 10、深入线程状态转换 
 
-## 10.1 转换过程图示
+### 10.1 转换过程图示
 
 `Thread.java`的内部类`State`包含以下几种状态：
 
@@ -2810,15 +2810,15 @@ public class TestMultiLock2 {
 
 
 
-## 10.2 状态转换过程说明
+### 10.2 状态转换过程说明
 
 **假设有线程 Thread t：**
 
-### 情况一：NEW <–> RUNNABLE
+#### 情况一：NEW <–> RUNNABLE
 
 - 当调用`t.start()`方法时, `NEW --> RUNNABLE`
 
-### 情况二：RUNNABLE <–> WAITING
+#### 情况二：RUNNABLE <–> WAITING
 
 **t 线程**用`synchronized(obj)`获取了`对象锁`后：
 
@@ -2827,17 +2827,17 @@ public class TestMultiLock2 {
   - **竞争锁成功**，t 线程从 `WAITING --> RUNNABLE`
   - **竞争锁失败**，t 线程从 `WAITING --> BLOCKED`
 
-### 情况三：RUNNABLE <–> WAITING
+#### 情况三：RUNNABLE <–> WAITING
 
 - 当前线程调用 `t.join()` 方法时，当前线程从 `RUNNABLE --> WAITING` ，注意是**当前线程**在 **t线程对象**的监视器上等待
 - **t 线程**运行结束，或调用了当前线程的 interrupt() 时，当前线程从 `WAITING --> RUNNABLE`
 
-### 情况四：RUNNABLE <–> WAITING
+#### 情况四：RUNNABLE <–> WAITING
 
 - 当前线程调用 `LockSupport.park()` 方法会让当前线程从`RUNNABLE --> WAITING`
 - 调用 `LockSupport.unpark(目标线程)` 或调用了线程 的 **interrupt()** ，会让目标线程从 `WAITING --> RUNNABLE`
 
-### 情况五：RUNNABLE <–> TIMED_WAITING
+#### 情况五：RUNNABLE <–> TIMED_WAITING
 
 t 线程用`synchronized(obj)` 获取了`对象锁`后
 
@@ -2846,27 +2846,27 @@ t 线程用`synchronized(obj)` 获取了`对象锁`后
   - 竞争锁成功，t 线程从 TIMED_WAITING --> RUNNABLE
   - 竞争锁失败，t 线程从 TIMED_WAITING --> BLOCKED
 
-### 情况六：RUNNABLE <–> TIMED_WAITING
+#### 情况六：RUNNABLE <–> TIMED_WAITING
 
 - 当前线程调用 t.join(long n) 方法时，当前线程从 RUNNABLE --> TIMED_WAITING 注意是**当前线程在 t 线程**对象的监视器上等待
 - 当前线程等待时间超过了 n 毫秒，或**t 线程**运行结束，或调用了当前线程的 interrupt() 时，**当前线程**从 `TIMED_WAITING --> RUNNABLE`
 
-### 情况七：RUNNABLE <–> TIMED_WAITING
+#### 情况七：RUNNABLE <–> TIMED_WAITING
 
 - 当前线程调用 `Thread.sleep(long n)` ，当前线程从 `RUNNABLE --> TIMED_WAITING`
 - 当前线程等待时间超过了 n 毫秒或调用了线程的 **interrupt()** ，当前线程从 `TIMED_WAITING --> RUNNABLE`
 
-### 情况八：RUNNABLE <–> TIMED_WAITING
+#### 情况八：RUNNABLE <–> TIMED_WAITING
 
 - 当前线程调用 `LockSupport.parkNanos(long nanos)` 或` LockSupport.parkUntil(long millis)` 时，当前线程从 `RUNNABLE --> TIMED_WAITING`
 - 调用`LockSupport.unpark(目标线程) `或调用了线程 的 interrupt() ，或是等待超时，会让目标线程从` TIMED_WAITING--> RUNNABLE`
 
-### 情况九：RUNNABLE <–> BLOCKED
+#### 情况九：RUNNABLE <–> BLOCKED
 
 - t 线程用 synchronized(obj) 获取了对象锁时如果竞争失败，从 RUNNABLE –> BLOCKED, 持 obj 锁线程的同步代码块执行完毕，会唤醒该对象上所有 BLOCKED 的线程重新竞争，
 - 如果其中 t 线程竞争 成功，从 BLOCKED –> RUNNABLE ，其它失败的线程仍然 BLOCKED。
 
-###  情况十：RUNNABLE <–> TERMINATED
+####  情况十：RUNNABLE <–> TERMINATED
 
 - 当前线程所有代码运行完毕，进入 TERMINATED
 
@@ -2874,7 +2874,7 @@ t 线程用`synchronized(obj)` 获取了`对象锁`后
 
 ***
 
-# 11、多把锁
+## 11、多把锁
 
 **多把不相干的锁**  。
 
@@ -2996,9 +2996,9 @@ class BigRoom {
 
 ***
 
-# 12、活跃性  
+## 12、活跃性  
 
-## 12.1 死锁
+### 12.1 死锁
 
 > 有这样的情况：一个线程需要同时获取多把锁，这时就容易发生死锁  
 
@@ -3070,7 +3070,7 @@ public class DeadLockTest1 {
 
 
 
-## 12.2 定位死锁  
+### 12.2 定位死锁  
 
 - 检测死锁可以使用 **jconsole**工具，或者使用 **jps** 定位进程 id，再用 **jstack id** 定位死锁  (保证代码在运行)
 
@@ -3088,7 +3088,7 @@ public class DeadLockTest1 {
 
 
 
-## 12.3 哲学家就餐问题  
+### 12.3 哲学家就餐问题  
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151757231.png" />
 
@@ -3180,7 +3180,7 @@ class Chopstick {
 
 
 
-## 12.4 活锁
+### 12.4 活锁
 
 活锁出现在两个线程互相改变对方的结束条件，最后谁也无法结束，例如：
 
@@ -3225,7 +3225,7 @@ public class TestLiveLock {
 
 
 
-## 12.5 饥饿  
+### 12.5 饥饿  
 
 线程饥饿的例子，先来看看使用顺序加锁的方式解决之前的死锁问题  ：
 
@@ -3239,7 +3239,7 @@ public class TestLiveLock {
 
 ***
 
-# 13、ReentrantLock
+## 13、ReentrantLock
 
 [引用](https://www.jianshu.com/p/4358b1466ec9)
 
@@ -3279,7 +3279,7 @@ try{
 
 
 
-## 13.1 可重入
+### 13.1 可重入
 
 可重入是指同一个线程如果首次获得了这把锁，那么因为它是这把锁的拥有者，因此有权利再次获取这把锁。如果不是可重入锁，那么第二次获得锁时，自己也会被锁挡住。
 
@@ -3343,7 +3343,7 @@ public class ReentRantLockTest {
 
 
 
-## 13.2 可中断
+### 13.2 可中断
 
 针对于`lockInterruptibly()`方法获得的中断锁， 直接退出阻塞队列, 获取锁失败。
 
@@ -3466,7 +3466,7 @@ public class ReentrantTest2 {
 
 
 
-## 13.3 锁超时  
+### 13.3 锁超时  
 
 > **lock.tryLock() 直接退出阻塞队列, 获取锁失败，不会一直阻塞着**。**防止无限制等待, 减少死锁**。
 
@@ -3690,7 +3690,7 @@ class Chopstick extends ReentrantLock {
 
 
 
-## 13.4 条件变量
+### 13.4 条件变量
 
  **`lock.newCondition()`创建条件变量对象; 通过条件变量对象调用`await/signal`方法, 等待/唤醒**。
 
@@ -3807,11 +3807,11 @@ public class ConditionVariable {
 
 
 
-## 13.5 源码分析
+### 13.5 源码分析
 
 [参考文章](https://blog.csdn.net/zhengzhaoyang122/article/details/110847701)
 
-### 13.5.1 ReentrantLock类关系
+#### 13.5.1 ReentrantLock类关系
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151758040.png" />
 
@@ -3823,7 +3823,7 @@ public class ConditionVariable {
 
 
 
-### 13.5.2 AbstractQueuedSynchronizer 抽象类分析
+#### 13.5.2 AbstractQueuedSynchronizer 抽象类分析
 
 | 方法名                                      | 描述                                                         |
 | :------------------------------------------ | ------------------------------------------------------------ |
@@ -3839,7 +3839,7 @@ public class ConditionVariable {
 
 
 
-### 13.5.3 Sync 类的源码如下
+#### 13.5.3 Sync 类的源码如下
 
 ```java
   abstract static class Sync extends AbstractQueuedSynchronizer {
@@ -3928,7 +3928,7 @@ public class ConditionVariable {
 
 
 
-### 13.5.4 NonfairSync 类
+#### 13.5.4 NonfairSync 类
 
 `NonfairSync` 类继承了 `Sync`类，表示采用**非公平策略获取锁**，其实现了 Sync类中抽象的 lock方法，源码如下：从 lock方法的源码可知，每一次都尝试获取锁，而并不会按照公平等待的原则进行等待，让等待时间最久的线程获得锁。`acquire()`方法是 `FairSync`和 `UnfairSync`的`父类 AQS`中的核心方法。
 
@@ -3961,7 +3961,7 @@ static final class NonfairSync extends Sync {
 
 
 
-### 13.5.5 FairSync类*
+#### 13.5.5 FairSync类*
 
 `FairSync` 类也继承了` Sync`类，表示采用**公平策略获取锁**，其实现了 `Sync`类中的抽象 `lock`方法，源码如下：
 
@@ -4013,7 +4013,7 @@ static final class NonfairSync extends Sync {
 
 
 
-###  13.5.6 ReentrantLock和 AQS之间方法的交互过程。
+####  13.5.6 ReentrantLock和 AQS之间方法的交互过程。
 
 以非公平锁为例，加锁和解锁的交互流程：
 
@@ -4039,7 +4039,7 @@ static final class NonfairSync extends Sync {
 
 
 
-### 13.5.7 ReentrantLock类
+#### 13.5.7 ReentrantLock类
 
 > **ReentrantLock类属性**
 

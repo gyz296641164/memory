@@ -9,7 +9,7 @@ date: 2023-03-01
 <!-- more -->
 
 
-### ThreadPoolExecutor提供了四个构造方法：
+## ThreadPoolExecutor提供了四个构造方法：
 
 ![image-20210518125854778](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075955.png)
 
@@ -58,7 +58,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 
 
-### JDK预定义线程池
+## JDK预定义线程池
 
 1. **FixedThreadPool**
 
@@ -154,7 +154,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 
 
-### 自定义线程池
+## 自定义线程池
 
 - 自定义线程池,没有使用线程工厂和拒绝策略构造方法！
 

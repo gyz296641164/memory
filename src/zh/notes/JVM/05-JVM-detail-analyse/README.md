@@ -8,7 +8,7 @@ date: 2023-02-26
 
 <!-- more -->
 
-# CMS和G1的漏标问题解决及三色标记算法图解
+## CMS和G1的漏标问题解决及三色标记算法图解
 
 [参考文章](https://www.jianshu.com/p/bbc10c98d0d6)
 

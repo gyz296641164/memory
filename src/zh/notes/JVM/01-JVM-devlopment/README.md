@@ -8,7 +8,7 @@ date: 2023-02-26
 
 <!-- more -->
 
-# JDK和JRE
+## JDK和JRE
 
 - **JDK**：我们可以把**java程序设计语言**、**Java虚拟机**、**Java类库**这三部分统称为JDK(Java Development Kit)。JDK是支持Java开发的最小环境。
 - **JRE：**可以把Java类库API中的**JavaSE的API子集**和**Java虚拟机**这两部分统称为JRE(Java Runtime Environment)。
@@ -19,7 +19,7 @@ date: 2023-02-26
 
 ***
 
-# Java代码执行流程
+## Java代码执行流程
 
 
 
@@ -39,17 +39,17 @@ date: 2023-02-26
 
 ***
 
-# 虚拟机生命周期
+## 虚拟机生命周期
 
 
 
-## 虚拟机的启动
+### 虚拟机的启动
 
 Java虚拟机的启动是通过引导类加载器（bootstrap class loader）创建一个初始类（initia class）来完成的，这个类是由虚拟机的具体实现指定的。
 
 
 
-## 虚拟机的执行
+### 虚拟机的执行
 
 - 一个运行中的Java虚拟机有着一个清晰的任务：执行Java程序。
 - 程序开始执行时他才执行，程序结束时他就停止。
@@ -57,7 +57,7 @@ Java虚拟机的启动是通过引导类加载器（bootstrap class loader）创
 
 
 
-## 虚拟机的退出
+### 虚拟机的退出
 
 有如下的几种情况：
 

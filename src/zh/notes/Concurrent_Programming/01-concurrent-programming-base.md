@@ -9,15 +9,15 @@ date: 2023-03-01
 <!-- more -->
 
 
-# 1、进程与线程  
+## 1、进程与线程  
 
-## 1.1 进程
+### 1.1 进程
 
 - 程序由指令和数据组成，但这些指令要运行，数据要读写，就必须将指令加载至 CPU，数据加载至内存。在指令运行过程中还需要用到磁盘、网络等设备。进程就是用来加载指令、管理内存、管理 IO 的。
 - 当一个程序被运行，从磁盘加载这个程序的代码至内存，这时就开启了一个进程。
 - 进程就可以视为程序的一个实例。大部分程序可以同时运行多个实例进程（例如记事本、画图、浏览器等），也有的程序只能启动一个实例进程（例如网易云音乐、360 安全卫士等）。  
 
-## 1.2 线程
+### 1.2 线程
 
 - 一个进程之内可以分为一到多个线程。
 - 一个线程就是一个指令流，将指令流中的一条条指令以一定的顺序交给 CPU 执行。
@@ -25,7 +25,7 @@ date: 2023-03-01
 
 
 
-## 1.3 线程的生命周期
+### 1.3 线程的生命周期
 
 要想实现多线程，必须在主线程中创建新的线程对象。Java语言使用Thread类及其子类的对象来表示线程，在它的一个完整的生命周期中通常要经历如下的五种状态：
 
@@ -41,11 +41,11 @@ date: 2023-03-01
 
 ***
 
-# 2、线程创建与运行
+## 2、线程创建与运行
 
 Java中有三种线程创建方式，分别为实现`Runnable接口的run方法`，`继承Thread类并重写run的方法`，使用`FutureTask`方式。
 
-## 2.1 继承Thread类的方式实现
+### 2.1 继承Thread类的方式实现
 
 ```java
 public class ThreadTest {
@@ -82,7 +82,7 @@ public class ThreadTest {
 
 
 
-## 2.2 实现Runnable接口的run方法方式
+### 2.2 实现Runnable接口的run方法方式
 
 ```java
 /**
@@ -108,7 +108,7 @@ public class ThreadTest {
 
 
 
-## 2.3 使用FutureTask的方式
+### 2.3 使用FutureTask的方式
 
 ```java
  	/**
@@ -149,15 +149,15 @@ public class ThreadTest {
 
 ***
 
-# 3、查看进程线程的方法  
+## 3、查看进程线程的方法  
 
-## 3.1 windows
+### 3.1 windows
 
 - 任务管理器可以查看进程和线程数，也可以用来杀死进程
 - tasklist 查看进程（信息列太多）
 - taskkill 杀死进程（配合jps，taskkill /F /PID 28060）
 
-## 3.2 linux 
+### 3.2 linux 
 
 - `ps -fe` 查看所有进程
 - `ps -fT -p <PID>` 查看某个进程（PID）的所有线程（ps -fe | grep java ，查看有关java的进程）
@@ -165,7 +165,7 @@ public class ThreadTest {
 - `top` 按大写 H 切换是否显示线程
 - `top -H -p <PID>` 查看某个进程（PID）的所有线程   
 
-## 3.3 Java
+### 3.3 Java
 
 - `jps` 命令查看所有 Java 进程
 - `jstack <PID>` 查看某个 Java 进程（PID）的所有线程状态
@@ -194,9 +194,9 @@ public class ThreadTest {
 
 ***
 
-# 4、线程运行原理
+## 4、线程运行原理
 
-## 4.1 栈与栈帧  
+### 4.1 栈与栈帧  
 
 Java Virtual Machine Stacks （Java 虚拟机栈）  
 
@@ -209,7 +209,7 @@ Java Virtual Machine Stacks （Java 虚拟机栈）
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151750219.png" />
 
-## 4.2 线程上下文切换（Thread Context Switch）
+### 4.2 线程上下文切换（Thread Context Switch）
 
 因为以下一些原因导致CPU不再执行当前的线程，转而执行另一个线程的代码：
 
@@ -227,7 +227,7 @@ Java Virtual Machine Stacks （Java 虚拟机栈）
 
 ***
 
-# 5、常见方法
+## 5、常见方法
 
 | 方法名           | static | 功能说明                                                     | 注意                                                         |
 | ---------------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -251,7 +251,7 @@ Java Virtual Machine Stacks （Java 虚拟机栈）
 
 
 
-## 5.1 start 与 run 
+### 5.1 start 与 run 
 
 **调用 run**   
 
@@ -284,9 +284,9 @@ public class RunMethodTest {
 
 
 
-## 5.2 线程通知与等待
+### 5.2 线程通知与等待
 
-### 5.2.1 wait()函数
+#### 5.2.1 wait()函数
 
 当一个线程调用一个共享变量的wait（）方法时，该调用线程会被阻塞挂起，直到发生下面几件事情之一才返回：
 
@@ -511,7 +511,7 @@ public class WaitNotifyInterrupt {
 
 
 
-### 5.2.2 wait(long timeout)函数
+#### 5.2.2 wait(long timeout)函数
 
 该方法相比wait（）方法多了一个超时参数，它的不同之处在于：
 
@@ -520,7 +520,7 @@ public class WaitNotifyInterrupt {
 
 
 
-### 5.2.3 wait(long timeout, int nanos) 函数
+#### 5.2.3 wait(long timeout, int nanos) 函数
 
 在其内部调用的是wait（long timeout）函数，如下代码只有在nanos>0时才使参数timeout递增1。
 
@@ -545,7 +545,7 @@ public final void wait(long timeout, int nanos) throws InterruptedException {
 
 
 
-### 5.2.4 notify() 函数
+#### 5.2.4 notify() 函数
 
 **概述**
 
@@ -557,7 +557,7 @@ public final void wait(long timeout, int nanos) throws InterruptedException {
 
 
 
-### 5.2.5 notifyAll() 函数
+#### 5.2.5 notifyAll() 函数
 
 不同于在共享变量上调用notify（）函数会唤醒被阻塞到该共享变量上的一个线程，**notifyAll（）方法则会唤醒所有在该共享变量上由于调用wait系列方法而被挂起的线程**。
 
@@ -682,9 +682,9 @@ threadA end wait
 
 
 
-## 5.3 等待线程执行终止的join方法
+### 5.3 等待线程执行终止的join方法
 
-### 5.3.1 概述
+#### 5.3.1 概述
 
 在项目实践中经常会遇到一个场景，就是**需要等待某几件事情完成后才能继续往下执行**，比如多个线程加载资源，需要等待多个线程全部加载完毕再汇总处理。Thread类中有一个join方法就可以做这个事情。join方法则是Thread类直接提供的。join是无参且返回值为void的方法。
 
@@ -694,7 +694,7 @@ threadA end wait
     }
 ```
 
-### 5.3.2 join方法示例
+#### 5.3.2 join方法示例
 
 ```java
 package com.gyz.concurrent;
@@ -810,15 +810,15 @@ public class JoinTest2 {
 
 
 
-## 5.4 让线程睡眠的sleep方法
+### 5.4 让线程睡眠的sleep方法
 
-### 5.4.1 概述
+#### 5.4.1 概述
 
 当一个执行中的线程调用了Thread的**sleep方法**后，**调用线程会暂时让出指定时间的执行权**，也就是在这期间不参与CPU的调度，但是该线所拥有的监视器资源，比如**锁还是持有不让出**的。指定的睡眠时间到了后该函数会正常返回，线程就处于就绪状态，然后参与CPU的调度，获取到CPU资源后就可以继续运行了。如果在睡眠期间其他线程调用了该线程的interrupt（）方法中断了该线程，则该线程会在调用sleep方法的地方抛出`InterruptedException异常`而返回。
 
 
 
-### 5.4.2 线程在睡眠时拥有的监视器资源不会被释放
+#### 5.4.2 线程在睡眠时拥有的监视器资源不会被释放
 
 **示例代码：**
 
@@ -935,9 +935,9 @@ public class SleepTest2 {
 
 
 
-## 5.5 让出CPU执行权的yield方法
+### 5.5 让出CPU执行权的yield方法
 
-### 5.5.1 概述
+#### 5.5.1 概述
 
 1. 当一个线程调用yield方法时，实际就是在**暗示线程调度器当前线程请求让出自己的CPU使用**，但是线程调度器可以无条件忽略这个暗示。
 
@@ -945,7 +945,7 @@ public class SleepTest2 {
 
 
 
-### 5.5.2 yield方法示例
+#### 5.5.2 yield方法示例
 
 当一个线程调用yield方法时，当前线程会让出CPU使用权，然后处于就绪状态，线程调度器会从线程就绪队列里面获取一个线程优先级最高的线程，**当然也有可能会调度到刚刚让出CPU的那个线程来获取CPU执行权**。下面举一个例子来加深对yield方法的理解。
 
@@ -1001,7 +1001,7 @@ public class YieldTest implements Runnable {
 
 
 
-### 5.5.3 总结
+#### 5.5.3 总结
 
 **sleep与yield方法的区别在于：**
 
@@ -1010,15 +1010,15 @@ public class YieldTest implements Runnable {
 
 
 
-## 5.6 线程中断
+### 5.6 线程中断
 
 Java中的线程中断是一种线程间的协作模式，通过**设置线程的中断标志并不能直接终止该线程的执行**，而是被中断的线程根据中断状态自行处理。
 
-### 5.6.1 void interrupt（）方法 
+#### 5.6.1 void interrupt（）方法 
 
 中断线程，例如，当线程A运行时，线程B可以调用线程A的interrupt（）方法来设置线程A的中断标志为true并立即返回。设置标志仅仅是设置标志，线程A实际并没有被中断，它会继续往下执行。如果线程A因为调用了wait系列函数、join方法或者sleep方法而被阻塞挂起，这时候若线程B调用线程A的interrupt（）方法，线程A会在调用这些方法的地方抛出`InterruptedException`异常而返回。
 
-### 5.6.2 boolean isInterrupted（）方法
+#### 5.6.2 boolean isInterrupted（）方法
 
 检测当前线程是否被中断，如果是返回true，否则返回false。
 
@@ -1030,7 +1030,7 @@ Java中的线程中断是一种线程间的协作模式，通过**设置线程�
 
 
 
-### 5.6.3 boolean interrupted（）方法
+#### 5.6.3 boolean interrupted（）方法
 
 检测当前线程是否被中断，如果是返回true，否则返回false。与isInterrupted不同的是：
 
@@ -1063,7 +1063,7 @@ public void run() {
 
 
 
-### 5.6.4 方法示例
+#### 5.6.4 方法示例
 
 > **下面看一个根据中断标志判断线程是否终止的例子**
 
@@ -1255,9 +1255,9 @@ public class InterruptTest4 {
 
 ***
 
-# 6、线程死锁
+## 6、线程死锁
 
-## 6.1 什么是线程死锁
+### 6.1 什么是线程死锁
 
 死锁是指两个或两个以上的线程在执行过程中，因争夺资源而造成的互相等待的现象，在无外力作用的情况下，这些线程会一直相互等待而无法继续运行下去，如图所示。
 
@@ -1274,7 +1274,7 @@ public class InterruptTest4 {
 
 
 
-## 6.2 举例说明死锁
+### 6.2 举例说明死锁
 
 > **死锁示例代码：**
 
@@ -1359,7 +1359,7 @@ public class DeadLockTest1 {
 
 
 
-## 6.3 如何避免线程死锁
+### 6.3 如何避免线程死锁
 
 1. 要想避免死锁，只需要破坏掉至少一个构造死锁的必要条件即可。**目前只有请求并持有和环路等待条件是可以被破坏的**。
 
@@ -1447,9 +1447,9 @@ public class DeadLockTest1 {
 
 ***
 
-# 7、守护线程与用户线程
+## 7、守护线程与用户线程
 
-## 7.1 概述
+### 7.1 概述
 
 Java中的线程分为两类，分别为**daemon线程（守护线程）**和**user线程（用户线程）**。在JVM启动时会调用main函数，main函数所在的线程就是一个用户线程，其实在JVM内部同时还启动了好多守护线程，比如垃圾回收线程。
 
@@ -1460,7 +1460,7 @@ Java中的线程分为两类，分别为**daemon线程（守护线程）**和**u
 
 
 
-## 7.2 Java中如何创建一个守护线程？
+### 7.2 Java中如何创建一个守护线程？
 
 代码如下：
 
@@ -1494,7 +1494,7 @@ public class DaemonThread {
 
 
 
-## 7.3 用户线程与守护线程的区别
+### 7.3 用户线程与守护线程的区别
 
 > **示例代码：**
 
@@ -1585,7 +1585,7 @@ public class DaemonThread {
 
 ***
 
-# 8、ThreadLocal
+## 8、ThreadLocal
 
 多线程访问同一个共享变量时特别容易出现并发问题，特别是在多个线程需要对一个共享变量进行写入时。为了保证线程安全，一般使用者在访问共享变量时需要进行适当的同步，如图所示。
 
@@ -1599,7 +1599,7 @@ ThreadLocal是JDK包提供的，它提供了线程本地变量，也就是如果
 
 
 
-## 8.1 ThreadLocal使用示例
+### 8.1 ThreadLocal使用示例
 
 本例开启了两个线程，在每个线程内部都设置了本地变量的值，然后调用print函数打印当前本地变量的值。如果打印后调用了本地变量的remove方法，则会删除本地内存中的该变量，代码如下。
 
@@ -1681,7 +1681,7 @@ public class ThreadLocalTest {
 
 
 
-## 8.2 ThreadLocal的实现原理
+### 8.2 ThreadLocal的实现原理
 
 > ThreadLocal相关类的类图结构如下图所示。
 
@@ -1826,7 +1826,7 @@ public class ThreadLocalTest {
 
 
 
-## 8.3 ThreadLocal不支持继承性
+### 8.3 ThreadLocal不支持继承性
 
 <a name="代码实例">代码实例</a>
 
@@ -1873,7 +1873,7 @@ public class ThreadLocalTest2 {
 
 
 
-## 8.4 InheritableThreadLocal类
+### 8.4 InheritableThreadLocal类
 
 > InheritableThreadLocal继承自ThreadLocal，其提供了一个特性，就是让子线程可以访问在父线程中设置的本地变量
 

@@ -8,11 +8,11 @@ date: 2023-03-01
 
 <!-- more -->
 
-# 线程池
+## 线程池
 
-## 自定义线程池
+### 自定义线程池
 
-### 使用线程池的好处
+#### 使用线程池的好处
 
 - 降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
 - 提高响应速度。当任务到达时，任务可以不需要的等到线程创建就能立即执行。
@@ -20,7 +20,7 @@ date: 2023-03-01
 
 ![image-20220901224954301](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220901224954.png)
 
-### 步骤1：自定义拒绝策略接口
+#### 步骤1：自定义拒绝策略接口
 
 ```java
 @FunctionalInterface // 拒绝策略
@@ -29,7 +29,7 @@ interface RejectPolicy<T> {
 }
 ```
 
-### 步骤2：自定义任务队列
+#### 步骤2：自定义任务队列
 
 ```java
 class BlockingQueue<T> {
@@ -168,7 +168,7 @@ class BlockingQueue<T> {
 }
 ```
 
-### 步骤3：自定义线程池
+#### 步骤3：自定义线程池
 
 ```java
 class ThreadPool {
@@ -250,7 +250,7 @@ class ThreadPool {
 }
 ```
 
-### 步骤4：测试
+#### 步骤4：测试
 
 ```java
     public static void main(String[] args) {
@@ -281,11 +281,11 @@ class ThreadPool {
     }
 ```
 
-## ThreadPoolExecutor
+### ThreadPoolExecutor
 
 ![image-20220912230208044](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220912230208.png)
 
-### 线程池状态
+#### 线程池状态
 
 ThreadPoolExecutor 使用 int 的高 3 位来表示线程池状态，低 29 位表示线程数量  
 
@@ -308,7 +308,7 @@ ctl.compareAndSet(c, ctlOf(targetState, workerCountOf(c))));
 private static int ctlOf(int rs, int wc) { return rs | wc; }
 ```
 
-###  构造方法
+####  构造方法
 
 ```java
     public ThreadPoolExecutor(int corePoolSize, 
@@ -352,7 +352,7 @@ private static int ctlOf(int rs, int wc) { return rs | wc; }
 
 根据这个构造方法，JDK Executors 类中提供了众多工厂方法来创建各种用途的线程池 。
 
-### newFixedThreadPool
+#### newFixedThreadPool
 
 ```java
 public static ExecutorService newFixedThreadPool(int nThreads) {
@@ -369,7 +369,7 @@ public static ExecutorService newFixedThreadPool(int nThreads) {
 
 > [!Note]适用于任务量已知，相对耗时的任务  
 
-### newCachedThreadPool
+#### newCachedThreadPool
 
 ```java
 public static ExecutorService newCachedThreadPool() {
@@ -440,7 +440,7 @@ public static ExecutorService newCachedThreadPool() {
 
 > [!Note]整个线程池表现为线程数会根据任务量不断增长，没有上限，当任务执行完毕，空闲 1分钟后释放线程。 适合任务数比较密集，但每个任务执行时间较短的情况  
 
-### newSingleThreadExecutor
+#### newSingleThreadExecutor
 
 ```java
 public static ExecutorService newSingleThreadExecutor() {
@@ -463,7 +463,7 @@ public static ExecutorService newSingleThreadExecutor() {
   - `Executors.newFixedThreadPool(1)` 初始时为1，以后还可以修改
     - 对外暴露的是 `ThreadPoolExecutor` 对象，可以强转后调用 `setCorePoolSize` 等方法进行修改
 
-### 提交任务
+#### 提交任务
 
 ```java
 // 执行任务
@@ -491,7 +491,7 @@ void execute(Runnable command);
 			throws InterruptedException, ExecutionException, TimeoutException;	
 ```
 
-### 关闭线程池
+#### 关闭线程池
 
 > **shutdown**
 
@@ -568,9 +568,9 @@ boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedExceptio
 
 ---
 
-### 异步模式之工作线程  
+#### 异步模式之工作线程  
 
-#### 1. 定义
+##### 1. 定义
 
 让有限的工作线程（Worker Thread）来轮流异步处理无限多的任务。也可以将其归类为分工模式，它的典型实现就是线程池，也体现了经典设计模式中的**享元模式**。
 
@@ -580,7 +580,7 @@ boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedExceptio
 
 >  [!Note]注意，不同任务类型应该使用不同的线程池，这样能够避免饥饿，并能提升效率。
 
-#### 2. 饥饿
+##### 2. 饥饿
 
 > **固定大小线程池会有饥饿现象**
 
@@ -740,7 +740,7 @@ public class TestDeadLock {
 17:25:14.632 c.TestDeadLock [pool-1-thread-1] - 上菜: 辣子鸡丁
 ```
 
-#### 3. 创建多少线程池合适
+##### 3. 创建多少线程池合适
 
 - 过小会导致程序不能充分地利用系统资源、容易导致饥饿
 - 过大会导致更多的线程上下文切换，占用更多内存
@@ -765,7 +765,7 @@ CPU 不总是处于繁忙状态，例如，当你执行业务计算时，这时�
 
 `4 * 100% * 100% / 10% = 40  `  
 
-### 任务调度线程池
+#### 任务调度线程池
 
 在『任务调度线程池』功能加入之前，可以使用 java.util.Timer 来实现定时功能，Timer 的优点在于简单易用，但由于所有任务都是由同一个线程来调度，因此所有任务都是串行执行的，同一时间只能有一个任务在执行，前一个任务的延迟或异常都将会影响到之后的任务。  
 
@@ -893,7 +893,7 @@ scheduleWithFixedDelay 例子：
 > 评价: 整个线程池表现为：线程数固定，任务数多于线程数时，会放入无界队列排队。任务执行完毕，这些线
 > 程也不会被释放。用来执行延迟或反复执行的任务 
 
-### 正确处理执行任务异常
+#### 正确处理执行任务异常
 
 方法1：主动捉异常   
 
@@ -929,7 +929,7 @@ scheduleWithFixedDelay 例子：
 
 ![image-20220921232905827](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220921232906.png)
 
-### * 应用之定时任务
+#### * 应用之定时任务
 
 ```java
 package cn.itcast.n8;
@@ -970,11 +970,11 @@ public class TestSchedule {
 
 ---
 
-# AQS原理
+## AQS原理
 
-## **黑马版**
+### **黑马版**
 
-## 概述  
+### 概述  
 
 全称是`AbstractQueuedSynchronizer`，是阻塞式锁和相关的同步器工具的框架。
 
@@ -1016,7 +1016,7 @@ if (tryRelease(arg)){
 
 
 
-## 实现不可重入锁
+### 实现不可重入锁
 
 ```java
 package com.gyz.juc;
@@ -1152,9 +1152,9 @@ log.debug("locking...");
 
 
 
-## AQS 要实现的功能目标  
+### AQS 要实现的功能目标  
 
-### 目标
+#### 目标
 
 - 阻塞版本获取锁acquire和非阻塞的版本尝试获取锁tryAcquire
 - 获取锁超时机制
@@ -1162,7 +1162,7 @@ log.debug("locking...");
 - 独占机制及共享机制
 - 条件不满足时的等待机制
 
-### 设计
+#### 设计
 
 AQS 的基本思想其实很简单  。获取锁的逻辑：
 
@@ -1208,15 +1208,15 @@ if (state 状态允许了){
 
 
 
-## 主要用到 AQS 的并发工具类  
+### 主要用到 AQS 的并发工具类  
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075918.png" />
 
 
 
-## **尚硅谷版**
+### **尚硅谷版**
 
-## 前置知识
+### 前置知识
 
 > **AbstractQueuedSynchronizer（AQS）：抽象的队列同步器**
 
@@ -1333,7 +1333,7 @@ AQS 是用来构建锁或者其它同步器组件的重量级基础框架及**�
 
 
 
-## 和AQS有关的并发编程类
+### 和AQS有关的并发编程类
 
 ![image-20201227165833625](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075924.png)
 
@@ -1405,9 +1405,9 @@ AQS 是用来构建锁或者其它同步器组件的重量级基础框架及**�
 
 
 
-## 从ReentrantLock开始解读AQS
+### 从ReentrantLock开始解读AQS
 
-### 前置知识
+#### 前置知识
 
 - 本次讲解我们走最常用的,lock/unlock作为案例突破口
 
@@ -1421,7 +1421,7 @@ AQS 是用来构建锁或者其它同步器组件的重量级基础框架及**�
 
 
 
-### lock()方法开始
+#### lock()方法开始
 
 > **通过 `ReentrantLock` 的源码来讲解公平锁和非公平锁**
 
@@ -1742,7 +1742,7 @@ private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
 
 
 
-### unlock() 开始
+#### unlock() 开始
 
 **线程 A 执行 `unlock()` 方法**
 
@@ -1832,15 +1832,15 @@ private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
 
 ***
 
-# ReentrantLock 原理  
+## ReentrantLock 原理  
 
 类图结构：
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080003.png" />
 
-## 非公平锁实现原理  
+非公平锁实现原理  
 
-### 加锁解锁流程
+#### 加锁解锁流程
 
 先从构造器开始看，默认为非公平锁实现  :
 
@@ -1922,7 +1922,7 @@ Thread-0 释放锁，进入 tryRelease 流程，如果成功  :
 
 
 
-### 加锁源码  
+#### 加锁源码  
 
 ```java
 // Sync 继承自 AQS
@@ -2089,7 +2089,7 @@ static final class NonfairSync extends Sync {
 
 
 
-### 解锁源码
+#### 解锁源码
 
 ```java
 // Sync 继承自 AQS
@@ -2161,7 +2161,7 @@ static final class NonfairSync extends Sync {
 
 
 
-## 可重入原理  
+### 可重入原理  
 
 ```java
 static final class NonfairSync extends Sync {
@@ -2210,9 +2210,9 @@ static final class NonfairSync extends Sync {
 
 
 
-## 可打断原理
+### 可打断原理
 
-### 不可打断模式
+#### 不可打断模式
 
 在此模式下，即使它被打断，仍会驻留在 AQS 队列中，一直要等到获得锁后方能得知自己被打断了。
 
@@ -2319,7 +2319,7 @@ static final class NonfairSync extends Sync {
 
 
 
-## 公平锁原理
+### 公平锁原理
 
 ```java
 static final class FairSync extends Sync {
@@ -2378,11 +2378,11 @@ static final class FairSync extends Sync {
 
 
 
-## 条件变量实现原理  
+### 条件变量实现原理  
 
 每个条件变量其实就对应着一个等待队列，其实现类是 ConditionObject  .
 
-### await 流程  
+#### await 流程  
 
 开始 Thread-0 持有锁，调用 await，进入 ConditionObject 的 addConditionWaiter 流程；
 创建新的 Node 状态为 -2（Node.CONDITION），关联 Thread-0，加入等待队列尾部  
@@ -2403,7 +2403,7 @@ park 阻塞 Thread-0
 
 
 
-### signal 流程  
+#### signal 流程  
 
 假设 Thread-1 要来唤醒 Thread-0  
 
@@ -2420,7 +2420,7 @@ park 阻塞 Thread-0
 
 Thread-1 释放锁，进入 unlock 流程，略 !
 
-### 源码  
+#### 源码  
 
 ```java
 public class ConditionObject implements Condition, java.io.Serializable {
@@ -2653,7 +2653,7 @@ private void doSignalAll(Node first) {
 
 ---
 
-# todo
+## todo
 
 - [ ] Tomcat 线程池  
 - [ ] Fork/Join  

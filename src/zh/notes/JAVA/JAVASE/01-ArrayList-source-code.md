@@ -9,9 +9,9 @@ date: 2023-03-01
 
 <!-- more -->
 
-# ArrayList源码分析
+## ArrayList源码分析
 
-## 构造方法
+### 构造方法
 
 | Constructor                    | Constructor描述                                              |
 | ------------------------------ | ------------------------------------------------------------ |
@@ -21,7 +21,7 @@ date: 2023-03-01
 
 ------
 
-## 案例演示
+### 案例演示
 
 **案例一:**
 
@@ -164,7 +164,7 @@ public class Arrays {
 
 ------
 
-## 添加方法
+### 添加方法
 
 | 方法名                                         | 描述                                                         |
 | ---------------------------------------------- | ------------------------------------------------------------ |
@@ -435,7 +435,7 @@ numMoved);
 
 ------
 
-## 删除方法
+### 删除方法
 
 - `public E remove(int index)` 根据索引删除元素
 
@@ -546,7 +546,7 @@ public class ArrayList<E> {
 
 ------
 
-## 修改方法
+### 修改方法
 
 - `public E set(int index, E element)` 根据索引修改集合元素
 
@@ -566,7 +566,7 @@ public class Test01 {
 }
 ```
 
-## 获取方法
+### 获取方法
 
 - `public E get(int index)` 根据索引获取元素
 
@@ -586,7 +586,7 @@ public class Test01 {
 }
 ```
 
-## 转换方法
+### 转换方法
 
 - `public String toString()` 把集合所有数据转换成字符串
 
@@ -608,7 +608,7 @@ public class Test01 {
 
 ------
 
-## 迭代器
+### 迭代器
 
 - `public Iterator<E> iterator()` 普通迭代器 
    源码同上(在讲toString方法的时候已经讲过基本操作,通过以下两个案例进行一步分析源码) 
@@ -621,7 +621,7 @@ public class Test01 {
 
 ------
 
-## 清空方法
+### 清空方法
 
 - `public void clear()` 清空集合所有数据
 
@@ -642,7 +642,7 @@ public class Test01 {
 }
 ```
 
-## 包含方法
+### 包含方法
 
 - `public boolean contains(Object o)` 判断集合是否包含指定元素
 
@@ -669,7 +669,7 @@ public class Test01 {
 
 ------
 
-## 判断集合是否为空
+### 判断集合是否为空
 
 ```
 public boolean isEmpty()
@@ -695,15 +695,15 @@ public class Test01 {
 
 ------
 
-# 面试题
+## 面试题
 
-## ArrayList是如何扩容的？
+### ArrayList是如何扩容的？
 
 第一次扩容10，以后每次都是原容量的1.5倍
 
 ------
 
-## ArrayList频繁扩容导致添加性能急剧下降，如何处理？
+### ArrayList频繁扩容导致添加性能急剧下降，如何处理？
 
 **案例**
 
@@ -769,14 +769,14 @@ public class Test01 {
 
 ------
 
-## ArrayList插入或删除元素一定比LinkedList慢么?
+### ArrayList插入或删除元素一定比LinkedList慢么?
 
 1. 数组删除元素确实要比链表慢，慢在需要创建新数组，还有比较麻烦的数据拷贝，但是在ArrayList底层不是每次删除元素都需要扩容，因此在这个方面相对于链表来说数组的性能更好
 2. LinkedList删除元素之所以效率并不高，其原理在于底层先需要对整个集合进行折半的动作，然后又需要对集合进行遍历一次，这些操作导致效率变低
 
 ------
 
-## ArrayList是线程安全的么？
+### ArrayList是线程安全的么？
 
 - ArrayList不是线程安全的,使用一个案例演示
 
@@ -961,7 +961,7 @@ public class Test01 {
 
 ------
 
-## 如何复制某个ArrayList到另一个ArrayList中去？
+### 如何复制某个ArrayList到另一个ArrayList中去？
 
 - 使用clone()方法
 - 使用ArrayList构造方法
@@ -969,7 +969,7 @@ public class Test01 {
 
 ------
 
-## 已知成员变量集合存储N多用户名称,在多线程的环境下,使用迭代器在读取集合数据的同时如何保证还可以正常的写入数据到集合?
+### 已知成员变量集合存储N多用户名称,在多线程的环境下,使用迭代器在读取集合数据的同时如何保证还可以正常的写入数据到集合?
 
 普通集合 ArrayList
 
@@ -1047,7 +1047,7 @@ new Thread(ct).start();
 
 ------
 
-## ArrayList 和 LinkList区别？
+### ArrayList 和 LinkList区别？
 
 - ArrayList
 

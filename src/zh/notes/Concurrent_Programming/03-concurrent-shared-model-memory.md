@@ -8,7 +8,7 @@ date: 2023-03-01
 
 <!-- more -->
 
-# 1、Java内存模型
+## 1、Java内存模型
 
 [好文推荐](https://zhuanlan.zhihu.com/p/29881777)
 
@@ -34,9 +34,9 @@ i = 10;
 
 ***
 
-# 2、可见性
+## 2、可见性
 
-## 2.1 退不出的循环
+### 2.1 退不出的循环
 
 先来看一个现象，main 线程对 run 变量的修改对于 t 线程不可见，导致了 t 线程无法停止：  
 
@@ -94,7 +94,7 @@ public class Test1 {
 
 
 
-## 2.1 解决方法
+### 2.1 解决方法
 
 - 使用`volatile`（易变关键字），它可以用来修饰`成员变量`和`静态成员变量`，它可以避免线程从自己的工作缓存中查找变量的值，必须到主存中获取它的值，**线程操作 volatile 变量都是直接操作主存**。
 
@@ -183,7 +183,7 @@ public class Test1 {
 
 
 
-## 2.3 可见性 vs 原子性  
+### 2.3 可见性 vs 原子性  
 
 前面例子体现的实际就是可见性，它保证的是在多个线程之间，一个线程对 volatile 变量的修改对另一个线程可见， 不能保证原子性，**仅用在一个写线程，多个读线程的情况**： 上例从字节码理解是这样的：  
 
@@ -220,9 +220,9 @@ putstatic i // 线程2-将修改后的值存入静态变量i 静态变量i=-1
 
 
 
-## 2.4 终止模式之两阶段终止模式  
+### 2.4 终止模式之两阶段终止模式  
 
-### 2.4.1 概念
+#### 2.4.1 概念
 
 顾名思义，就是将终止过程分成两个阶段，其中第一个阶段主要是线程 T1 向线程 T2发送终止指令，而第二阶段则是线程 T2响应终止指令。
 
@@ -245,7 +245,7 @@ putstatic i // 线程2-将修改后的值存入静态变量i 静态变量i=-1
 
    <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075648.png" />
 
-### 2.4.2 实现
+#### 2.4.2 实现
 
 **利用 isInterrupted  实现两阶段终止模式**：
 
@@ -380,7 +380,7 @@ class Monitor {
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075650.png" />
 
-## 2.5 模式之 Balking（犹豫）
+#### 2.5 模式之 Balking（犹豫）
 
 Balking （犹豫）模式用在一个线程发现另一个线程或本线程已经做了某一件相同的事，那么本线程就无需再做 了，直接结束返回，有点类似单例。
 
@@ -471,9 +471,9 @@ class Monitor2 {
 
 ***
 
-# 3、有序性
+## 3、有序性
 
-## 3.1 指令重排
+### 3.1 指令重排
 
 JVM 会在不影响正确性的前提下，可以调整语句的执行顺序，思考下面一段代码  ：
 
@@ -503,7 +503,7 @@ i = ...;
 
 
 
-## 3.2 多线程下指令重排问题
+### 3.2 多线程下指令重排问题
 
 > **示例代码**
 
@@ -621,9 +621,9 @@ public class ConcurrencyTest {
 
 ***
 
-# 3、volatile
+## 3、volatile
 
-## 3.1 原理
+### 3.1 原理
 
 volatile 的底层实现原理是：`内存屏障`，`Memory Barrier（Memory Fence）`和`缓存一致性协议（硬件层面）`
 
@@ -638,7 +638,7 @@ volatile 的底层实现原理是：`内存屏障`，`Memory Barrier（Memory Fe
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075653.png" />
 
-## 3.2 volatile是如何保证可见性
+### 3.2 volatile是如何保证可见性
 
 - 写屏障（sfence）保证在该屏障之前对共享变量的改动，都同步到主存当中
 
@@ -671,7 +671,7 @@ volatile 的底层实现原理是：`内存屏障`，`Memory Barrier（Memory Fe
 
 
 
-## 3.3 volatile是如何保证有序性
+### 3.3 volatile是如何保证有序性
 
 - `写屏障`会确保**指令重排序**时，不会将写屏障之前的代码排在写屏障之后（即写屏障之前代码的共享变量的改变都同步到主存）
 
@@ -703,7 +703,7 @@ volatile 的底层实现原理是：`内存屏障`，`Memory Barrier（Memory Fe
 
 
 
-## 3.4 volatile不能解决原子性
+### 3.4 volatile不能解决原子性
 
 - **写屏障仅仅是保证之后的读能够读到最新的结果**，但不能保证其它线程的读, 跑到它前面去
 
@@ -715,7 +715,7 @@ volatile 的底层实现原理是：`内存屏障`，`Memory Barrier（Memory Fe
 
 
 
-## 3.5 double-checked locking (双重检查锁) 问题
+### 3.5 double-checked locking (双重检查锁) 问题
 
 - 首先synchronized可以保证它的临界区的资源是 `原子性`、`可见性`、`有序性`的，有序性的前提是，**在synchronized代码块中的共享变量, 不会在代码块外使用到, 否则`有序性`不能被保证**，只能使用`volatile`来保证有序性。
 
@@ -836,7 +836,7 @@ volatile 的底层实现原理是：`内存屏障`，`Memory Barrier（Memory Fe
 
 
 
-## 3.6 double-checked locking 解决指令重排问题
+### 3.6 double-checked locking 解决指令重排问题
 
 加volatile：
 
@@ -900,7 +900,7 @@ public final class Singleton {
 
 
 
-## 3.7 happens-before
+### 3.7 happens-before
 
 `happens-before` 规定了对共享变量的写操作,对其它线程的读操作可见，它是可见性与有序性的一套规则总结。抛开 `happens-before `规则，JMM 并不能保证一个线程对共享变量的写，对于其它线程对该共享变量的读可见。
 
@@ -1013,9 +1013,9 @@ public final class Singleton {
 
 
 
-## 3.8 练习题
+### 3.8 练习题
 
-### 3.8.1 balking 模式习题
+#### 3.8.1 balking 模式习题
 
 希望 doInit() 方法仅被调用一次，下面的实现是否有问题，为什么？
 
@@ -1039,7 +1039,7 @@ volatile 可以保存线程的可见性，有序性，但是不能保证原子�
 
 
 
-### 3.8.2 线程安全单例习题
+#### 3.8.2 线程安全单例习题
 
 单例模式有很多实现方法，饿汉、懒汉、静态内部类、枚举类，试着分析每种实现下获取单例对象（即调用 getInstance）时的线程安全，并思考注释中的问题：
 
