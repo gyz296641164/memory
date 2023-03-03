@@ -27,6 +27,12 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: [
         {
+          text: "JAVASE",
+          prefix: "JAVASE/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
           text: "JAVA8",
           prefix: "JAVA8/",
           collapsible: true,
@@ -60,7 +66,7 @@ export const zhSidebar = sidebar({
         {
           text: "JAVA集合",
           icon: "star",
-          prefix: "JAVASE/",
+          prefix: "JAVA_Collection/",
           collapsible: true,
           children: "structure",
         },
