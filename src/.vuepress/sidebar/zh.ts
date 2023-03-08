@@ -211,25 +211,25 @@ export const zhSidebar = sidebar({
           collapsible: true,
           children: [
             {
-              text: "01-33",
+              text: "第一部分01-33",
               prefix: "01-33/",
               collapsible: true,
               children: "structure",
             },
             {
-              text: "34-63",
+              text: "第二部分34-63",
               prefix: "34-63/",
               collapsible: true,
               children: "structure",
             },
             {
-              text: "64-108",
+              text: "第三部分64-108",
               prefix: "64-108/",
               collapsible: true,
               children: "structure",
             },
             {
-              text: "109-132",
+              text: "第四部分109-132",
               prefix: "109-132/",
               collapsible: true,
               children: "structure",
