@@ -9,7 +9,7 @@ date: 2023-02-26
 
 <!-- more -->
 
-# 开篇
+## 开篇
 
 到目前为止，我们已经获取到了当前bean对应的拦截器（增强），接下来就是拿着这些拦截器来生成动态代理了，那么从这篇文章开始，我们就会一步一步来分析AOP创建代理的流程，分析入口当然是这个createProxy()方法方法啦。
 
@@ -23,7 +23,7 @@ date: 2023-02-26
 
 ---
 
-# 通过构造方法创建ProxyFactory代理工厂
+## 通过构造方法创建ProxyFactory代理工厂
 
 上篇文章呢，我们分析到了这个地方，大家来回顾下，如下图：
 
@@ -77,7 +77,7 @@ date: 2023-02-26
 
 ---
 
-# 为父类ProxyConfig设置相关属性
+## 为父类ProxyConfig设置相关属性
 
 首先我们来看下这个`proxyFactory.copyFrom(this)`是干嘛的，那么就要先看下这个入参this到底是哪个类的实例。
 
@@ -111,7 +111,7 @@ date: 2023-02-26
 
 ---
 
-# 为ProxyFactory设置proxyTargetClass标识
+## 为ProxyFactory设置proxyTargetClass标识
 
 接着我们继续往下看，此时就会看到下边这块代码
 
@@ -159,7 +159,7 @@ date: 2023-02-26
 
 ---
 
-# 为ProxyFactory设置拦截器
+## 为ProxyFactory设置拦截器
 
 到了这里，我们发现前边我们千辛万苦得到的拦截器还没有用到，不过没事儿，我们继续往下看，此时就会看到一个buildAdvisors()方法，一看这个方法的名字，就必然和拦截器脱不了干系，这个buildAdvisors()方法的代码如下：
 
@@ -183,7 +183,7 @@ date: 2023-02-26
 
 ---
 
-# ProxyFactory扩展点介绍
+## ProxyFactory扩展点介绍
 
 设置完拦截器后，我们再接着往下看，此时可以看到一个ProxyFactory的扩展点，那就是customizeProxyFactory()方法，如下图
 
@@ -241,7 +241,7 @@ date: 2023-02-26
 
 ---
 
-# 总结
+## 总结
 
 一张图来梳理下AOP代理的创建流程
 

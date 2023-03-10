@@ -7,7 +7,7 @@ date: 2023-02-26
 
 <!-- more -->
 
-# 开篇
+## 开篇
 
 大家好，上篇文章我们详细分析了下代理工厂ProxyFactory，我们知道在ProxyFactory创建好之后，Spring会为ProxyFactory设置很多核心的属性，其中就包括非常核心的拦截器，这个拦截器包含我们切面中的增强拦截器和普通的拦截器。
 
@@ -21,7 +21,7 @@ date: 2023-02-26
 
 ---
 
-# AOP代理工厂DefaultAopProxyFactory
+## AOP代理工厂DefaultAopProxyFactory
 
 现在创建代理的准备工作都完成了，那么接下来就会来执行这行代码proxyFactory.getProxy(getProxyClassLoader())，如下图：
 
@@ -57,7 +57,7 @@ date: 2023-02-26
 
 ---
 
-# jdk代理和cglib代理怎么选？
+## jdk代理和cglib代理怎么选？
 
 接下来还有啥好说的，我们直接到DefaultAopProxyFactory类中看下这个createAopProxy()方法呗，如下图：
 
@@ -121,7 +121,7 @@ date: 2023-02-26
 
 ---
 
-# 总结
+## 总结
 
 一张图来梳理下AOP代理的创建流程
 

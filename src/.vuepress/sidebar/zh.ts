@@ -90,23 +90,23 @@ export const zhSidebar = sidebar({
     {
       text: "Spring Cloud",
       icon: "note",
-      prefix: "notes/Spring Cloud/",
+      prefix: "notes/SpringCloud/",
       collapsible: true,
       children: [
         {
           text: "Spring Cloud - Hoxton.SR1(上)",
           icon: "star",
-          link: "01-Spring Cloud - Hoxton.SR1.md",
+          link: "01-SpringCloud-Hoxton.SR1.md",
         },
         {
           text: "Spring Cloud - Hoxton.SR1(下)",
           icon: "star",
-          link: "02-Spring Cloud - Hoxton.SR1.md",
+          link: "02-SpringCloud-Hoxton.SR1.md",
         },
         {
           text: "Spring Cloud Alibaba",
           icon: "star",
-          link: "03-Spring Cloud Alibaba.md",
+          link: "03-SpringCloudAlibaba.md",
         },
       ],
     },

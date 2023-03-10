@@ -4,11 +4,11 @@ title: 主页
 icon: home
 # bgImage: /222.jpeg
 heroImage: /logo2.svg
-heroText: Memory's notes
+heroText: Memory's Notes
 tagline: 不积跬步，无以至千里；不积小流，无以成江海✊
 actions:
   - text: 开始阅读 🧭
-    link: /zh/notes/  
+    link: /zh/notes/
     type: primary
 
   - text: 博客主页 💡
