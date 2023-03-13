@@ -66,7 +66,7 @@ date: 2023-03-10
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202302/20230211151336.png)
 
-说白了这里会依次在指定method上查找AspectJ的六种注解，分别是@Pointcut、@Around、@Before、@After、@AfterReturning、@AfterThrowing，具体查找的话就是这行代码AspectJAnnotation<?> foundAnnotation = findAnnotation(method, (Class<Annotation>) clazz)，说白了就是调用工具方法findAnnotation()来完成AspectJ注解的扫描，最后返回扫描到的AspectJ注解。
+说白了这里会依次在指定method上查找AspectJ的六种注解，分别是@Pointcut、@Around、@Before、@After、@AfterReturning、@AfterThrowing，具体查找的话就是这行代码`AspectJAnnotation<?> foundAnnotation = findAnnotation(method, (Class<Annotation>) clazz)`，说白了就是调用工具方法findAnnotation()来完成AspectJ注解的扫描，最后返回扫描到的AspectJ注解。
 
 那么刚才getAdvisorMethods()返回的before()、afterReturning()、getOrder()这三个方法，在处理getOrder()这个method时，findAspectJAnnotationOnMethod()方法就会返回null，因为getOrder()方法上没有加AspectJ的六种注解之一。
 
@@ -96,11 +96,11 @@ date: 2023-03-10
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202302/20230211152137.png)
 
-到这里为止，List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory)这行代码就执行完毕了，如下图：
+到这里为止，`List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory)`这行代码就执行完毕了，如下图：
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202302/20230211152151.png)
 
-此时我们以切面类LoggingAspect为例，经过List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory)这行代码处理之后，返回结果classAdvisors中就只剩下before()和afterReturning()这两个增强方法对应的Advisor了。
+此时我们以切面类LoggingAspect为例，经过`List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory)`这行代码处理之后，返回结果classAdvisors中就只剩下before()和afterReturning()这两个增强方法对应的Advisor了。
 
 ---
 
@@ -124,7 +124,7 @@ date: 2023-03-10
 
 通过上边这张图，我们可以看到，在为bean构建Advisors的过程中，会通过步骤1 aspectNames.add(beanName)）记录处理过的切面类，而最后处理完后，会通过步骤3 this.aspectBeanNames = aspectNames将处理过的切面类赋值给this.aspectBeanNames
 
-这样当下一次再调用buildAspectJAdvisors()方法时，这个this.aspectBeanNames就不会为null，此时会执行步骤4 List<String> aspectNames = this.aspectBeanNames这行代码，那么此时aspectNames的值就是之前处理过的切面类的beanName，所以aspectNames是不为null的，也就是说步骤5 aspectNames == null 的结果为false，此时就会直接从缓存中获取了，也就是步骤6
+这样当下一次再调用buildAspectJAdvisors()方法时，这个this.aspectBeanNames就不会为null，此时会执行步骤4 `List<String> aspectNames = this.aspectBeanNames`这行代码，那么此时aspectNames的值就是之前处理过的切面类的beanName，所以aspectNames是不为null的，也就是说步骤5 aspectNames == null 的结果为false，此时就会直接从缓存中获取了，也就是步骤6
 
 接着buildAspectJAdvisors()方法构建的advisor就会放入到advisors集合中，如下图：
 
@@ -132,7 +132,7 @@ date: 2023-03-10
 
 经过这个findCandidateAdvisors()方法的处理，那么IOC容器中所有的增强都会被放入到advisors集合中，最后作为结果返回
 
-也就是说，到目前为止这行代码List<Advisor> candidateAdvisors = findCandidateAdvisors()已经执行完毕了，如下图：
+也就是说，到目前为止这行代码`List<Advisor> candidateAdvisors = findCandidateAdvisors()`已经执行完毕了，如下图：
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202302/20230211153649.png)
 
@@ -140,7 +140,7 @@ date: 2023-03-10
 
 那接下来该怎么做呢？
 
-其实很简单，那就是从所有切面类的所有增强Advisor中，找到与当前bean相匹配的增强Advisors，也就是执行List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName)这行代码了。
+其实很简单，那就是从所有切面类的所有增强Advisor中，找到与当前bean相匹配的增强Advisors，也就是执行`List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName)`这行代码了。
 
 这个findAdvisorsThatCanApply()方法会使用增强Advisor中的切点表达式与当前bean中的方法做匹配，从而找到与当前bean匹配的增强Advisor，这个我们下篇文章接着分析。
 
