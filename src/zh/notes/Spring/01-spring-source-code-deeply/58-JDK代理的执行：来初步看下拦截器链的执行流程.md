@@ -1,4 +1,14 @@
-<h1 align="center">58_JDK代理的执行：来初步看下拦截器链的执行流程</h1>
+---
+title: 58_JDK代理的执行：来初步看下拦截器链的执行流程
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
+
 
 # 开篇
 

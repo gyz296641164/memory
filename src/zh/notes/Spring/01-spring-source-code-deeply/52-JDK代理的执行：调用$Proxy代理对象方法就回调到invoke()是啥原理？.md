@@ -1,4 +1,13 @@
-<h1 align="center">52_JDK代理的执行：调用$Proxy代理对象方法就回调到invoke()是啥原理？</h1>
+---
+title: 52_JDK代理的执行：调用$Proxy代理对象方法就回调到invoke()是啥原理？
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
 
 # 开篇
 

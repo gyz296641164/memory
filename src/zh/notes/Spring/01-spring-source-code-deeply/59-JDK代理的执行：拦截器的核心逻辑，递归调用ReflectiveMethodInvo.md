@@ -1,4 +1,13 @@
-<h1 align="center">59_JDK代理的执行：拦截器的核心逻辑，递归调用ReflectiveMethodInvo</h1>
+---
+title: 59_JDK代理的执行：拦截器的核心逻辑，递归调用ReflectiveMethodInvo
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
 
 # 开篇
 

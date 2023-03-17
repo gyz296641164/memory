@@ -1,4 +1,14 @@
-<h1 align="center">55_JDK代理的执行：怎么为目标方法匹配适用的增强？</h1>
+---
+title: 55_JDK代理的执行：怎么为目标方法匹配适用的增强？
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
+
 
 # 开篇
 

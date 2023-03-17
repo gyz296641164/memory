@@ -1,4 +1,13 @@
-<h1 align="center">61_CGLIB代理的创建：通过Enhancer来创建代理</h1>
+---
+title: 61_CGLIB代理的创建：通过Enhancer来创建代理
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
 
 ## 开篇
 

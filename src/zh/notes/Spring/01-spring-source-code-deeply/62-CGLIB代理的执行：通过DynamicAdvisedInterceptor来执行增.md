@@ -1,4 +1,13 @@
-<h1 align="center">62_CGLIB代理的执行：通过DynamicAdvisedInterceptor来执行增</h1>
+---
+title: 62_CGLIB代理的执行：通过DynamicAdvisedInterceptor来执行增
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
 
 
 

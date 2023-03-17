@@ -1,4 +1,13 @@
-<h1 align="center">64_AOP拓展：AnnotationAwareAspectJAutoProxyCreat</h1>
+---
+title: 64_AOP拓展：AnnotationAwareAspectJAutoProxyCreat
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
 
 ## 开篇
 

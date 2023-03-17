@@ -1,4 +1,14 @@
-<h1 align="center">60_JDK代理的执行：拦截器链的本质，责任链模式</h1>
+---
+title: 60_JDK代理的执行：拦截器链的本质，责任链模式
+category:
+  - Spring源码
+star: true
+sticky: true
+date: 2023-03-17
+---
+
+<!-- more -->
+
 
 # 开篇
 
