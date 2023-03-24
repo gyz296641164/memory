@@ -2,7 +2,7 @@ import { sidebar } from "vuepress-theme-hope";
 
 export const zhSidebar = sidebar({
   "/zh/": [
-    "",
+    "", //侧边栏“首页”
     "intro",
     {
       text: "如何使用",
@@ -72,44 +72,45 @@ export const zhSidebar = sidebar({
         },
       ],
     },
-    {
-      text: "Spring",
-      icon: "note",
-      prefix: "notes/Spring/",
-      collapsible: true, //侧边栏折叠 
-      children: [
-        {
-          text: "深入学习Spring源码",
-          icon: "star",
-          prefix: "01-spring-source-code-deeply/",
-          collapsible: true,
-          children: "structure", //自动生成侧边栏
-        },
-      ],
-    },
-    {
-      text: "Spring Cloud",
-      icon: "note",
-      prefix: "notes/SpringCloud/",
-      collapsible: true,
-      children: [
-        {
-          text: "Spring Cloud - Hoxton.SR1(上)",
-          icon: "star",
-          link: "01-SpringCloud-Hoxton.SR1.md",
-        },
-        {
-          text: "Spring Cloud - Hoxton.SR1(下)",
-          icon: "star",
-          link: "02-SpringCloud-Hoxton.SR1.md",
-        },
-        {
-          text: "Spring Cloud Alibaba",
-          icon: "star",
-          link: "03-SpringCloudAlibaba.md",
-        },
-      ],
-    },
+    // {
+    //   text: "Spring",
+    //   icon: "note",
+    //   prefix: "notes/Spring/",
+    //   collapsible: true, //侧边栏折叠 
+    //   children: [
+    //     {
+    //       text: "深入学习Spring源码",
+    //       icon: "star",
+    //       prefix: "01-spring-source-code-deeply/",
+    //       collapsible: true,
+    //       children: "structure", //自动生成侧边栏
+    //     },
+    //   ],
+    // },
+    // {
+    //   text: "Spring Cloud",
+    //   icon: "note",
+    //   prefix: "notes/SpringCloud/",
+    //   collapsible: true,
+    //   children: [
+    //     {
+    //       text: "Spring Cloud - Hoxton.SR1(上)",
+    //       icon: "star",
+    //       link: "01-SpringCloud-Hoxton.SR1.md",
+    //     },
+    //     {
+    //       text: "Spring Cloud - Hoxton.SR1(下)",
+    //       icon: "star",
+    //       link: "02-SpringCloud-Hoxton.SR1.md",
+    //     },
+    //     {
+    //       text: "Spring Cloud Alibaba",
+    //       icon: "star",
+    //       link: "03-SpringCloudAlibaba.md",
+    //     },
+    //   ],
+    // },
+
     {
       text: "JVM",
       icon: "note",
@@ -298,5 +299,17 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: "structure",
     },
-  ]
+  ],
+  "/zh/notes/SpringCloud/": [
+    "01-SpringCloud-Hoxton.SR1","02-SpringCloud-Hoxton.SR1","03-SpringCloudAlibaba"
+  ],
+  "/zh/notes/Spring/": [
+    {
+      text: "Spring源码",
+      icon: "hot",
+      prefix: "01-spring-source-code-deeply/",
+      collapsible: true,
+      children: "structure",
+    }
+  ],
 });

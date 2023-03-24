@@ -26,5 +26,15 @@ export const zhNavbar = navbar([
         link: "Linux",
       },
     ],
-  }
+  },
+  {
+    text: "Spring源码",
+    icon: "hot",
+    link: "/zh/notes/Spring/01-spring-source-code-deeply/",
+  },
+  {
+    text: "SpringCloud学习教程",
+    icon: "hot",
+    link: "/zh/notes/SpringCloud/",
+  },
 ]);

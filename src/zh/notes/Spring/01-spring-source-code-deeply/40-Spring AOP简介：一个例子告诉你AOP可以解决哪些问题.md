@@ -3,7 +3,7 @@ title: 40_Spring AOP简介：一个例子告诉你AOP可以解决哪些问题
 category:
   - Spring源码
 star: true
-sticky: true
+sticky: true # 置顶文章在博客列表上
 date: 2023-03-10
 ---
 

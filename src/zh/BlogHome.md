@@ -2,7 +2,7 @@
 home: true
 layout: BlogHome
 icon: home
-bgImage: /222.jpeg
+bgImage: /background.jpg
 title: 博客主页
 heroImage: /logo.svg
 heroText: Memory's blog
