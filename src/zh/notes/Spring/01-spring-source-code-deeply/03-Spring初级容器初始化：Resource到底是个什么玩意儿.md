@@ -1,5 +1,5 @@
 ---
-title: 03-Spring初级容器初始化：Resource到底是个什么玩意儿？
+title: 03_Spring初级容器初始化：Resource到底是个什么玩意儿？
 category:
   - Spring源码
 star: true

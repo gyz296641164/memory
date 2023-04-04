@@ -1,5 +1,5 @@
 ---
-title: 07-Spring初级容器初始化：XML文件的校验模式
+title: 07_Spring初级容器初始化：XML文件的校验模式
 category:
   - Spring源码
 star: true

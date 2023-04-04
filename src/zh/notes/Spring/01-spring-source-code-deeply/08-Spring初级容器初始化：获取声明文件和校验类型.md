@@ -1,5 +1,5 @@
 ---
-title: 08-Spring初级容器初始化：获取声明文件和校验类型
+title: 08_Spring初级容器初始化：获取声明文件和校验类型
 category:
   - Spring源码
 star: true

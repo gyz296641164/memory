@@ -1,5 +1,5 @@
 ---
-title: 05-Spring初级容器初始化：基础数据的准备
+title: 05_Spring初级容器初始化：基础数据的准备
 category:
   - Spring源码
 star: true

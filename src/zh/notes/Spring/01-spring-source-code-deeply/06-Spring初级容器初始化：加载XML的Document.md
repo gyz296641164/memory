@@ -1,4 +1,12 @@
-<h1 align="center">06-Spring初级容器初始化：加载XML的Document</h1>
+---
+title: 06_Spring初级容器初始化：加载XML的Document
+category:
+  - Spring源码
+star: true
+date: 2023-03-31
+---
+
+<!-- more -->
 
 ## 开篇
 

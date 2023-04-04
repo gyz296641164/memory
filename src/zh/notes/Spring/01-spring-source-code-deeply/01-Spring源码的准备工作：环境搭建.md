@@ -1,5 +1,5 @@
 ---
-title: 01-Spring源码的准备工作：环境搭建
+title: 01_Spring源码的准备工作：环境搭建
 category:
   - Spring源码
 star: true
@@ -112,7 +112,7 @@ maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
 maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
 ```
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202210201535474.png" alt="img"/>
+![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202210201535474.png)
 
 同时，我们需要注释以下的配置，因为在Gradle构建`v5.2.6.RELEASE`版本的Spring源码时，相应的jar包可能下载不到了，如果不注释掉的话可能会导致Gradle构建失败，这个坑大家需要注意下：
 

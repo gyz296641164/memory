@@ -1,5 +1,5 @@
 ---
-title: 09-Spring初级容器初始化：寻找标签解析的入口
+title: 09_Spring初级容器初始化：寻找标签解析的入口
 category:
   - Spring源码
 star: true
@@ -108,13 +108,13 @@ date: 2023-03-31
 
 只要满足以上任意一个条件，就认为当前解析的标签为默认标签，否则具有其他类型的namespaceUri标签都会被认为是自定义标签。
 
-Spring自定义标签是相对于默认标签<bean/>而言的，比如Spring内部也自定义了很多自定义标签，如<context:component-scan/> 、<tx:annotation-driven/>等。
+Spring自定义标签是相对于默认标签`<bean/>`而言的，比如Spring内部也自定义了很多自定义标签，如`<context:component-scan/>` 、`<tx:annotation-driven/>`等。
 
 那namespaceUri是从哪里来的呢？不知道大家还记得不，我们来看下applicationContext.xml文件：
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/images/Spring/202303/202303311758673.png)
 
-也就是说，当我们解析bean标签时，bean标签对应的命名空间的URI即namespaceURI其实就是：http://www.springframework.org/schema/beans，来自于图中beans标签上的xmlns属性。
+也就是说，当我们解析bean标签时，bean标签对应的命名空间的URI即namespaceURI其实就是：[http://www.springframework.org/schema/beans](http://www.springframework.org/schema/beans)， 来自于图中beans标签上的xmlns属性。
 
 同时，我们到方法getNamespaceURI中看下：
 

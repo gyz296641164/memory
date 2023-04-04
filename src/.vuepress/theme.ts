@@ -28,10 +28,10 @@ export default hopeTheme({
 
   blog: {
     medias: {
-      Email: "https://example.com",
+      // Email: "https://example.com",
       Gitee: "https://example.com",
-      GitHub: "https://example.com",
-      QQ: "https://example.com",
+      GitHub: "https://github.com/gyz296641164/memory",
+      // QQ: "https://example.com",
     },
   },
 
@@ -99,6 +99,8 @@ export default hopeTheme({
     comment: {
 
     },
+    
+    photoSwipe: true,
 
     // all features are enabled for demo, only preserve features you need here
     mdEnhance: {
