@@ -10,7 +10,7 @@ date: 2023-11-29
 
 Maven的命令非常多，我们只是讲解常用的几个：（所有命令都可以在控制台运行的）
 
-# install
+## install
 
 本地安装， 包含编译，打包，安装到本地仓库
 
@@ -20,7 +20,7 @@ Maven的命令非常多，我们只是讲解常用的几个：（所有命令都
 
 安装到本地仓库 - 将打包的jar文件，保存到本地仓库目录中。
 
-# clean
+## clean
 
 清除已编译信息。
 
@@ -28,11 +28,11 @@ Maven的命令非常多，我们只是讲解常用的几个：（所有命令都
 
 ![image-20231129142449081](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Maven/202311/202311291424346.png)
 
-# compile
+## compile
 
 只编译。 javac命令
 
-# package
+## package
 
 打包。 包含编译，打包两个功能。
 

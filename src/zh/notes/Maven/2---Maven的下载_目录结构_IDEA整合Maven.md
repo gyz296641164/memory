@@ -2,11 +2,11 @@
 
 ---
 
-# IDEA默认整合了Maven
+## IDEA默认整合了Maven
 
 ![image-20231129110821661](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Maven/202311/202311291108027.png)
 
-# 下载地址
+## 下载地址
 
 http://maven.apache.org/
 
@@ -14,7 +14,7 @@ http://maven.apache.org/
 
 ![image-20231129110907189](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Maven/202311/202311291109465.png)
 
-# 目录结构
+## 目录结构
 
 ![image-20231129110919051](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Maven/202311/202311291109249.png)
 
