@@ -12,14 +12,14 @@ export const zhSidebar = sidebar({
       collapsible: true, //侧边栏折叠 
       children: "structure",
     },
-    {
-      text: "文章",
-      icon: "note",
-      prefix: "posts/",
-      collapsible: true, //侧边栏折叠
-      children: "structure",
-    },
-    "slides",
+    // {
+    //   text: "文章",
+    //   icon: "note",
+    //   prefix: "posts/",
+    //   collapsible: true, //侧边栏折叠
+    //   children: "structure",
+    // },
+    // "slides", //幻灯片页
     {
       text: "JAVA",
       icon: "note",
@@ -296,6 +296,13 @@ export const zhSidebar = sidebar({
       text: "并发编程",
       icon: "note",
       prefix: "notes/Concurrent_Programming/",
+      collapsible: true,
+      children: "structure",
+    },
+    {
+      text: "Maven基础",
+      icon: "note",
+      prefix: "notes/Maven/",
       collapsible: true,
       children: "structure",
     },
