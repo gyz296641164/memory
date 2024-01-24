@@ -306,6 +306,13 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: "structure",
     },
+    {
+      text: "Nginx",
+      icon: "note",
+      prefix: "notes/Nginx/",
+      collapsible: true,
+      children: "structure",
+    },
   ],
   "/zh/notes/SpringCloud/": [
     "01-SpringCloud-Hoxton.SR1","02-SpringCloud-Hoxton.SR1","03-SpringCloudAlibaba"

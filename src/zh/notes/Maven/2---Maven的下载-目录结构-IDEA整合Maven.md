@@ -1,6 +1,12 @@
-**Maven的下载 _ 目录结构 _ IDEA整合Maven**
-
 ---
+title: Maven仓库
+category:
+  - Maven
+order: 2
+date: 2023-11-29
+---
+
+<!-- more -->
 
 ## IDEA默认整合了Maven
 
