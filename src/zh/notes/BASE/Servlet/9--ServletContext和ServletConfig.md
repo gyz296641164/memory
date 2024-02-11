@@ -72,9 +72,9 @@ servletContext.getMinorVersion()
   </context-param>
 ```
 
-`servletContext.getInitParameter("key")`：该方法可以读取web.xml文件中<context-param>标签中的配置信息。
+`servletContext.getInitParameter("key")`：该方法可以读取web.xml文件中`<context-param>`标签中的配置信息。
 
-`servletContext.getInitParameterNames()`：该方法可以读取web.xml文件中所有param-name标签中的值。
+`servletContext.getInitParameterNames()`：该方法可以读取web.xml文件中所有`param-name`标签中的值。
 
 ### 全局容器
 
