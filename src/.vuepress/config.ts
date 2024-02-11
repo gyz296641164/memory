@@ -2,9 +2,6 @@ import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
 
-const defaultOptions = {
-  level: [2, 3],
-};
 
 export default defineUserConfig({
   base: '/',
