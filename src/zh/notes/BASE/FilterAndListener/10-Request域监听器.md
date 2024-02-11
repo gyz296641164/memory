@@ -8,7 +8,7 @@ date: 2024-02-11
 
 <!-- more -->
 
-# 认识Requet域监听器
+## 认识Requet域监听器
 
 Requet域共有两个监听器接口，分别是：
 
@@ -19,7 +19,7 @@ Requet域共有两个监听器接口，分别是：
 
 ---
 
-# 定义监听器类
+## 定义监听器类
 
 ```java
 package com.gyz.listener.listener;
@@ -74,7 +74,7 @@ public class MyRequestListener implements ServletRequestListener, ServletRequest
 
 ---
 
-# 配置监听器
+## 配置监听器
 
 使用web.xml 或者通过@WebListener注解都可以
 
@@ -92,7 +92,7 @@ public class MyRequestListener implements ServletRequestListener, ServletRequest
 
 ---
 
-# 准备Servlet
+## 准备Servlet
 
 ```java
 package com.gyz.listener.servlet;
@@ -122,7 +122,7 @@ public class MyServlet3 extends HttpServlet {
 
 ---
 
-# 请求测试
+## 请求测试
 
 访问接口：http://localhost:8089/listenerDemo1_war_exploded/myServlet3.do
 

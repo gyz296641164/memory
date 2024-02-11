@@ -8,7 +8,7 @@ date: 2024-02-11
 
 <!-- more -->
 
-# 认识Application域监听器
+## 认识Application域监听器
 
 Application域共有两个监听器接口，分别是：
 
@@ -19,7 +19,7 @@ Application域共有两个监听器接口，分别是：
 
 ---
 
-# 监听器代码
+## 监听器代码
 
 ```java
 package com.gyz.application;

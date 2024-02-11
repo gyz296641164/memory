@@ -8,7 +8,7 @@ date: 2024-02-11
 
 <!-- more -->
 
-# Session域监听器
+## Session域监听器
 
 Session域共有四个监听器接口，分别是：
 
@@ -21,9 +21,9 @@ Session域共有四个监听器接口，分别是：
 
 ---
 
-# 监听器代码
+## 监听器代码
 
-## HttpSessionListener、HttpSessionAttributeListener
+### HttpSessionListener、HttpSessionAttributeListener
 
 ```java
 package com.gyz.sessionlistener.listener;
@@ -63,7 +63,7 @@ public class MySessionListener implements HttpSessionListener, HttpSessionAttrib
 }
 ```
 
-## HttpSessionBindingListener
+### HttpSessionBindingListener
 
 ```java
 package com.gyz.sessionlistener.listener;
@@ -109,7 +109,7 @@ public class MySessionBindingListener implements HttpSessionBindingListener {
 }
 ```
 
-## HttpSessionActivationListener
+### HttpSessionActivationListener
 
 ```java
 package com.gyz.sessionlistener.listener;

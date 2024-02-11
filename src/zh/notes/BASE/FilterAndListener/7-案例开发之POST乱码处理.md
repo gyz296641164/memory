@@ -8,7 +8,7 @@ date: 2024-02-11
 
 <!-- more -->
 
-# login.jsp
+## login.jsp
 
 ```jsp
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -29,7 +29,7 @@ date: 2024-02-11
 
 ---
 
-# servlet
+## servlet
 
 ```java
 package com.gyz.controller.login;
@@ -61,7 +61,7 @@ public class LoginController extends HttpServlet {
 
 ---
 
-# 过滤器
+## 过滤器
 
 ```java
 package com.gyz.controller.filter;
@@ -97,7 +97,7 @@ public class Filter0_EncodingFilter implements Filter {
 
 ---
 
-# 配置过滤器
+## 配置过滤器
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -124,7 +124,7 @@ public class Filter0_EncodingFilter implements Filter {
 
 ---
 
-# 测试
+## 测试
 
 访问：http://localhost:8088/filterDemo3_war_exploded/login.jsp
 
