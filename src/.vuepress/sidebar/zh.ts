@@ -72,6 +72,28 @@ export const zhSidebar = sidebar({
         },
       ],
     },
+
+    {
+      text: "基础",
+      icon: "note",
+      prefix: "notes/BASE/",
+      collapsible: true,
+      children: [
+        {
+          text: "Servlet",
+          prefix: "Servlet/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "过滤器与监听器",
+          prefix: "FilterAndListener/",
+          collapsible: true,
+          children: "structure",
+        },
+      ]
+    },
+
     // {
     //   text: "Spring",
     //   icon: "note",
@@ -315,7 +337,7 @@ export const zhSidebar = sidebar({
     },
   ],
   "/zh/notes/SpringCloud/": [
-    "01-SpringCloud-Hoxton.SR1","02-SpringCloud-Hoxton.SR1","03-SpringCloudAlibaba"
+    "01-SpringCloud-Hoxton.SR1", "02-SpringCloud-Hoxton.SR1", "03-SpringCloudAlibaba"
   ],
   "/zh/notes/Spring/": [
     {
