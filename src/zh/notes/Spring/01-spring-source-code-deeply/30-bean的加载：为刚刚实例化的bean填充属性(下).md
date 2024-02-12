@@ -293,7 +293,7 @@ public class TestA {
 
 可能大家比较疑惑的是，为什么这里还需要集合autowiredBeanNames呢？因为现在不是通过属性名称来自动装配，所以，在匹配的过程中，很有可能会同时匹配到多个类型相同的bean，这是一方面。
 
-另外，如果当前bean的属性类型不是Student，而是类似List<Student>或Set<Student>这样的集合类型，这样的话，如果我们根据类型匹配到多个bean，那当然需要将这些bean的信息，都存放到集合autowiredBeanNames中，方便后续和bean绑定依赖关系。
+另外，如果当前bean的属性类型不是Student，而是类似`List<Student>`或`Set<Student>`这样的集合类型，这样的话，如果我们根据类型匹配到多个bean，那当然需要将这些bean的信息，都存放到集合autowiredBeanNames中，方便后续和bean绑定依赖关系。
 
 ------
 
