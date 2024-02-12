@@ -336,9 +336,11 @@ export const zhSidebar = sidebar({
       children: "structure",
     },
   ],
+  
   "/zh/notes/SpringCloud/": [
     "01-SpringCloud-Hoxton.SR1", "02-SpringCloud-Hoxton.SR1", "03-SpringCloudAlibaba"
   ],
+
   "/zh/notes/Spring/": [
     {
       text: "Spring源码",
@@ -349,11 +351,10 @@ export const zhSidebar = sidebar({
     }
   ],
 
-  "/zh/notes/": [
+  "/zh/notes/cfmall-notes/": [
     {
       text: "谷粒商城",
       icon: "hot",
-      prefix: "cfmall-notes/",
       collapsible: true,
       children: [
         {
