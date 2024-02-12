@@ -348,4 +348,39 @@ export const zhSidebar = sidebar({
       children: "structure",
     }
   ],
+
+  "/zh/notes/": [
+    {
+      text: "谷粒商城",
+      icon: "hot",
+      prefix: "cfmall-notes/",
+      collapsible: true,
+      children: [
+        {
+          text: "1-课程资料",
+          prefix: "1-课程资料/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "2-配置信息",
+          prefix: "2-配置信息/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "3-踩坑集锦",
+          prefix: "3-踩坑集锦/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "4-分布式基础篇",
+          prefix: "4-分布式基础篇/",
+          collapsible: true,
+          children: "structure",
+        },
+      ],
+    }
+  ],
 });
