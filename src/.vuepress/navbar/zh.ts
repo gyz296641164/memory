@@ -4,6 +4,12 @@ export const zhNavbar = navbar([
   "/zh/",
   { text: "演示", icon: "discover", link: "/zh/demo/" },
   {
+    text: "谷粒商城",
+    icon: "hot",
+    link: "/zh/notes/cfmall-notes/",
+    // activeMatch: "^/zh/notes/cfmall-notes",
+  },
+  {
     text: "博文",
     icon: "edit",
     prefix: "/zh/notes/",
@@ -33,7 +39,7 @@ export const zhNavbar = navbar([
     link: "/zh/notes/Spring/01-spring-source-code-deeply/",
   },
   {
-    text: "SpringCloud学习教程",
+    text: "SpringCloud基础教程",
     icon: "hot",
     link: "/zh/notes/SpringCloud/",
   },
