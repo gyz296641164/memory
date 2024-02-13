@@ -9,7 +9,7 @@ date: 2023-03-17
 
 <!-- more -->
 
-# 开篇
+## 开篇
 
 上篇文章我们主要分析了增强方法构建为Advisor的过程，接着所有切面类中的所有增强方法，都会按照这个过程构建出各自的增强Advisor出来，那么这篇文章，我们就来看下当前bean，也就是目标类，和增强中的切点表达式的匹配过程。
 
@@ -20,7 +20,7 @@ date: 2023-03-17
 
 ---
 
-# 增强还有分类？普通增强、引介增强都是什么？
+## 增强还有分类？普通增强、引介增强都是什么？
 
 涉及方法：
 
@@ -78,7 +78,7 @@ date: 2023-03-17
 
 ---
 
-# 来跟踪下目标类与切点表达式的匹配过程
+## 来跟踪下目标类与切点表达式的匹配过程
 
 接下来，我们就来看下普通增强到底是怎么进行匹配的，此时我们点进去canApply(candidate, clazz, hasIntroductions)方法，就会看到如下代码：
 
@@ -120,7 +120,9 @@ date: 2023-03-17
 
 刚才我们执行到了shadowMatch = obtainPointcutExpression().matchesMethodExecution(methodToMatch)这行代码，现在obtainPointcutExpression()方法返回了一个PointcutExpressionImpl类的实例，那么接下来就会调用PointcutExpressionImpl类的matchesMethodExecution(methodToMatch)来完成切点表达式和目标类的匹配。
 
-正当我们进入PointcutExpressionImpl类一探究竟时，我们发现这个PointcutExpressionImpl类竟然是aspectj包下的类，如下图：![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202302/20230213080212.png)
+正当我们进入PointcutExpressionImpl类一探究竟时，我们发现这个PointcutExpressionImpl类竟然是aspectj包下的类，如下图：
+
+![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202302/20230213080212.png)
 
 也就是说方法匹配这块是由aspectj包完成的，而不是Spring来完成的，Spring只是借助了人家aspectj现成的功能罢了。
 
@@ -134,7 +136,7 @@ date: 2023-03-17
 
 ---
 
-# 总结
+## 总结
 
 一张图来梳理下AOP代理的创建流程
 

@@ -8,7 +8,7 @@ date: 2023-03-30
 
 <!-- more -->
 
-# Spring基础容器XmlBeanFactory的简单使用
+## Spring基础容器XmlBeanFactory的简单使用
 
 为了方便大家理解，我们先从一个最简单的demo开始，作为Spring源码分析的入口，首先，我们在IDEA中创建一个简单的Maven工程，引入如下依赖：
 
@@ -81,7 +81,7 @@ public class BeanFactoryDemo {
 
 ---
 
-# XmlBeanFactory和ApplicationContext的对比
+## XmlBeanFactory和ApplicationContext的对比
 
 XmlBeanFactory大家可能会觉得比较陌生，毕竟我们在公司开发的过程中，一般都是以ApplicationContext作为Spring的容器，大家暂时可以将XmlBeanFactory理解为是一个基础的Spring容器，它功能比较简单，而ApplicationContext相比于XmlBeanFactory而言算是一个高级的容器了。
 
@@ -91,7 +91,7 @@ ApplicationContext在XmlBeanFactory的基础上，添加了非常多的扩展功
 
 ---
 
-# XmlBeanFactory的工作原理分析
+## XmlBeanFactory的工作原理分析
 
 最后，我们可以简单来分析下前面demo的功能，我们看下这张图：
 
@@ -109,7 +109,7 @@ ApplicationContext在XmlBeanFactory的基础上，添加了非常多的扩展功
 
 ---
 
-# 总结
+## 总结
 
 - 第一，我们简单带大家写了一个demo，体验了一下Spring基础容器XmlBeanFactory的使用
 

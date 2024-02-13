@@ -9,7 +9,7 @@ date: 2023-03-17
 
 <!-- more -->
 
-# 开篇
+## 开篇
 
 大家好，上节我们将getInterceptors()这个方法作为分析的入口，主要分析了Advice advice = advisor.getAdvice()这行代码，我们知道这行代码经过一通处理，最终会将不同类型的增强方法，给封装到不同的advice中，而这些advice中有的实现了MethodInterceptor接口，有的则实现的是其他的接口。
 
@@ -23,7 +23,7 @@ date: 2023-03-17
 
 ---
 
-# MethodInterceptor类型的Advice就是拦截器?
+## MethodInterceptor类型的Advice就是拦截器?
 
 我们先来回顾一下，上节我们将这行代码分析完毕了，如下图：
 
@@ -71,7 +71,7 @@ date: 2023-03-17
 
 ---
 
-# 初始化适配器adapters
+## 初始化适配器adapters
 
 分析到这里，我们知道了`@After`、`@Around`和`@AfterThrowing`三种增强，会被添加到拦截器interceptors中。
 
@@ -103,7 +103,7 @@ date: 2023-03-17
 
 ---
 
-# 非MethodInterceptor类型的Advice是怎么包装为拦截器的？
+## 非MethodInterceptor类型的Advice是怎么包装为拦截器的？
 
 好了，现在我们知道了adapters中，其实就是MethodBeforeAdviceAdapter、AfterReturningAdviceAdapter和ThrowsAdviceAdapter这三个Adapter，那么我们回到主线，继续往下分析，我们现在要分析的代码如下：
 
@@ -197,7 +197,7 @@ date: 2023-03-17
 
 ---
 
-# 总结
+## 总结
 
 好了，今天的知识点，我们就讲到这里了，我们来总结一下吧。
 

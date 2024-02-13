@@ -1,3 +1,13 @@
+---
+title: 35_Spring注解源码解析：@Component
+category:
+  - Spring源码
+star: true
+date: 2023-03-31
+---
+
+<!-- more -->
+
 <h1 align="center">35_Spring注解源码解析：@Component</h1>
 
 ## 开篇

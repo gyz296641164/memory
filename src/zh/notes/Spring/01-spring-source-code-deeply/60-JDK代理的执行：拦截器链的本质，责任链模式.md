@@ -10,7 +10,7 @@ date: 2023-03-17
 <!-- more -->
 
 
-# 开篇
+## 开篇
 
 大家好，上节我们分析了拦截器ExposeInvocationInterceptor和AspectJAfterThrowingAdvice的核心逻辑，现在大家知道，其实拦截器的核心逻辑，就是不断的递归调用ReflectiveMethodInvocation，而通过每个拦截器中的递归调用，就可以将这些拦截器串成一根链条。
 
@@ -31,7 +31,7 @@ date: 2023-03-17
 
 ---
 
-# AfterReturning增强：未发生异常才会执行
+## AfterReturning增强：未发生异常才会执行
 
 上节我们分析到了拦截器AfterReturningAdviceInterceptor，那我们接着来看下吧，拦截器代码如下：
 
@@ -75,7 +75,7 @@ date: 2023-03-17
 
 ---
 
-# After增强：无论是否有异常都会执行
+## After增强：无论是否有异常都会执行
 
 好，接下来就轮到执行AspectJAfterAdvice拦截器了，AspectJAfterAdvice代码如下：
 
@@ -115,7 +115,7 @@ date: 2023-03-17
 
 ---
 
-# Before增强：目标方法前执行
+## Before增强：目标方法前执行
 
 好，那接下来我们就来看下MethodBeforeAdviceInterceptor拦截器的代码吧，如下图：
 
@@ -199,7 +199,7 @@ before()方法执行完毕后，接着就会递归调用ReflectiveMethodInvocati
 
 ---
 
-# 总结
+## 总结
 
 好了，今天的知识点，我们就讲到这里了，我们来总结一下吧。
 
