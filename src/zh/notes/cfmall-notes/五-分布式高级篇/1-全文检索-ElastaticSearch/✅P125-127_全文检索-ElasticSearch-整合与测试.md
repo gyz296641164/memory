@@ -1,5 +1,5 @@
 ---
-title: ✅P125-127_全文检索-ElasticSearch-整合&测试
+title: ✅P125-127_全文检索-ElasticSearch-整合与测试
 category:
   - 谷粒商城
 date: 2024-02-13

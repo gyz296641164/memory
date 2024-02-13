@@ -1,5 +1,5 @@
 ---
-title: ✅P168_SpringCache-整合&体验@SpringCache
+title: ✅P168_SpringCache-整合-体验@SpringCache
 category:
   - 谷粒商城
 date: 2024-02-13

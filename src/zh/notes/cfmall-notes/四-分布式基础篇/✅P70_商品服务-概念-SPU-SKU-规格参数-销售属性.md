@@ -1,5 +1,5 @@
 ---
-title: ✅P70_商品服务-概念-SPU&SKU&规格参数&销售属性
+title: ✅P70_商品服务-概念-SPU-SKU-规格参数-销售属性
 category:
   - 谷粒商城
 date: 2024-02-13
