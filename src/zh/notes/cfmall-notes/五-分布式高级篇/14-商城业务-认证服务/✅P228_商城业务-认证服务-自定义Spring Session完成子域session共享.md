@@ -1,3 +1,12 @@
+---
+title: ✅P228_商城业务-认证服务-自定义Spring Session完成子域session共享
+category:
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## 解决子域session共享问题
 
 > `cfmall-product`服务和`cfmall-auth-server`服务各配置一份，内容相同

@@ -1,3 +1,12 @@
+---
+title: ✅P226_商城业务-认证服务-分布式session解决方案原理
+category:
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## Session共享问题解决-session复制
 
 ![](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202312/8163416707fdc9a55456471c94783331.png#id=MrrSS&originHeight=282&originWidth=397&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)

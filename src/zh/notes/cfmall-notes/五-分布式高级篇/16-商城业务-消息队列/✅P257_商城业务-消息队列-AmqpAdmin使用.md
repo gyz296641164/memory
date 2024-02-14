@@ -1,3 +1,11 @@
+---
+title: ✅P257_商城业务-消息队列-AmqpAdmin使用
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## 使用AmqpAdmin创建交换机
 
 **交换机的类型如下图所示**(选中Exchange，Ctrl+H)

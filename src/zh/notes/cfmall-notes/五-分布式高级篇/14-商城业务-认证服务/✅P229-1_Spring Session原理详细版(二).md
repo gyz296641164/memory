@@ -1,3 +1,12 @@
+---
+title: ✅P229-1_Spring Session原理详细版(二)
+category:
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## 开篇
 
 上一篇文章中介绍了Spring-Session的核心原理，Filter，Session，Repository等等，传送门：[spring-session（一）揭秘](https://www.cnblogs.com/lxyit/p/9672097.html)。

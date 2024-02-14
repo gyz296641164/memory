@@ -1,3 +1,11 @@
+---
+title: ✅P250_商城业务-消息队列-RabbitMQ工作流程
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ### RabbitMQ简介
 
 RabbitMQ是一个由erlang开发的AMQP(Advanved Message Queue Protocol)的开源实现。

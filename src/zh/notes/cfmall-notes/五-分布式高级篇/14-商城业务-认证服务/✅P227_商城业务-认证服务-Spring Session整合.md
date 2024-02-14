@@ -1,3 +1,12 @@
+---
+title: ✅P227_商城业务-认证服务-Spring Session整合
+category:
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## Spring Session官方文档
 
 [Spring Session 3.2.1](https://docs.spring.io/spring-session/reference/guides/boot-redis.html)

@@ -1,8 +1,16 @@
+---
+title: ✅P259_商城业务-消息队列-RabbitListener-RabbitHandler接收消息
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 **商城业务-消息队列-RabbitListener&RabbitHandler接收消息**
 
 ---
 
-# [@RabbitListener ](/RabbitListener ) 
+## @RabbitListener
 
 @RabbitListener使用前提：必须有@EnableRabbit并且标注方法的类必须在组件中(启动类加上@EnableRabbit注解)
 
@@ -79,7 +87,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
 ---
 
-# 模拟多个客户端接收消息
+## 模拟多个客户端接收消息
 
 **多个客户端监听Queue。只要收到消息，队列就删除消息，而且只能有一个客户端收到此消息的场景**
 
@@ -183,7 +191,7 @@ public class RabbitController {
 
 ---
 
-# [@RabbitHandler ](/RabbitHandler ) 
+## @RabbitHandler
 
 **@RabbitListener标注类上监听多个队列**
 

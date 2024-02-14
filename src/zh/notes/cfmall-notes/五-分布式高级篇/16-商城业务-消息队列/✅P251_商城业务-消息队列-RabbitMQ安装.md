@@ -1,3 +1,11 @@
+---
+title: ✅P251_商城业务-消息队列-RabbitMQ安装
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## 一、Docker安装RabbitMQ
 
 docker安装RabbitMQ命令：

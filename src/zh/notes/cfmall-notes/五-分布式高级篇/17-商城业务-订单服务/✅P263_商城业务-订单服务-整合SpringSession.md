@@ -1,3 +1,11 @@
+---
+title: ✅P263_商城业务-订单服务-整合SpringSession
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## 导入依赖
 
 Redis默认使用lettuce作为客户端可能导致内存泄漏，因此需要排除lettuce依赖，使用jedis作为客户端或者使用高版本的Redis依赖即可解决内存泄漏问题

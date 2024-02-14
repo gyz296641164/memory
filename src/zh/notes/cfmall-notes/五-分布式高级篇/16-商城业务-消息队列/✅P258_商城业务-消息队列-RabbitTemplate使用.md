@@ -1,8 +1,16 @@
+---
+title: ✅P258_商城业务-消息队列-RabbitTemplate使用
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 **商城业务-消息队列-RabbitTemplate使用**
 
 ---
 
-# 1.使用RabbitTemplate工具类发送String类型消息
+## 1.使用RabbitTemplate工具类发送String类型消息
 
 `cfmall-order/src/test/java/com/gyz/cfmall/order/CfmallOrderApplicationTests.java`
 
@@ -16,7 +24,7 @@ public void sendMessage() {
 
 ---
 
-# 2.使用RabbitTemplate工具类发送java对象
+## 2.使用RabbitTemplate工具类发送java对象
 
 > 前提条件：**java对象实现了Serializable接口**
 
@@ -44,7 +52,7 @@ public void sendPojoMessage() {
 
 ---
 
-# 3.使用RabbitTemplate工具类发送json数据
+## 3.使用RabbitTemplate工具类发送json数据
 
 > 前提条件：**给容器中注入json转化器**
 

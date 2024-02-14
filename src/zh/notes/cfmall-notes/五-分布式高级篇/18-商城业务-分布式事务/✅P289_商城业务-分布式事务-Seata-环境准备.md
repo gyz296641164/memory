@@ -1,3 +1,11 @@
+---
+title: ✅P289_商城业务-分布式事务-Seata-环境准备
+  - 谷粒商城
+date: 2024-02-14
+---
+
+<!-- more -->
+
 ## 1、简介
 
 官网：[https://seata.io/zh-cn/](https://seata.io/zh-cn/)
