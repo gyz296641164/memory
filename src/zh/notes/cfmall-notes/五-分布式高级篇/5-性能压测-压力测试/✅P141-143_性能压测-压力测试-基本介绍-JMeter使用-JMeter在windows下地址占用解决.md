@@ -47,12 +47,15 @@ date: 2024-02-13
 ### 1、 JMeter 安装
 
 JMeter下载地址：[https://jmeter.apache.org/download_jmeter.cgi](https://jmeter.apache.org/download_jmeter.cgi)
+
 ![](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202311/202312011059430.png#id=AcVmm&originHeight=220&originWidth=667&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 下载对应的压缩包， 解压运行 `jmeter.bat` 即可
+
 ![](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202311/202312011100422.png#id=KMGLx&originHeight=415&originWidth=611&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=) 
 
 JMeter中文设置
+
 ![](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202311/202312011107327.png#id=agKzN&originHeight=438&originWidth=783&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 ### 2、 JMeter 压测示例
@@ -103,8 +106,9 @@ JMeter中文设置
 
 ![](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202311/202311301948056.png#id=GI9fQ&originHeight=315&originWidth=1915&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
-| **Label** | 每个 JMeter 的 element（例如 HTTP Request）都有一个 Name 属性，这里显示的就是 Name 属性的值； |
+| 参数                    | 解析                                                         |
 | --- | --- |
+| **Label** | 每个 JMeter 的 element（例如 HTTP Request）都有一个 Name 属性，这里显示的就是 Name 属性的值； |
 | **#Samples** | 表示这次测试中一共发出了多少个请求，**值 = 线程数 _ 循环次数_ |
 | **Average** | 平均响应时间——默认情况下是单个 Request 的平均响应时间（ms），当使用了 Transaction Controller时，也可以以Transaction 为单位显示平均响应时间；**值 = 总运行时间 / 发送到服务器的总请求数** |
 | **Median** | 中位数，也就是 50％ 用户的响应时间（ms）； |
@@ -134,3 +138,4 @@ windows 本身提供的端口访问机制的问题。
    - 以同样方式添加 `TCPTimedWaitDelay`： 30
 - 修改配置完毕之后记得重启机器才会生效
 - [配置参考]([https://support.microsoft.com/zh-cn/help/196271/when-you-try-to-connect-from-tcp-ports-grea](https://support.microsoft.com/zh-cn/help/196271/when-you-try-to-connect-from-tcp-ports-grea) ter-than-5000-you-receive-t)
+

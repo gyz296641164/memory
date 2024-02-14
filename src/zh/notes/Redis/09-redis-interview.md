@@ -1,5 +1,5 @@
 ---
-title: JAVA面试题
+title: Redis面试题
 category:
   - Redis
 date: 2023-02-28
