@@ -2,7 +2,7 @@ import { sidebar } from "vuepress-theme-hope";
 
 export const zhSidebar = sidebar({
   "/zh/": [
-    "", //侧边栏“首页”
+    // "", //侧边栏“首页”
     "intro",
     {
       text: "如何使用",
