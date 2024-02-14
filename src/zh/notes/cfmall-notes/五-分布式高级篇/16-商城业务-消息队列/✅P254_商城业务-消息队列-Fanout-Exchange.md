@@ -1,5 +1,6 @@
 ---
 title: ✅P254_商城业务-消息队列-Fanout-Exchange
+category:
   - 谷粒商城
 date: 2024-02-14
 ---

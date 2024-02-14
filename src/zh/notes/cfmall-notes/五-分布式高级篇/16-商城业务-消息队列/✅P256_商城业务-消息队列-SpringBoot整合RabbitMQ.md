@@ -1,5 +1,6 @@
 ---
 title: ✅P256_商城业务-消息队列-SpringBoot整合RabbitMQ
+category:
   - 谷粒商城
 date: 2024-02-14
 ---

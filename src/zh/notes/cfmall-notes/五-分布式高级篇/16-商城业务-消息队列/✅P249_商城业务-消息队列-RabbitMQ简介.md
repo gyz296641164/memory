@@ -1,5 +1,6 @@
 ---
 title: ✅P249_商城业务-消息队列-RabbitMQ简介
+category:
   - 谷粒商城
 date: 2024-02-14
 ---

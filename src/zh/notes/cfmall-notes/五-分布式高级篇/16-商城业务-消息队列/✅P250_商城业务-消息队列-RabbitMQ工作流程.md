@@ -1,5 +1,6 @@
 ---
 title: ✅P250_商城业务-消息队列-RabbitMQ工作流程
+category:
   - 谷粒商城
 date: 2024-02-14
 ---

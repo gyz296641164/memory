@@ -1,5 +1,6 @@
 ---
 title: ✅P253_商城业务-消息队列-Direct-Exchange
+category:
   - 谷粒商城
 date: 2024-02-14
 ---

@@ -1,5 +1,6 @@
 ---
 title: ✅P258_商城业务-消息队列-RabbitTemplate使用
+category:
   - 谷粒商城
 date: 2024-02-14
 ---
