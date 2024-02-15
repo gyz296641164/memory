@@ -18,7 +18,7 @@ features:
   - title: Spring Cloud && Spring Cloud Alibaba 基础教程
     icon: fab fa-markdown
     details: 介绍了常见组件的基本使用以及案例演示。
-    link: /zh/demo/markdown
+    link: /zh/notes/SpringCloud/
 
   - title: 谷粒商城
     icon: person-chalkboard
