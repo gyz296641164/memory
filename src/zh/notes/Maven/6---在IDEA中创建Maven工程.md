@@ -1,5 +1,5 @@
 ---
-title: IDEA创建Maven工程
+title: 6_IDEA创建Maven工程
 category:
   - Maven
 order: 6

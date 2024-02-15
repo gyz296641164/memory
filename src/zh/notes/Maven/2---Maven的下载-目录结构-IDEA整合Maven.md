@@ -1,5 +1,5 @@
 ---
-title: Maven仓库
+title: 2_Maven目录结构
 category:
   - Maven
 order: 2

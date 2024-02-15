@@ -1,5 +1,5 @@
 ---
-title: Maven项目结构
+title: 7_Maven项目结构
 category:
   - Maven
 order: 7

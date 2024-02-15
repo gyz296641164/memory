@@ -1,5 +1,5 @@
 ---
-title: JDK配置
+title: 4_JDK配置
 category:
   - Maven
 order: 4

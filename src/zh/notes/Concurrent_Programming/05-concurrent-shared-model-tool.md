@@ -1,5 +1,5 @@
 ---
-title: 共享模型之工具
+title: 5_共享模型之工具
 category:
   - 并发编程
 order: 5

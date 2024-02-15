@@ -1,5 +1,5 @@
 ---
-title: 共享模型之管程
+title: 2_共享模型之管程
 category:
   - 并发编程
 order: 2
