@@ -283,7 +283,7 @@ hashCode方法可以这样理解：**它返回的就是根据对象的内存地�
 
 **深拷贝**：被复制对象的所有变量都含有与原来的对象相同的值。而那些引用其他对象的变量将指向被复制过的新对象。而不再是原有的那些被引用的对象。换言之，深拷贝把要复制的对象所引用的对象都复制了一遍.
 
-![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/1462/1675489386042/2c56eb2723ee4cec85b2b36a8b77d167.png)
+![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/35136d51989f8a2e.png)
 
 ## 11.static都有哪些用法?
 

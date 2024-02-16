@@ -704,7 +704,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 在共享内存的并发模型里，线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态来隐式进行通信。典型的共享内存通信方式，就是**通过共享对象进行通信**。
 
-![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/1462/1675489410098/b106c218386d4caa9fd623a7bf3d4ef9.png)
+![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/986358c1340d55b2.png)
 
 例如线程A与线程B之间如果要通信的话，那么就必须经历下面两个步骤：
 

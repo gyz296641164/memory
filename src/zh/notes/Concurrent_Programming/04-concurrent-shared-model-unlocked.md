@@ -201,9 +201,15 @@ public class AccountCas implements Account {
  }   
 ```
 
-其中的关键是 `compareAndSwap（比较并设置值）`，它的简称就是 `CAS` （也有 Compare And Swap 的说法），它必须是`原子操作`。
+其中的关键是 `compareAndSet（比较并设置值）`，它的简称就是 `CAS` （也有 Compare And Swap 的说法），它必须是`原子操作`。
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075841.png" />
+
+上图说明：
+
+- 线程1获取Account对象中的余额为100，减10后为90，要设置成新值，在此更新操作之前会用pre:100与Account中的共享变量(线程2已经改为90了)作比较，发现100和90不相等，设置新值失败；
+- 线程1再次获取Account对象中的余额为90，减10后为80，要设置成新值。当用pre:90与Account中的共享变量(线程2已经改为80了)作比较，发现90和80不相等，设置新值失败；
+- 线程1再次获取Account对象中的余额为80，减10后为70，要设置成新值。当用pre:80与Account中的共享变量80作比较，发现80和80相等，设置新值70成功。
 
 **流程 :**
 
@@ -453,7 +459,7 @@ class DecimalAccountCas implements DecimalAccount {
 ### 测试代码
 
 ```java
-DecimalAccount.demo(new DecimalAccountSafeCas(new BigDecimal("10000")));
+DecimalAccount.demo(new new DecimalAccountCas(new BigDecimal("10000")));
 ```
 
 ### ABA 问题及解决

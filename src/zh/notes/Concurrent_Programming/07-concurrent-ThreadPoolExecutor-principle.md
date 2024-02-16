@@ -25,19 +25,21 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
 
 **线程池状态含义如下：**
 
-- RUNNING：接受新任务并且处理阻塞队列里的任务。
-- SHUTDOWN：拒绝新任务但是处理阻塞队列里的任务。
-- STOP：拒绝新任务并且抛弃阻塞队列里的任务，同时会中断正在处理的任务。
-- TIDYING：所有任务都执行完（包含阻塞队列里面的任务）后当前线程池活动线程数为0，将要调用terminated方法。
-- TERMINATED：终止状态。terminated方法调用完成以后的状态。
+- `RUNNING`：接受新任务并且处理阻塞队列里的任务。
+- `SHUTDOWN`：拒绝新任务但是处理阻塞队列里的任务。
+- `STOP`：拒绝新任务并且抛弃阻塞队列里的任务，同时会中断正在处理的任务。
+- `TIDYING`：所有任务都执行完（包含阻塞队列里面的任务）后当前线程池活动线程数为0，将要调用terminated方法。
+- `TERMINATED`：终止状态。terminated方法调用完成以后的状态。
 
 **线程池状态转换列举如下：**
 
-- RUNNING -> SHUTDOWN ：显式调用shutdown（）方法，或者隐式调用了finalize（）方法里面的shutdown（）方法。
-- RUNNING或SHUTDOWN）-> STOP ：显式调用shutdownNow（）方法时。
-- SHUTDOWN -> TIDYING ：当线程池和任务队列都为空时。
-- STOP -> TIDYING ：当线程池为空时。
-- TIDYING -> TERMINATED：当terminated（）hook方法执行完成时。
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/8a882b275af0ed34.png)
+
+- `RUNNING -> SHUTDOWN` ：显式调用shutdown()方法，或者隐式调用了finalize()方法里面的shutdown()方法。
+- `RUNNING -> STOP` ：显式调用shutdownNow()方法时。
+- `SHUTDOWN -> TIDYING` ：当线程池和任务队列都为空时。
+- `STOP -> TIDYING` ：当线程池为空时。
+- `TIDYING -> TERMINATED` ：当terminated() hook方法执行完成时。
 
 **线程池参数如下：**
 

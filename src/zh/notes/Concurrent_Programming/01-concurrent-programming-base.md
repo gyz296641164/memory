@@ -37,7 +37,133 @@ date: 2023-03-01
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151750217.png" />
 
+### 1.4 线程的状态
 
+网上对线程状态的描述很多，有5种，6种，7种，都可以接受
+
+5中状态一般是针对传统的线程状态来说（操作系统层面）
+
+![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202312/18717e4ed4717aac.png)
+
+Java中给线程准备的6种状态
+
+![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202312/c38124344f0c8f64.png)
+
+`NEW`：Thread对象被创建出来了，但是还没有执行start方法。
+
+`RUNNABLE`：Thread对象调用了start方法，就为RUNNABLE状态（CPU调度/没有调度）
+
+`BLOCKED`、`WAITING`、`TIME_WAITING`：都可以理解为是阻塞、等待状态，因为处在这三种状态下，CPU不会调度当前线程
+
+`BLOCKED`：synchronized没有拿到同步锁，被阻塞的情况
+
+`WAITING`：调用wait方法就会处于WAITING状态，需要被手动唤醒
+
+`TIME_WAITING`：调用sleep方法或者join方法，会被自动唤醒，无需手动唤醒
+
+`TERMINATED`：run方法执行完毕，线程生命周期到头了
+
+> **代码验证**
+
+NEW：
+
+```java
+public static void main(String[] args) throws InterruptedException {
+    Thread t1 = new Thread(() -> {
+  
+    });
+    System.out.println(t1.getState());
+}
+```
+
+RUNNABLE：
+
+```java
+public static void main(String[] args) throws InterruptedException {
+    Thread t1 = new Thread(() -> {
+        while(true){
+
+        }
+    });
+    t1.start();
+    Thread.sleep(500);
+    System.out.println(t1.getState());
+}
+```
+
+BLOCKED：
+
+```java
+public static void main(String[] args) throws InterruptedException {
+    Object obj = new Object();
+    Thread t1 = new Thread(() -> {
+        // t1线程拿不到锁资源，导致变为BLOCKED状态
+        synchronized (obj){
+
+        }
+    });
+    // main线程拿到obj的锁资源
+    synchronized (obj) {
+        t1.start();
+        Thread.sleep(500);
+        System.out.println(t1.getState());
+    }
+}
+```
+
+WAITING：
+
+```java
+public static void main(String[] args) throws InterruptedException {
+    Object obj = new Object();
+    Thread t1 = new Thread(() -> {
+        synchronized (obj){
+            try {
+                obj.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    t1.start();
+    Thread.sleep(500);
+    System.out.println(t1.getState());
+}
+```
+
+TIMED_WAITING：
+
+```java
+public static void main(String[] args) throws InterruptedException {
+    Thread t1 = new Thread(() -> {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    });
+    t1.start();
+    Thread.sleep(500);
+    System.out.println(t1.getState());
+}
+```
+
+TERMINATED：
+
+```java
+public static void main(String[] args) throws InterruptedException {
+    Thread t1 = new Thread(() -> {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    });
+    t1.start();
+    Thread.sleep(1000);
+    System.out.println(t1.getState());
+}
+```
 
 ***
 

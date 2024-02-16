@@ -14,11 +14,11 @@ date: 2024-02-15
 
 ## 1.HTTP响应码有哪些
 
-1、1xx（临时响应）
-2、2xx（成功）
-3、3xx（重定向）：表示要完成请求需要进一步操作
-4、4xx（错误）：表示请求可能出错，妨碍了服务器的处理
-5、5xx（服务器错误）：表示服务器在尝试处理请求时发生内部错误
+- 1xx（临时响应）
+- 2xx（成功）
+- 3xx（重定向）：表示要完成请求需要进一步操作
+- 4xx（错误）：表示请求可能出错，妨碍了服务器的处理
+- 5xx（服务器错误）：表示服务器在尝试处理请求时发生内部错误
 
 举例：
 
@@ -43,7 +43,7 @@ date: 2024-02-15
    - Forward只有一次请求；
    - Redirect有两次请求。
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/f3fff334c18a4ce5.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/f3fff334c18a4ce5.png)
 
 ## 3.Get和Post请求的区别
 
@@ -76,7 +76,7 @@ date: 2024-02-15
 
 为了更好地促进互联网的研究和发展，国际标准化组织ISO在1985 年指定了网络互联模型。OSI 参考模型（Open System Interconnect Reference Model），具有 7 层结构
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/38e391267d6644d0.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/38e391267d6644d0.png)
 
 **应用层**：各种应用程序协议，比如HTTP、HTTPS、FTP、SOCKS安全套接字协议、DNS域名系统、GDP网关发现协议等等。
 **表示层**：加密解密、转换翻译、压缩解压缩，比如LPP轻量级表示协议。
@@ -89,9 +89,9 @@ date: 2024-02-15
 
 而且在消息通信的过程中具体的执行流程为：
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/98f6ab56a9d358c3.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/98f6ab56a9d358c3.png)
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/7b221b831cdc9a9d.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/7b221b831cdc9a9d.png)
 
 网络传输的数据其实会通过这七层协议来进行数据的封装和拆解
 
@@ -141,7 +141,7 @@ HTTP协议的长连接和短连接，实质上是TCP协议的长连接和短连�
 
 ## 9.TCP原理
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/f628368bdcbfd79c.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/f628368bdcbfd79c.png)
 
 三次握手：
 
@@ -173,7 +173,7 @@ session是浏览器和服务器会话过程中，服务器会分配的一块储�
 
 Tomcat服务器Apache软件基金会项目中的一个核心项目，是一个免费的开放源代码的Web应用服务器（Servlet容器），属于轻量级应用服务器，在中小型系统和并发访问用户不是很多的场合下被普遍使用，是开发和调试JSP程序的首选。
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/682f48b602d91286.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/682f48b602d91286.png)
 
 ## 12.Tomcat有几种部署方式
 
@@ -186,7 +186,7 @@ Tomcat服务器Apache软件基金会项目中的一个核心项目，是一个�
 
 Servlet是JavaEE规范的一种，主要是为了扩展Java作为Web服务的功能，统一接口。由其他内部厂商如tomcat，jetty内部实现web的功能。如一个http请求到来：容器将请求封装为servlet中的HttpServletRequest对象，调用init()，service()等方法输出response,由容器包装为httpresponse返回给客户端的过程。
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/6e9ddd1f4fd48594.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/6e9ddd1f4fd48594.png)
 
 ## 14. 什么是Servlet规范?
 
@@ -194,19 +194,19 @@ Servlet是JavaEE规范的一种，主要是为了扩展Java作为Web服务的功
 * 从package上来说，就是javax.servlet和javax.servlet.http两个包。
 * 从接口来说，就是规范了Servlet接口、Filter接口、Listener接口、ServletRequest接口、ServletResponse接口等。类图如下：
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/e34d420663c5921b.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/e34d420663c5921b.png)
 
 ## 15.为什么我们将tomcat称为Web容器或者Servlet容器？
 
 我们用一张图来表示他们之间的关系:
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/996e90735fa99779.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/996e90735fa99779.png)
 
 简单的理解：启动一个ServerSocket，监听8080端口。Servlet容器用来装我们开发的Servlet。
 
 ## 16.Servlet的生命周期
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/56a72a68d3734a97.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/56a72a68d3734a97.png)
 
 ## 17. jsp和Servlet的区别
 
@@ -258,4 +258,4 @@ application：
 
 GenericServlet 为抽象类，定义了一个通用的、独立于底层协议的servlet，实现了Servlet 和 ServletConfig接口，ServletConfig接口定义了在Servlet初始化的过程中由Servlet容器传递给Servlet得配置信息对象。OK，这个类可能我们不是那么熟悉，但是他的子类相信大家都知道，也就是HttpServlet，HttpServlet 继承自抽象类GenericServlet 具有其所有的特性并拓展了一些其他的方法，如doGet、doPost等
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/6407b8fb3851c76a.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/6407b8fb3851c76a.png)
