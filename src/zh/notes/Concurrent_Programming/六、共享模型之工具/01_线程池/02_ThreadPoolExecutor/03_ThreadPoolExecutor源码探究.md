@@ -1,22 +1,21 @@
 ---
-title: 7_ThreadPoolExecutor原理探究
+title: 03_ThreadPoolExecutor源码探究
 category:
   - 并发编程
-order: 7
 date: 2023-03-01
 ---
 
 <!-- more -->
 
-## 1、介绍
+## 一、介绍
 
 ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线程执行每个提交的任务，通常我们使用Executors的工厂方法来创建ExecutorService。
 
-​	<a name="类图">类图</a>
+<a name="类图">类图</a>
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080048.png" />
+![类图](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080048.png)
 
-​																		
+​																	
 
 **线程池主要解决两个问题：**
 
@@ -83,7 +82,7 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
 
      
 
-     ```
+     ```java
      public static ExecutorService newFixedThreadPool （Int nThreads) { 
      	return new ThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit . MILLISECONDS , 
      								new LinkedBlockingQueue<Runnable>()) ; 
@@ -125,11 +124,9 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
 
 ***
 
-## 2、在自定义线程池时，请参考以下指南
+## 二、在自定义线程池时，请参考以下指南
 
-
-
-### （一）core and maximum pool sizes核心和最大线程池数量
+### 2.1 core and maximum pool sizes核心和最大线程池数量
 
 | 参数            | 解释           |
 | --------------- | -------------- |
@@ -140,7 +137,7 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
 
 <a name="线程池对任务的处理流程">线程池对任务的处理流程</a>
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080049.png" />
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080049.png)
 
 <div align="center">线程任务处理流程</div>
 
@@ -151,7 +148,7 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
 
 
 
-### （二）prestartCoreThread 核心线程预启动
+### 2.2 prestartCoreThread 核心线程预启动
 
 在默认情况下，只有当新任务到达时，才开始创建和启动核心线程，但是我们可以用 `prestartCoreThread()` 和 `prestartAllCoreThreads()`方法动态调整。如果使用非空队列构建池，则可能需要预先启动线程。
 
@@ -160,9 +157,7 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
 | prestartCoreThread()     | 创一个空闲任务线程等待任务的到达               |
 | prestartAllCoreThreads() | 创建核心线程池数量的空闲任务线程等待任务的到达 |
 
-
-
-### （三）ThreadFactory线程工厂
+### 2.3 ThreadFactory线程工厂
 
 - 新线程使用ThreadFactory创建。 如果未另行指定，则使用Executors.defaultThreadFactory默认工厂，使其全部位于同一个ThreadGroup中，并且具有相同的NORM_PRIORITY优先级和非守护进程状态。
 
@@ -170,9 +165,8 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
 
 - 线程应该有modifyThread权限。 如果工作线程或使用该池的其他线程不具备此权限，则服务可能会降级：配置更改可能无法及时生效，并且关闭池可能会保持可终止但尚未完成的状态。
 
-  
 
-### （四）Keep-alive times 线程存活时间
+### 2.4 Keep-alive times 线程存活时间
 
 - 如果线程池当前拥有超过corePoolSize的线程，那么多余的线程在空闲时间超过keepAliveTime时会被终止 ( 请参阅getKeepAliveTime(TimeUnit) )。这提供了一种在不积极使用线程池时减少资源消耗的方法。
 
@@ -187,7 +181,7 @@ ExecutorService（ThreadPoolExecutor的顶层接口）使用线程池中的线�
   默认情况下，keep-alive策略仅适用于存在超过corePoolSize线程的情况。 但是，只要keepAliveTime值不为零，方法`allowCoreThreadTimeOut(boolean)`也可用于将此超时策略应用于**核心线程**。
 
 
-### （五）Queuing 队列
+### 2.5 Queuing 队列
 
 BlockingQueue用于存放提交的任务，队列的实际容量与线程池大小相关联。
 
@@ -219,9 +213,7 @@ BlockingQueue用于存放提交的任务，队列的实际容量与线程池大�
 
      **这里主要为了说明有界队列大小和maximumPoolSizes的大小控制，如何降低资源消耗的同时，提高吞吐量!**
 
-
-
-### （六）Rejected tasks 拒绝任务
+### 2.6 Rejected tasks 拒绝任务
 
 拒绝任务有两种情况：
 
@@ -235,9 +227,7 @@ BlockingQueue用于存放提交的任务，队列的实际容量与线程池大�
 3. **DiscardPolicy**：直接丢弃新提交的任务；
 4. **DiscardOldestPolicy**：如果执行器没有关闭，队列头的任务将会被丢弃，然后执行器重新尝试执行任务（如果失败，则重复这一过程）；
 
-
-
-### （七）Hook methods 钩子方法
+### 2.7 Hook methods 钩子方法
 
 ThreadPoolExecutor为提供了每个任务执行前后提供了钩子方法：
 
@@ -245,31 +235,25 @@ ThreadPoolExecutor为提供了每个任务执行前后提供了钩子方法：
 
 **注意：如果hook或回调方法抛出异常，内部的任务线程将会失败并结束。**
 
-
-
-### （八）Queue maintenance 维护队列
+### 2.8 Queue maintenance 维护队列
 
 `getQueue()`方法可以访问任务队列，一般用于监控和调试。**绝不建议将这个方法用于其他目的**。当在大量的队列任务被取消时，`remove()`和`purge()`方法可用于回收空间。
 
-
-
-### （九）Finalization 关闭
+### 2.9 Finalization 关闭
 
 - 如果程序中不在持有线程池的引用，并且线程池中没有线程时，线程池将会自动关闭。如果您希望确保即使用户忘记调用 `shutdown()`方法也可以回收未引用的线程池，使未使用线程最终死亡。那么必须通过设置适当的 keep-alive times 并设置allowCoreThreadTimeOut(boolean) 或者 使 corePoolSize下限为0 。
 
 - **一般情况下，线程池启动后建议手动调用shutdown()关闭。**
 
-
-
 ***
 
-## 3、源码分析
+## 三、源码分析
 
 ### 3.1 用户线程提交任务的execute方法 
 
 execute 方法的作用是提交任务 command 到线程池进行执行。 用户线程提到线程池的模型图如下图所示。
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080050.png" />
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080050.png)
 
 从该图可以看出，ThreadPoolExecutor的实现实际是一个生产消费模型，当用户添加任务到线程池时相当于生产者生产元素，workers线程工作集中的线程直接执行任务或者从任务队列里面获取任务时则相当于消费者消费元素。
 
@@ -320,8 +304,6 @@ public void execute(Runnable command){
 - 如果代码（4）添加任务失败，则说明任务队列已满，那么执行代码（5）尝试新开启线程（如类图中的thread3和thread4）来执行该任务，如果当前线程池中线程个数>maximumPoolSize则执行拒绝策略。
 
   - <a href="#类图">跳转至类图</a>
-
-    
 
 ***
 
@@ -453,36 +435,30 @@ private boolean addWorker(Runnable firstTask, boolean core) {
 1. 执行到第二部分的代码（8）时说明使用CAS成功地增加了线程个数，但是现在任务还没开始执行。这里使用全局的独占锁来控制把新增的Worker添加到工作集workers中。代码（8.1）创建了一个工作线程Worker。
 2. 代码（8.2）获取了独占锁，代码（8.3）重新检查线程池状态，这是为了避免在获取锁前其他线程调用了shutdown关闭了线程池。如果线程池已经被关闭，则释放锁，新增线程失败，否则执行代码（8.4）添加工作线程到线程工作集，然后释放锁。代码（8.5）判断如果新增工作线程成功，则启动工作线程。
 
-
-
 ***
 
 ### 3.3 工作线程Worker的执行
 
 1. **用户线程提交任务到线程池后，由Worker来执行。**
 
-   
-
    ```
    private final class Worker extends AbstractQueuedSynchronizer implements Runnable{...}
    ```
-
+   
 2. **Worker的构造函数：**
 
-   
-
    ```
-   Worker(Runnable firstTask) {
+Worker(Runnable firstTask) {
                setState(-1); // inhibit interrupts until runWorker
                this.firstTask = firstTask;
                this.thread = getThreadFactory().newThread(this);
            }
    ```
-
+   
    在构造函数内首先设置Worker的状态为-1，这是为了避免当前Worker在调用runWorker方法前被中断（**当其他线程调用了线程池的shutdownNow时，如果Worker状态>=0则会中断该线程**）。这里设置了线程的状态为-1，所以该线程就不会被中断了。在如下runWorker代码中，运行代码（9）时会调用 `unlock` 方法，该方法把status设置为了0，所以这时候调用`shutdownNow` 会中断Worker线程。
 
    ```java
-   final void runWorker(Worker w) {
+final void runWorker(Worker w) {
            Thread wt = Thread.currentThread();
            Runnable task = w.firstTask;
            w.firstTask = null;
@@ -526,14 +502,12 @@ private boolean addWorker(Runnable firstTask, boolean core) {
            }
        }
    ```
-
+   
    - 在如上代码（10）中，如果当前task==null或者调用getTask从任务队列获取的任务返回null，则跳转到代码（11）执行。如果task不为null则执行代码（10.1）获取工作线程内部持有的独占锁，然后执行扩展接口代码（10.2）在具体任务执行前做一些事情。代码（10.3）具体执行任务，代码（10.4）在任务执行完毕后做一些事情，代码（10.5）统计当前Worker完成了多少个任务，并释放锁。
 
    - 这里在执行具体任务期间加锁，是为了避免在任务运行期间，其他线程调用了shutdown后正在执行的任务被中断（shutdown只会中断当前被阻塞挂起的线程）
 
 3. **processWorkerExit(w, completedAbruptly) 执行清理任务，其代码如下。**
-
-   
 
    ```java
     private void processWorkerExit(Worker w, boolean completedAbruptly) {
@@ -565,12 +539,10 @@ private boolean addWorker(Runnable firstTask, boolean core) {
            }
        }
    ```
-
+   
    - 在如上代码中，代码（11.1）统计线程池完成任务个数，并且在统计前加了全局锁。把在当前工作线程中完成的任务累加到全局计数器，然后从工作集中删除当前Worker。
    - 代码（11.2）判断如果当前线程池状态是SHUTDOWN并且工作队列为空，或者当前线程池状态是STOP并且当前线程池里面没有活动线程，则设置线程池状态为TERMINATED。如果设置为了TERMINATED状态，则还需要调用条件变量termination的signalAll（）方法激活所有因为调用线程池的awaitTermination方法而被阻塞的线程。
    - 代码（11.3）则判断当前线程池里面线程个数是否小于核心线程个数，如果是则新增一个线程。
-
-
 
 ***
 

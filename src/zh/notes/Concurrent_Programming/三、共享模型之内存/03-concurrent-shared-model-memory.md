@@ -1,8 +1,7 @@
 ---
-title: 3_共享模型之内存
+title: 共享模型之内存
 category:
   - 并发编程
-order: 3
 date: 2023-03-01
 ---
 

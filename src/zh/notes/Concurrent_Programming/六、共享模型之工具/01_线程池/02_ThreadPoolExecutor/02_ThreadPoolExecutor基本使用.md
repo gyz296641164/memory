@@ -1,13 +1,11 @@
 ---
-title: 6_线程池类之ThreadPoolExecutor使用
+title: 02_ThreadPoolExecutor基本使用
 category:
   - 并发编程
-order: 6
 date: 2023-03-01
 ---
 
 <!-- more -->
-
 
 ## ThreadPoolExecutor提供了四个构造方法：
 

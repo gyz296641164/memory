@@ -1,8 +1,7 @@
 ---
-title: 4_共享模型之无锁
+title: 共享模型之无锁
 category:
   - 并发编程
-order: 4
 date: 2023-03-01
 ---
 
