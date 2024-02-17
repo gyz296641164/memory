@@ -287,7 +287,50 @@ export const zhSidebar = sidebar({
       icon: "note",
       prefix: "notes/Concurrent_Programming/",
       collapsible: true,
-      children: "structure",
+      children: [
+        {
+          text: "一、并发编程基础",
+          prefix: "一、并发编程基础/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "二、共享模型之管程",
+          prefix: "二、共享模型之管程/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "三、共享模型之内存",
+          prefix: "三、共享模型之内存/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "四、共享模型之无锁",
+          prefix: "四、共享模型之无锁/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "五、共享模型之不可变",
+          prefix: "五、共享模型之不可变/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "六、共享模型之工具",
+          prefix: "六、共享模型之工具/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "七、并发编程面试题",
+          prefix: "七、并发编程面试题/",
+          collapsible: true,
+          children: "structure",
+        },
+      ],
     },
     {
       text: "Maven基础",
