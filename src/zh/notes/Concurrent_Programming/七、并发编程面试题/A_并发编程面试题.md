@@ -1,5 +1,5 @@
 ---
-title: 七、并发编程面试题
+title: 并发编程面试题
 category:
   - 并发编程
 order: 8

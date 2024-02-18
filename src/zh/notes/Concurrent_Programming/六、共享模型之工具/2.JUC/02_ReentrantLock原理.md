@@ -50,7 +50,7 @@ Thread-1 执行了
 
 2. 如果自己是紧邻着 head（排第二位），那么再次 tryAcquire 尝试获取锁，当然这时 state 仍为 1，失败
 
-3. 进入 shouldParkAfterFailedAcquire 逻辑，将前驱 node，即 head 的 waitStatus 改为 -1，这次返回 false  
+3. 进入 shouldParkAfterFailedAcquire 逻辑，将前驱 node，即 head 的 waitStatus 改为 -1，这次返回 false。**Node(null)的 waitStatus 为 -1是为了唤醒Node(Thread-1)**，即前驱节点有义务唤醒后继结点。
 
    <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080007.png" />
 
@@ -58,7 +58,7 @@ Thread-1 执行了
 
 5. 当再次进入 shouldParkAfterFailedAcquire 时，这时因为其前驱 node 的 waitStatus 已经是 -1，这次返回true  
 
-6. 进入 parkAndCheckInterrupt， Thread-1 park（灰色表示）  
+6. 进入 parkAndCheckInterrupt， Thread-1 park（灰色表示阻塞住了）  
 
    <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716080008.png" />
 

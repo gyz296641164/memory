@@ -1,3 +1,12 @@
+---
+title: 09_ReentrantLock原理
+category:
+  - 并发编程
+date: 2023-03-01
+---
+
+<!-- more -->
+
 # LinkedBlockingQueue 原理
 
 ## 1. 基本的入队出队

@@ -7,7 +7,7 @@ date: 2023-03-01
 
 <!-- more -->
 
-## 1、共享带来的问题
+## 一、共享带来的问题
 
 ### 1.1 小故事  
 
@@ -185,7 +185,7 @@ public class Test17 {
 
 ***
 
-## 2、synchronized 解决方案  
+## 二、synchronized 解决方案  
 
 ### 2.1 *应用之互斥  
 
@@ -376,9 +376,9 @@ class Zoom {
 
 ***
 
-## 3、方法上的 synchronized  
+## 三、方法上的 synchronized  
 
-### 2.1 语法：
+### 3.1 语法：
 
 ```java
 class Test{
@@ -418,13 +418,13 @@ class Test{
 
 
 
-### 2.2 不加 synchronized 的方法
+### 3.2 不加 synchronized 的方法
 
 不加 synchronzied 的方法（无法保证原子性）就好比不遵守规则的人，不去老实排队（好比翻窗户进去的）。 
 
 
 
-### 2.3 所谓的“线程八锁”  
+### 3.3 所谓的“线程八锁”  
 
 **其实就是考察 synchronized 锁住的是哪个对象**  。
 
@@ -908,7 +908,7 @@ class Test{
 
 ***
 
-## 4、变量的线程安全分析  
+## 四、变量的线程安全分析  
 
 ### 4.1 成员变量和静态变量是否线程安全？  
 
@@ -1520,7 +1520,7 @@ public void foo(SimpleDateFormat sdf) {
 
 ***
 
-## 5、习题  
+## 五、习题  
 
 ### 5.1 卖票练习  
 
@@ -1902,7 +1902,7 @@ class Account {
 
 ***
 
-## 6、Monitor （管程/监视器）
+## 六、Monitor （管程/监视器）
 
 [概念引用](https://zhuanlan.zhihu.com/p/85812140)
 
@@ -2013,7 +2013,7 @@ public static void main(String[] args) {
 
 ***
 
-## 7、synchronized原理进阶（重点）
+## 七、synchronized原理进阶（重点）
 
 下文将会探索synchronized的基本使用、实现机制、Java是如何对它进行了优化、锁优化机制、锁的存储结构等升级过程。[参考文章](https://www.cnblogs.com/aspirant/p/11470858.html)
 
@@ -2264,7 +2264,7 @@ Java对象头**无锁状态**下Mark Word部分的存储结构（32位虚拟机�
 
 ***
 
-## 8、锁的优化
+## 八、锁的优化
 
 - 从JDK6开始，就对synchronized的实现机制进行了较大调整，包括使用JDK5引进的CAS自旋之外，还增加了`自适应的CAS自旋`、`锁消除`、`锁粗化`、`偏向锁`、`轻量级锁`这些优化策略。由于此关键字的优化使得性能极大提高，同时语义清晰，操作简单，无需手动关闭，所以推荐在允许的情况下尽量使用此关键字，同时在性能上此关键字还有优化的空间。
 - 锁主要存在四种状态，依次是：**无锁状态**、**偏向锁状态**、**轻量级锁状态**、**重量级锁状态**，锁可以从偏向锁升级到轻量级锁，再升级到重量级锁。但是锁的升级是单向的，也就是说只能从低级到高级，不会出现锁的降级。
@@ -2288,7 +2288,15 @@ Java对象头**无锁状态**下Mark Word部分的存储结构（32位虚拟机�
 - 自旋锁在JDK1.4.2中引入，默认关闭，但是可以使用`-XX:+UseSpinning`开启，在JDK1.6中默认开启，JDK1.7中，去掉此参数，改为内置实现，换言之，JDK1.7 以后无法通过参数指定。**同时自旋的默认次数为10次**，可以通过参数`-XX:PreBlockSpin`来调整。
 - 如果通过参数-XX:PreBlockSpin来调整自旋锁的自旋次数，会带来诸多不便。假如将参数调整为10，但是系统很多线程都是等你刚刚退出的时候就释放了锁（假如多自旋一两次就可以获取锁），是不是很尴尬。于是JDK1.6**引入自适应的自旋锁**，让虚拟机会变得越来越聪明。
 
+#### 8.1.4 自旋重试成功/失败情况
 
+自旋重试成功的情况
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/71c8c6295a3747b4.png)
+
+自旋重试失败的情况
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/e33338d0778dc0ee.png)
 
 ### 8.2 适应性自旋锁
 
@@ -2297,8 +2305,6 @@ JDK 1.6引入了更加聪明的自旋锁，即自适应自旋锁。所谓自适�
 - **线程如果自旋成功了，那么下次自旋的次数会更加多，因为虚拟机认为既然上次成功了，那么此次自旋也很有可能会再次成功，那么它就会允许自旋等待持续的次数更多。**
 - **反之，如果对于某个锁，很少有自旋能够成功，那么在以后要或者这个锁的时候自旋的次数会减少甚至省略掉自旋过程，以免浪费处理器资源。**
 - 自旋会占用CPU时间，单核CPU自旋就是浪费，多核CPU自旋才能发挥优势。
-
-
 
 ### 8.3 锁消除
 
@@ -2368,7 +2374,39 @@ public void vectorTest(){
 
 ### 8.5 * 偏向锁 
 
+#### 8.5.1 概述
+
 偏向锁是JDK6中的重要引进，因为HotSpot作者经过研究实践发现，在大多数情况下，锁不仅不存在多线程竞争，而且**总是由同一线程多次获得**，为了让线程获得锁的代价更低，引进了**偏向锁**。
+
+例如：
+
+```java
+static final Object obj = new Object();
+
+public static void m1() {
+    synchronized (obj) {
+        // 同步块 A
+        m2();
+    }
+}
+
+public static void m2() {
+    synchronized (obj) {
+        // 同步块 B
+        m3();
+    }
+}
+
+public static void m3() {
+    synchronized (obj) {
+        // 同步块 C
+    }
+}
+```
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/14c7588e4a716d08.png)
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/25d7877d0a157c73.png)
 
 **偏向锁是在单线程执行代码块时使用的机制，如果在多线程并发的环境下（即线程A尚未执行完同步代码块，线程B发起了申请锁的请求），则一定会转化为轻量级锁和重量级锁**。
 
@@ -2378,17 +2416,11 @@ public void vectorTest(){
 
 为了在没有多线程竞争的情况下尽量减少不必要的轻量级锁执行路径。因为轻量级锁的加锁解锁操作是需要依赖多次CAS原子指令的，而偏向锁只需要在置换ThreadID的时候依赖一次CAS原子指令（由于一旦出现多线程竞争的情况就必须撤销偏向锁，所以偏向锁的撤销操作的性能损耗也必须小于节省下来的CAS原子指令的性能消耗）。
 
-
-
 > **轻量级锁是为了在线程交替执行同步块时提高性能，而偏向锁则是在只有一个线程执行同步块时进一步提高性能**。
-
-
 
 > 那么偏向锁是如何来减少不必要的CAS操作呢？首先我们看下无竞争下锁存在什么问题：
 
 现在几乎所有的锁都是可重入的，即已经获得锁的线程可以多次锁住/解锁监视对象，按照之前的HotSpot设计，每次加锁/解锁都会涉及到一些CAS操作（比如对等待队列的CAS操作），CAS操作会延迟本地调用，因此偏向锁的想法是 一旦线程第一次获得了监视对象，之后让监视对象“偏向”这个线程，之后的多次调用则可以避免CAS操作，**说白了就是置个变量，如果发现为true则无需再走各种加锁/解锁流程**。
-
-
 
 > **CAS为什么会引入本地延迟？**
 
@@ -2408,7 +2440,7 @@ public void vectorTest(){
 - 因为总线被设计为固定的“通信能力”，如果Cache一致性流量过大，总线将成为瓶颈。而当Core1和Core2中的值再次一致时，称为“**Cache一致性**”，从这个层面来说，**锁设计的终极目标便是减少Cache一致性流量**。
 - 而CAS恰好会导致Cache一致性流量，如果有很多线程都共享同一个对象，当某个Core CAS成功时必然会引起总线风暴，这就是所谓的本地延迟，**本质上偏向锁就是为了消除CAS，降低Cache一致性流量**。
 
-【**偏向锁获取**】
+#### 8.5.2 偏向锁获取
 
 所以，当一个线程访问同步块并**获取锁**时，会在对象头和栈帧中的锁记录里存储`锁偏向的线程ID`，以后该线程进入和退出同步块时不需要花费CAS操作来争夺锁资源，只需要检查是否为偏向锁、`锁标识`为以及`ThreadID`即可，处理流程如下：
 
@@ -2426,7 +2458,7 @@ public void vectorTest(){
 
 5. 执行同步代码块；
 
-【**偏向锁释放**】
+#### 8.5.3 偏向锁释放
 
 偏向锁的释放采用了 一种只有竞争才会**释放锁**的机制，线程是不会主动去释放偏向锁，需要等待其他线程来竞争。偏向锁的撤销需要等待全局安全点（这个时间点是上没有正在执行的代码）。其步骤如下：
 
@@ -2440,11 +2472,9 @@ public void vectorTest(){
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151756288.png" />
 
+#### 8.5.4 偏向锁状态
 
-
-### 8.6 偏向锁状态
-
-`运行时元数据（Mark Word）`的结构如下:
+对象头格式如下，具体指的是`Mark Word(运行时元数据)`:
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151756263.png" />
 
@@ -2453,16 +2483,307 @@ public void vectorTest(){
 - **Lightweight**：使用轻量级锁，前62位保存的是锁记录的指针，最后2位为状态（00）；
 - **Heavyweight**：使用重量级锁，前62位保存的是Monitor的地址指针，最后2位为状态(10)。
 
+##### 8.5.4.1 测试偏向锁延迟特性
 
+```
+class Dog {}
+```
 
-### 8.7 偏向锁批量重偏向
+利用 jol 第三方工具来查看对象头信息（注意这里我扩展了 jol 让它输出更为简洁）
 
-- 如果对象被多个线程访问，但是没有竞争 ( 一个线程执行完, 另一个线程再来执行, 没有竞争)，这时偏向Thread1的对象仍有机会重新偏向Thread2，重偏向会重置Thread ID；
-- 当撤销偏向锁 101 升级为 轻量级锁00超过20次后（超过阈值），JVM会觉得是不是偏向错了，这时会在给对象加锁时，重新偏向至加锁线程 (Thread2)。
+```java
+// 添加虚拟机参数 -XX:BiasedLockingStartupDelay=0 
+public static void main(String[] args) throws IOException {
+    Dog d = new Dog();
+    ClassLayout classLayout = ClassLayout.parseInstance(d);
+    new Thread(() -> {
+        log.debug("synchronized 前");
+        System.out.println(classLayout.toPrintableSimple(true));
+        synchronized (d) {
+            log.debug("synchronized 中");
+            System.out.println(classLayout.toPrintableSimple(true));
+        }
+        log.debug("synchronized 后");
+        System.out.println(classLayout.toPrintableSimple(true));
+    }, "t1").start();
+}
+```
 
+输出：
 
+```
+11:08:58.117 c.TestBiased [t1] - synchronized 前
+00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000101 
+11:08:58.121 c.TestBiased [t1] - synchronized 中
+00000000 00000000 00000000 00000000 00011111 11101011 11010000 00000101 
+11:08:58.121 c.TestBiased [t1] - synchronized 后
+00000000 00000000 00000000 00000000 00011111 11101011 11010000 00000101
+```
 
-### 8.8 轻量级锁
+> **注意**：处于偏向锁的对象解锁后，线程 id 仍存储于对象头中
+
+##### 8.5.4.2 测试禁用
+
+在上面测试代码运行时在添加 VM 参数 `-XX:-UseBiasedLocking` 禁用偏向锁
+
+输出：
+
+```
+11:13:10.018 c.TestBiased [t1] - synchronized 前
+00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+11:13:10.021 c.TestBiased [t1] - synchronized 中
+00000000 00000000 00000000 00000000 00100000 00010100 11110011 10001000 
+11:13:10.021 c.TestBiased [t1] - synchronized 后
+00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001
+```
+
+##### 8.5.4.3 测试 hashCode
+
+正常状态对象一开始是没有 hashCode 的，第一次调用才生成。
+
+#### 8.5.5 批量重偏向
+
+如果对象被多个线程访问，但是没有竞争 ( 一个线程执行完, 另一个线程再来执行, 没有竞争)，这时偏向Thread1的对象仍有机会重新偏向Thread2，重偏向会重置Thread ID；
+
+当撤销偏向锁 101 升级为 轻量级锁00超过20次后（超过阈值），JVM会觉得是不是偏向错了，这时会在给对象加锁时，重新偏向至加锁线程 (Thread2)。
+
+```java
+private static void test3() throws InterruptedException {
+    Vector<Dog> list = new Vector<>();
+    Thread t1 = new Thread(() -> {
+        for (int i = 0; i < 30; i++) {
+            Dog d = new Dog();
+            list.add(d);
+            synchronized (d) {
+                log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+            }
+        }
+        synchronized (list) {
+            list.notify();
+        }
+    }, "t1");
+    t1.start();
+
+    Thread t2 = new Thread(() -> {
+        synchronized (list) {
+            try {
+                list.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        log.debug("===============> ");
+        for (int i = 0; i < 30; i++) {
+            Dog d = list.get(i);
+            log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+            synchronized (d) {
+                log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+            }
+            log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+        }
+    }, "t2");
+    t2.start();
+}
+```
+
+输出：
+
+```
+[t1] - 0 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 1 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 2 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 3 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 4 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 5 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 6 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 7 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 8 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 9 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 10 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 11 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 12 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 13 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 14 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 15 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 16 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 17 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 18 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 19 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 20 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 21 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 22 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 23 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 24 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 25 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 26 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 27 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 28 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t1] - 29 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - ===============> 
+[t2] - 0 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 0 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 0 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 1 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 1 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 1 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 2 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 2 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 2 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 3 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 3 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 3 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 4 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 4 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 4 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 5 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 5 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 5 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 6 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 6 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 6 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 7 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101
+[t2] - 7 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 7 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 8 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 8 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 8 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 9 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 9 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 9 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 10 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 10 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 10 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 11 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 11 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 11 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 12 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 12 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 12 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 13 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 13 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 13 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 14 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 14 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 14 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 15 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 15 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 15 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 16 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 16 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 16 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 17 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 17 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 17 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 18 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 18 00000000 00000000 00000000 00000000 00100000 01011000 11110111 00000000 
+[t2] - 18 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 
+[t2] - 19 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 19 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 19 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 20 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 20 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 20 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 21 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 21 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 21 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 22 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 22 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 22 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 23 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 23 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 23 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 24 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 24 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 24 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101
+[t2] - 25 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 25 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 25 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 26 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 26 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 26 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 27 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 27 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 27 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 28 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 28 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 28 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 29 00000000 00000000 00000000 00000000 00011111 11110011 11100000 00000101 
+[t2] - 29 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101 
+[t2] - 29 00000000 00000000 00000000 00000000 00011111 11110011 11110001 00000101
+```
+
+#### 8.5.6 批量撤销
+
+```java
+package com.gyz.interview.concurrent;
+
+import org.openjdk.jol.info.ClassLayout;
+
+import java.util.Vector;
+import java.util.concurrent.locks.LockSupport;
+
+public class LockCanelTest {
+    static Thread t1, t2, t3;
+
+    private static void test4() throws InterruptedException {
+        Vector<Dog> list = new Vector<>();
+        int loopNumber = 39;
+        t1 = new Thread(() -> {
+            for (int i = 0; i < loopNumber; i++) {
+                Dog d = new Dog();
+                list.add(d);
+                synchronized (d) {
+                    log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+                }
+            }
+            LockSupport.unpark(t2);
+        }, "t1");
+        t1.start();
+        t2 = new Thread(() -> {
+            LockSupport.park();
+            log.debug("===============> ");
+            for (int i = 0; i < loopNumber; i++) {
+                Dog d = list.get(i);
+                log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+                synchronized (d) {
+                    log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+                }
+                log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+            }
+            LockSupport.unpark(t3);
+        }, "t2");
+        t2.start();
+        t3 = new Thread(() -> {
+            LockSupport.park();
+            log.debug("===============> ");
+            for (int i = 0; i < loopNumber; i++) {
+                Dog d = list.get(i);
+                log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+                synchronized (d) {
+                    log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+                }
+                log.debug(i + "\t" + ClassLayout.parseInstance(d).toPrintableSimple(true));
+            }
+        }, "t3");
+        t3.start();
+
+        t3.join();
+        log.debug(ClassLayout.parseInstance(new Dog()).toPrintableSimple(true));
+    }
+}
+```
+
+> **参考资料**：
+>
+> https://github.com/farmerjohngit/myblog/issues/12
+>
+> https://www.cnblogs.com/LemonFive/p/11246086.html
+>
+> https://www.cnblogs.com/LemonFive/p/11248248.html
+>
+> [偏向锁论文](https://www.oracle.com/technetwork/java/biasedlocking-oopsla2006-wp-149958.pdf)
+
+### 8.6 轻量级锁
 
 > **引入轻量级锁的主要目的**
 
@@ -2554,7 +2875,7 @@ public void vectorTest(){
 
 
 
-### 8.9 锁膨胀
+### 8.7 锁膨胀
 
 - 如果在尝试`加轻量级锁`的过程中，cas替换操作无法成功，这是有一种情况就是其它线程已经为这个对象加上了轻量级锁，这是就要进行`锁膨胀(有竞争)`，将`轻量级锁变成重量级锁`。
 
@@ -2572,13 +2893,13 @@ public void vectorTest(){
   
   
 
-### 8.10 重量级锁
+### 8.8 重量级锁
 
 Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来实现的。但是监视器锁本质又是依赖于底层的操作系统的 `Mutex Lock` 来实现的。而操作系统实现线程之间的切换这就需要从用户态转换到核心态，这个成本非常高，状态之间的转换需要相对比较长的时间，这就是为什么Synchronized效率低的原因。因此，**这种依赖于操作系统Mutex Lock所实现的锁我们称之为 “重量级锁”**。
 
 
 
-### 8.11 偏向锁、轻量级锁和重量级锁转换
+### 8.9 偏向锁、轻量级锁和重量级锁转换
 
 图示一：
 
@@ -2592,7 +2913,7 @@ Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来�
 
 
 
-### 8.12 锁的优劣
+### 8.10 锁的优劣
 
 各种锁并不是相互代替的，而是在不同场景下的不同选择，绝对不是说重量级锁就是不合适的。每种锁是只能升级，不能降级，即由偏向锁->轻量级锁->重量级锁，而这个过程就是开销逐渐加大的过程。
 
@@ -2610,7 +2931,7 @@ Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来�
 
 
 
-### 8.12 总结
+### 8.11 总结
 
 > 对于 synchronized 锁来说，**锁的升级主要是通过 Mark Word 中的锁标记位与是否是偏向锁标记为来达成的**；synchronized 关键字所对象的锁都是先**从偏向锁开始**，随着锁竞争的不断升级，逐步演化至轻量级锁，最后变成了重量级锁。
 
@@ -2643,7 +2964,7 @@ Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来�
 
 ***
 
-## 9、Park & Unpark  
+## 九、Park & Unpark  
 
 ### 9.1 基本使用
 
@@ -2797,7 +3118,7 @@ public class TestMultiLock2 {
 
 ***
 
-## 10、深入线程状态转换 
+## 十、深入线程状态转换 
 
 ### 10.1 转换过程图示
 
@@ -2813,11 +3134,11 @@ public class TestMultiLock2 {
 
 **假设有线程 Thread t：**
 
-#### 情况一：NEW <–> RUNNABLE
+#### 10.2.1 NEW <–> RUNNABLE
 
 - 当调用`t.start()`方法时, `NEW --> RUNNABLE`
 
-#### 情况二：RUNNABLE <–> WAITING
+#### 10.2.2 RUNNABLE <–> WAITING
 
 **t 线程**用`synchronized(obj)`获取了`对象锁`后：
 
@@ -2826,17 +3147,17 @@ public class TestMultiLock2 {
   - **竞争锁成功**，t 线程从 `WAITING --> RUNNABLE`
   - **竞争锁失败**，t 线程从 `WAITING --> BLOCKED`
 
-#### 情况三：RUNNABLE <–> WAITING
+#### 10.2.3 RUNNABLE <–> WAITING
 
 - 当前线程调用 `t.join()` 方法时，当前线程从 `RUNNABLE --> WAITING` ，注意是**当前线程**在 **t线程对象**的监视器上等待
 - **t 线程**运行结束，或调用了当前线程的 interrupt() 时，当前线程从 `WAITING --> RUNNABLE`
 
-#### 情况四：RUNNABLE <–> WAITING
+#### 10.2.4 RUNNABLE <–> WAITING
 
 - 当前线程调用 `LockSupport.park()` 方法会让当前线程从`RUNNABLE --> WAITING`
 - 调用 `LockSupport.unpark(目标线程)` 或调用了线程 的 **interrupt()** ，会让目标线程从 `WAITING --> RUNNABLE`
 
-#### 情况五：RUNNABLE <–> TIMED_WAITING
+#### 10.2.5 RUNNABLE <–> TIMED_WAITING
 
 t 线程用`synchronized(obj)` 获取了`对象锁`后
 
@@ -2845,27 +3166,27 @@ t 线程用`synchronized(obj)` 获取了`对象锁`后
   - 竞争锁成功，t 线程从 TIMED_WAITING --> RUNNABLE
   - 竞争锁失败，t 线程从 TIMED_WAITING --> BLOCKED
 
-#### 情况六：RUNNABLE <–> TIMED_WAITING
+#### 10.2.6 RUNNABLE <–> TIMED_WAITING
 
 - 当前线程调用 t.join(long n) 方法时，当前线程从 RUNNABLE --> TIMED_WAITING 注意是**当前线程在 t 线程**对象的监视器上等待
 - 当前线程等待时间超过了 n 毫秒，或**t 线程**运行结束，或调用了当前线程的 interrupt() 时，**当前线程**从 `TIMED_WAITING --> RUNNABLE`
 
-#### 情况七：RUNNABLE <–> TIMED_WAITING
+#### 10.2.7 RUNNABLE <–> TIMED_WAITING
 
 - 当前线程调用 `Thread.sleep(long n)` ，当前线程从 `RUNNABLE --> TIMED_WAITING`
 - 当前线程等待时间超过了 n 毫秒或调用了线程的 **interrupt()** ，当前线程从 `TIMED_WAITING --> RUNNABLE`
 
-#### 情况八：RUNNABLE <–> TIMED_WAITING
+#### 10.2.8 RUNNABLE <–> TIMED_WAITING
 
 - 当前线程调用 `LockSupport.parkNanos(long nanos)` 或` LockSupport.parkUntil(long millis)` 时，当前线程从 `RUNNABLE --> TIMED_WAITING`
 - 调用`LockSupport.unpark(目标线程) `或调用了线程 的 interrupt() ，或是等待超时，会让目标线程从` TIMED_WAITING--> RUNNABLE`
 
-#### 情况九：RUNNABLE <–> BLOCKED
+#### 10.2.9 RUNNABLE <–> BLOCKED
 
 - t 线程用 synchronized(obj) 获取了对象锁时如果竞争失败，从 RUNNABLE –> BLOCKED, 持 obj 锁线程的同步代码块执行完毕，会唤醒该对象上所有 BLOCKED 的线程重新竞争，
 - 如果其中 t 线程竞争 成功，从 BLOCKED –> RUNNABLE ，其它失败的线程仍然 BLOCKED。
 
-####  情况十：RUNNABLE <–> TERMINATED
+####  10.2.10 RUNNABLE <–> TERMINATED
 
 - 当前线程所有代码运行完毕，进入 TERMINATED
 
@@ -2873,7 +3194,7 @@ t 线程用`synchronized(obj)` 获取了`对象锁`后
 
 ***
 
-## 11、多把锁
+## 十一、多把锁
 
 **多把不相干的锁**  。
 
@@ -2995,7 +3316,7 @@ class BigRoom {
 
 ***
 
-## 12、活跃性  
+## 十二、活跃性  
 
 ### 12.1 死锁
 
@@ -3238,7 +3559,7 @@ public class TestLiveLock {
 
 ***
 
-## 13、ReentrantLock
+## 十三、ReentrantLock
 
 [引用](https://www.jianshu.com/p/4358b1466ec9)
 
@@ -3492,40 +3813,44 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Slf4j(topic = "c.ReentrantTest")
 public class ReentrantTestTimeOut {
-    private static final ReentrantLock lock = new ReentrantLock();
+    private static ReentrantLock reentrantLock = new ReentrantLock();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(() -> {
-            log.debug("尝试获得锁");
-            // 此时肯定获取失败, 因为主线程已经获得了锁对象
-            if (!lock.tryLock()) {
-                log.debug("获取立刻失败，返回");
+            log.info("t1线程尝试获取锁");
+            if (!reentrantLock.tryLock()) {
+                log.info("t1线程获取锁失败,立刻返回");
                 return;
             }
             try {
-                log.debug("获得到锁");
+                log.info("t1线程获取到锁");
             } finally {
-                lock.unlock();
+                reentrantLock.unlock();
+                log.info("t1线程释放锁");
             }
         }, "t1");
 
-        lock.lock();
-        log.debug("获得到锁");
+        reentrantLock.lock();
+        log.info("main线程获取到锁");
         t1.start();
-        // 主线程2s之后才释放锁
-        Sleeper.sleep(2);
-        log.debug("释放了锁");
-        lock.unlock();
+        try {
+            Thread.sleep(2000);
+        } finally {
+            reentrantLock.unlock();
+            log.info("main线程释放锁");
+        }
     }
-
 }
 ```
 
 输出结果：
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151758751.png" />
-
-
+```
+17:21:31.080 [main] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - main线程获取到锁
+17:21:31.084 [t1] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - t1线程尝试获取锁
+17:21:31.084 [t1] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - t1线程获取锁失败,立刻返回
+17:21:33.099 [main] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - main线程释放锁
+```
 
 > **设置等待时间, 超过等待时间还没有获得锁, 失败, 从阻塞队列移除该线程**
 
@@ -3545,49 +3870,52 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Version 1.0.0
  */
 @Slf4j(topic = "c.ReentrantTestSetTimeOut")
-public class ReentrantTestSetTimeOut {
+@Slf4j
+public class ReentrantTestTimeOut {
+    private static ReentrantLock reentrantLock = new ReentrantLock();
 
-    private static final ReentrantLock lock = new ReentrantLock();
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(() -> {
-            log.debug("尝试获得锁");
+            log.info("t1线程尝试获取锁");
             try {
-                // 设置等待时间, 超过等待时间 / 被打断, 都会获取锁失败; 退出阻塞队列
-                if (!lock.tryLock(1, TimeUnit.SECONDS)) {
-                    log.debug("获取锁超时，返回");
+                if (!reentrantLock.tryLock(5, TimeUnit.SECONDS)) {
+                    log.info("获取锁超时，返回");
                     return;
                 }
             } catch (InterruptedException e) {
-                log.debug("被打断了, 获取锁失败, 返回");
                 e.printStackTrace();
-                return;
             }
+
             try {
-                log.debug("获得到锁");
+                log.info("t1线程获取到锁");
             } finally {
-                lock.unlock();
+                reentrantLock.unlock();
+                log.info("t1线程释放锁");
             }
         }, "t1");
 
-        lock.lock();
-        log.debug("获得到锁");
+        reentrantLock.lock();
+        log.info("main线程获取到锁");
         t1.start();
-//      t1.interrupt();
-        // 主线程2s之后才释放锁
-        Sleeper.sleep(2);
-        log.debug("main线程释放了锁");
-        lock.unlock();
+        //      t1.interrupt();
+        try {
+            Thread.sleep(7000);
+        } finally {
+            reentrantLock.unlock();
+            log.info("main线程释放锁");
+        }
     }
-
 }
 ```
 
 输出结果：
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151758936.png" />
-
-
+```
+17:27:48.324 [main] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - main线程获取到锁
+17:27:48.329 [t1] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - t1线程尝试获取锁
+17:27:53.343 [t1] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - 获取锁超时，返回
+17:27:55.339 [main] INFO com.gyz.interview.concurrent.reentrantlock.ReentrantTestTimeOut - main线程释放锁
+```
 
 > **通过`lock.tryLock()`来解决 `哲学家就餐`问题**
 
@@ -3687,13 +4015,13 @@ class Chopstick extends ReentrantLock {
 }
 ```
 
-
+输出：控制台一直输出，各个科学家轮番吃，不会存在饥饿的现象。
 
 ### 13.4 条件变量
 
  **`lock.newCondition()`创建条件变量对象; 通过条件变量对象调用`await/signal`方法, 等待/唤醒**。
 
-- **Synchronized** 中也有`条件变量`，就是`Monitor监视器`中的 `waitSet等待集合`，当条件不满足时进入`waitSet 等待`
+- **synchronized** 中也有`条件变量`，就是`Monitor监视器`中的 `waitSet等待集合`，当条件不满足时进入`waitSet 等待`
 - **ReentrantLock** 的条件变量比 synchronized 强大之处在于,它是 **支持多个条件变量。**
 - 这就好比synchronized 是那些不满足条件的线程都在`一间休息室`等通知；**(此时会造成虚假唤醒)**，而 ReentrantLock 支持`多间休息室`，有专门等烟的休息室、专门等早餐的休息室、唤醒时也是按休息室来唤醒; **(可以避免虚假唤醒)**
 
@@ -3812,7 +4140,7 @@ public class ConditionVariable {
 
 #### 13.5.1 ReentrantLock类关系
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151758040.png" />
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151758040.png)
 
 - **ReentrantLock** 实现了 **Lock**接口，**Lock**接口中定义了 **lock**与 **unlock**相关操作。 
 
@@ -3834,9 +4162,7 @@ public class ConditionVariable {
 
 一般来说，**自定义同步器要么是独占方式，要么是共享方式**，它们也只需实现`tryAcquire`、`tryRelease`、`tryAcquireShared`、`tryReleaseShared`中的一种即可。**AQS也支持自定义同步器同时实现独占和共享两种方式**，如`ReentrantReadWriteLock`。ReentrantLock是独占锁，所以实现了tryAcquire、tryRelease。以非公平锁为例，这里主要阐述一下**非公平锁与AQS**之间方法的关联之处，
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151758736.jpg" />
-
-
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151758736.jpg)
 
 #### 13.5.3 Sync 类的源码如下
 
@@ -4074,21 +4400,42 @@ static final class NonfairSync extends Sync {
  }
 ```
 
+---
 
+## 十四、wait/notify 原理
 
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/340c12e813570b96.png)
 
+Owner 线程发现条件不满足，调用 wait 方法，即可进入 WaitSet 变为 WAITING 状态
 
+BLOCKED 和 WAITING 的线程都处于阻塞状态，不占用 CPU 时间片
 
+BLOCKED 线程会在 Owner 线程释放锁时唤醒
 
+WAITING 线程会在 Owner 线程调用 notify 或 notifyAll 时唤醒，但唤醒后并不意味者立刻获得锁，仍需进入
 
+EntryList 重新竞争
 
+---
 
+## 十五、join 原理
 
+是调用者轮询检查线程 alive 状态
 
+`t1.join();`
 
+等价于下面的代码
 
+```java
+synchronized (t1) {
+ 	// 调用者线程进入 t1 的 waitSet 等待, 直到 t1 运行结束
+ 	while (t1.isAlive()) {
+ 		t1.wait(0);
+ 	}
+}
+```
 
-
+> **注意*：join 体现的是【保护性暂停】模式
 
 ​     
 

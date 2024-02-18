@@ -379,7 +379,7 @@ class Monitor {
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/20220716075650.png" />
 
-#### 2.5 模式之 Balking（犹豫）
+### 2.5 模式之 Balking（犹豫）
 
 Balking （犹豫）模式用在一个线程发现另一个线程或本线程已经做了某一件相同的事，那么本线程就无需再做 了，直接结束返回，有点类似单例。
 
@@ -626,12 +626,23 @@ public class ConcurrencyTest {
 
 volatile 的底层实现原理是：`内存屏障`，`Memory Barrier（Memory Fence）`和`缓存一致性协议（硬件层面）`
 
-**内存屏障**
+#### 4.1.1 内存屏障
 
-- 对volatile变量的`写指令后`会加入`写屏障`（保证写屏障之前的写操作，都能同步到主存中）
-- 对volatile变量的`读指令前`会加入`读屏障`（保证读屏障之后的读操作，都能读到主存的数据）
+Memory Barrier（Memory Fence）
 
-**缓存一致性协议**
+可见性：
+
+- 写屏障（sfence）保证在该屏障之前的，对共享变量的改动，都同步到主存当中
+- 而读屏障（lfence）保证在该屏障之后，对共享变量的读取，加载的是主存中最新数据
+
+有序性：
+
+- 写屏障会确保指令重排序时，不会将写屏障之前的代码排在写屏障之后
+- 读屏障会确保指令重排序时，不会将读屏障之后的代码排在读屏障之前
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/3f182cd6cc0ad5de.png)
+
+#### 4.1.2 缓存一致性协议
 
 最出名的就是Intel 的`MESI协议`，`MESI协议`保证了每个缓存中使用的共享变量的副本是一致的。它核心的思想是：当CPU写数据时，如果发现操作的变量是共享变量，即在其他CPU中也存在该变量的副本，会发出信号通知其他CPU将该变量的缓存行置为无效状态，因此当其他CPU需要读取这个变量时，发现自己缓存中缓存该变量的缓存行是无效的，那么它就会从内存重新读取。
 
@@ -1036,8 +1047,6 @@ public class TestVolatile {
 
 volatile 可以保存线程的可见性，有序性，但是不能保证原子性，doInit 方法没加锁，可能会被调用多次。
 
-
-
 #### 4.8.2 线程安全单例习题
 
 单例模式有很多实现方法，饿汉、懒汉、静态内部类、枚举类，试着分析每种实现下获取单例对象（即调用 getInstance）时的线程安全，并思考注释中的问题：
@@ -1074,7 +1083,7 @@ public final class Singleton implements Serializable {
 - 问题5 : 通过向外提供公共方法, 体现了更好的封装性, 可以在方法内实现懒加载的单例; 可以提供泛型等
 - 补充 : 任何一个readObject方法，不管是显式的还是默认的，它都会返回一个新建的实例，这个新建的实例不同于该类初始化时创建的实例。
 
-**实现2： 饿汉式**
+**实现2： 枚举单例**
 
 ```java
 // 问题1：枚举单例是如何限制实例个数的：创建枚举类的时候就已经定义好了，每个枚举常量其实就是枚举类的一个静态成员变量
@@ -1100,7 +1109,7 @@ enum Singleton {
 
 
 
-**实现3：懒汉式**
+**实现3：懒汉单例**
 
 ```java
 public final class Singleton {
@@ -1118,9 +1127,7 @@ public final class Singleton {
 
 ```
 
-
-
-**实现4：DCL 懒汉式**
+**实现4：DCL 懒汉单例**
 
 ```java
 public final class Singleton {
@@ -1152,7 +1159,7 @@ public final class Singleton {
   - 此时t1先获取到锁对象, 进入到synchronized中, 此时创建对象, 返回单例对象, 释放锁;
   - 这时候t2获得了锁对象, 如果在代码块中没有if判断, 则线程2认为没有单例对象, 因为在代码块外判断的时候就没有, 所以t2就还是会创建单例对象. 此时就重复创建了
 
-**实现5：静态内部类懒汉式**
+**实现5：静态内部类懒汉单例**
 
 ```java
 public final class Singleton {
