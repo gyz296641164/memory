@@ -1,5 +1,5 @@
 ---
-title: 09_ReentrantLock原理
+title: 09_LinkedBlockingQueue
 category:
   - 并发编程
 date: 2023-03-01
@@ -9,7 +9,16 @@ date: 2023-03-01
 
 # LinkedBlockingQueue 原理
 
-## 1. 基本的入队出队
+## 1. 概述
+
+- LinkedBlockingQueue继承于AbstractQueue，它本质上是一个FIFO(先进先出)的队列。
+- LinkedBlockingQueue是一个基于链表实现的阻塞队列，**内部类Node存储元素**。默认情况下，该阻塞队列的大小为`Integer.MAX_VALUE`，由于这个数值特别大，所以 LinkedBlockingQueue 也被称作**无界队列**，代表它几乎没有界限，队列可以随着元素的添加而动态增长，但是如果没有剩余内存，则队列将抛出OOM错误。所以为了避免队列过大造成机器负载或者内存爆满的情况出现，我们在使用的时候建议**手动设置队列大小**。
+- LinkedBlockingQueue是通过单链表实现的：
+  - head是链表的表头。取出数据时，都是从表头head处取出。
+  - last是链表的表尾。新增数据时，都是从表尾last处插入。
+- LinkedBlockingQueue采用两把锁的锁分离技术实现入队出队互不阻塞，添加元素和获取元素都有独立的锁，也就是说LinkedBlockingQueue是读写分离的，读写操作可以并行执行。
+
+## 2. 基本的入队出队
 
 ### 入队
 
@@ -82,7 +91,7 @@ return x;
 
 ![image-20240217204011157](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/2773b0bf00ec097d.png)
 
-## 2. 加锁分析
+## 3. 加锁分析
 
 ==高明之处==在于用了两把锁和 dummy 节点
 
@@ -171,7 +180,7 @@ public E take() throws InterruptedException {
 
 ---
 
-## 3. 性能比较
+## 4. 性能比较
 
 主要列举 LinkedBlockingQueue 与 ArrayBlockingQueue 的性能比较：
 

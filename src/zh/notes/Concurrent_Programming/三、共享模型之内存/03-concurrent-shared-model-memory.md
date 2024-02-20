@@ -466,7 +466,98 @@ class Monitor2 {
 
 ```
 
+### 2.6 CPU缓存结构原理
 
+#### 2.6.1 CPU 缓存结构
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/3c8854c29c175933.png)
+
+查看 cpu 缓存：
+
+```
+⚡ root@yihang01 ~ lscpu
+Architecture: x86_64
+CPU op-mode(s): 32-bit, 64-bit
+Byte Order: Little Endian
+CPU(s): 1
+On-line CPU(s) list: 0
+Thread(s) per core: 1
+Core(s) per socket: 1
+Socket(s): 1
+NUMA node(s): 1
+Vendor ID: GenuineIntel
+CPU family: 6
+Model: 142
+Model name: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz
+Stepping: 11
+CPU MHz: 1992.002
+BogoMIPS: 3984.00
+Hypervisor vendor: VMware
+Virtualization type: full
+L1d cache: 32K
+L1i cache: 32K
+L2 cache: 256K
+L3 cache: 8192K
+NUMA node0 CPU(s): 0
+```
+
+速度比较
+
+| 从 cpu 到 | 大约需要的时钟周期 |
+| --------- | ------------------ |
+| 寄存器    | 1 cycle            |
+| L1        | 3~4 cycle          |
+| L2        | 10~20 cycle        |
+| L3        | 40~45 cycle        |
+| 内存      | 120~240 cycle      |
+
+查看 cpu 缓存行
+
+```
+⚡ root@yihang01 ~ cat /sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size
+64
+```
+
+cpu 拿到的内存地址格式是这样的
+
+`[高位组标记][低位索引][偏移量]`
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/e5e8a014d62a3b22.png)
+
+#### 2.6.2 CPU缓存读
+
+读取数据流程如下：
+
+- 根据低位，计算在缓存中的索引
+- 判断是否有效
+  - 0 去内存读取新数据更新缓存行
+  - 1 再对比高位组标记是否一致
+    - 一致，根据偏移量返回缓存数据
+    - 不一致，去内存读取新数据更新缓存行
+
+#### 2.6.3 CPU缓存一致性
+
+MESI 协议(缓存一致性协议)
+
+1. E、S、M 状态的缓存行都可以满足 CPU 的读请求
+
+2. E 状态的缓存行，有写请求，会将状态改为 M，这时并不触发向主存的写
+
+3. E 状态的缓存行，必须监听该缓存行的读操作，如果有，要变为 S 状态
+
+   ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/cc6996f7e8156828.png)
+
+4.  M 状态的缓存行，必须监听该缓存行的读操作，如果有，先将其它缓存（S 状态）中该缓存行变成 I 状态（即6
+
+   的流程），写入主存，自己变为 S 状态
+
+5. S 状态的缓存行，有写请求，走 4. 的流程
+
+6. S 状态的缓存行，必须监听该缓存行的失效操作，如果有，自己变为 I 状态
+
+7. I 状态的缓存行，有读请求，必须从主存读取
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/fba879c0d9645944.png)
 
 ***
 
