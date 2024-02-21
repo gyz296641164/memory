@@ -1,5 +1,5 @@
 ---
-title: Redis分布式锁
+title: 07_Redis分布式锁
 category:
   - Redis
 date: 2023-02-28

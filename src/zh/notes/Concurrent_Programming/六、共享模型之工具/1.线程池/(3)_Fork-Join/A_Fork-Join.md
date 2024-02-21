@@ -1,3 +1,13 @@
+---
+title: Fork-Join
+category:
+  - 并发编程
+order: 8
+date: 2024-02-16
+---
+
+<!-- more -->
+
 ## 概念
 
 Fork/Join 是 JDK 1.7 加入的新的线程池实现，它体现的是一种**分治思想**，适用于能够进行任务拆分的 cpu 密集型

@@ -234,53 +234,7 @@ export const zhSidebar = sidebar({
       icon: "note",
       prefix: "notes/Redis/",
       collapsible: true,
-      children: [
-        {
-          text: "1_初识Redis",
-          icon: "star",
-          link: "01-redis-start",
-        },
-        {
-          text: "2_Redis持久化",
-          icon: "star",
-          link: "02-redis-persistence",
-        },
-        {
-          text: "3_Redis事务",
-          icon: "star",
-          link: "03-redis-transaction",
-        },
-        {
-          text: "4_复制",
-          icon: "star",
-          link: "04-redis-copy",
-        },
-        {
-          text: "5_哨兵",
-          icon: "star",
-          link: "05-redis-sentinel",
-        },
-        {
-          text: "6_缓存设计",
-          icon: "star",
-          link: "06-redis-cache-design",
-        },
-        {
-          text: "7_Redis分布式锁",
-          icon: "star",
-          link: "07-redis-distributed-lock",
-        },
-        {
-          text: "8_JAVA操作Redis",
-          icon: "star",
-          link: "08-redis-operate-byjava",
-        },
-        {
-          text: "9_Redis常见面试题",
-          icon: "star",
-          link: "09-redis-interview",
-        },
-      ],
+      children: "structure"
     },
     {
       text: "并发编程",

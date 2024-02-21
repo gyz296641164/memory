@@ -1,5 +1,5 @@
 ---
-title: JAVA操作Redis
+title: 08_JAVA操作Redis
 category:
   - Redis
 date: 2023-02-28

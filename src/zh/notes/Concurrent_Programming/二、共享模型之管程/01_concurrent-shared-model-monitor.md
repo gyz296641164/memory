@@ -2855,7 +2855,7 @@ public class LockCanelTest {
 
 > **轻量级锁获取和释放流程图示**
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151756064.png" />
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151756064.png)
 
 **为什么升级为轻量锁时要把对象头里的Mark Word复制到线程栈的锁记录中呢？**
 
@@ -2909,9 +2909,7 @@ Synchronized是通过对象内部的一个叫做 `监视器锁（Monitor）`来�
 
 图示二：
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151757519.png" />
-
-
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Concurrent/202207151757519.png)
 
 ### 8.10 锁的优劣
 

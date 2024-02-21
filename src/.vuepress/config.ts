@@ -15,6 +15,7 @@ export default defineUserConfig({
 
   theme,
   port: 8099, //自定义项目启动端口号
+
   plugins: [
     searchProPlugin({
       // 索引全部内容
@@ -34,3 +35,8 @@ export default defineUserConfig({
   ],
   shouldPrefetch: false,
 });
+
+// 页面标题层级
+const defaultOptions = {
+  level: [1, 2, 3],
+}

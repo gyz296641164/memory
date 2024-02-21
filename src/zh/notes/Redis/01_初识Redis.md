@@ -1,5 +1,5 @@
 ---
-title: 初识Redis
+title: 01_初识Redis
 category:
   - Redis
 date: 2023-02-28
