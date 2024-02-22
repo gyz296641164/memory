@@ -9,7 +9,7 @@ date: 2024-02-21
 
 ## 10、统计高并发网站每个网页每天的 UV 数据，结合Redis你会如何实现？
 
-### 10.1 选用方案：HyperLogLog
+### 10.1 选用方案：HyperLogLog(Redis高级数据结构)
 
 如果统计 PV 那非常好办，给每个网页一个独立的 Redis 计数器就可以了，这个计数器的 key 后缀加上当天的日期。这样来一个请求，incrby 一次，最终就可以统计出所有的 PV 数据。
 
@@ -528,7 +528,7 @@ public class RedisDistLock implements Lock {
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/35037de529c84fc9.png)
 
-![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/5983/1663570141014/581aa5fa8b24431c8a1c41bcc4491783.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/others/202402/09e7959e71c6944f.png)
 
 ```java
 package com.msb.redis.lock.rdl;
@@ -904,12 +904,12 @@ public class TestRedisDistLockWithDog {
 
 Redisson把这些工作都封装好了
 
-```
-     <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>3.12.3</version>
-        </dependency>
+```xml
+<dependency>
+    <groupId>org.redisson</groupId>
+    <artifactId>redisson</artifactId>
+    <version>3.12.3</version>
+</dependency>
 ```
 
 ```java
@@ -996,8 +996,6 @@ public class TestRedissionLock {
 https://github.com/redisson/redisson/
 
 [https://redisson.org/](https://redisson.org/)
-
-锁过期时间不好评估怎么办？
 
 ---
 

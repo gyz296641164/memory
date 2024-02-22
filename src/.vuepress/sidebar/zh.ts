@@ -22,7 +22,7 @@ export const zhSidebar = sidebar({
     // "slides", //幻灯片页
     {
       text: "JAVA",
-      icon: "note",
+      icon: "java",
       prefix: "notes/JAVA/",
       collapsible: true,
       children: [
@@ -103,7 +103,7 @@ export const zhSidebar = sidebar({
 
     {
       text: "JVM",
-      icon: "note",
+      icon: "jvm",
       prefix: "notes/JVM/",
       collapsible: true,
       children: [
@@ -136,7 +136,7 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Docker",
-      icon: "note",
+      icon: "docker",
       prefix: "notes/Docker/",
       collapsible: true,
       children: [
@@ -174,12 +174,12 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Linux常用命令",
-      icon: "note",
+      icon: "linux",
       link: "notes/Linux.md",
     },
     {
       text: "MySQL",
-      icon: "note",
+      icon: "mysql",
       prefix: "notes/MySQL/",
       collapsible: true,
       children: [
@@ -231,7 +231,7 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Redis",
-      icon: "note",
+      icon: "redis",
       prefix: "notes/Redis/",
       collapsible: true,
       children: "structure"
@@ -288,14 +288,14 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Maven基础",
-      icon: "note",
+      icon: "maven",
       prefix: "notes/Maven/",
       collapsible: true,
       children: "structure",
     },
     {
       text: "Nginx",
-      icon: "note",
+      icon: "nginx",
       prefix: "notes/Nginx/",
       collapsible: true,
       children: "structure",
@@ -309,7 +309,7 @@ export const zhSidebar = sidebar({
   "/zh/notes/Spring/": [
     {
       text: "Spring源码",
-      icon: "hot",
+      icon: "spring",
       prefix: "01-spring-source-code-deeply/",
       collapsible: true,
       children: "structure",

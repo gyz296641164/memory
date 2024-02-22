@@ -38,5 +38,5 @@ export default defineUserConfig({
 
 // 页面标题层级
 const defaultOptions = {
-  level: [1, 2, 3],
+  level: [1, 2, 3, 4],
 }
