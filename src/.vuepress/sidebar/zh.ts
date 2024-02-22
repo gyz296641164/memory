@@ -82,7 +82,7 @@ export const zhSidebar = sidebar({
 
     {
       text: "基础",
-      icon: "note",
+      icon: "basic",
       prefix: "notes/BASE/",
       collapsible: true,
       children: [
@@ -103,7 +103,7 @@ export const zhSidebar = sidebar({
 
     {
       text: "JVM",
-      icon: "jvm",
+      icon: "virtual_machine",
       prefix: "notes/JVM/",
       collapsible: true,
       children: [
@@ -132,11 +132,18 @@ export const zhSidebar = sidebar({
           icon: "star",
           link: "05-JVM-detail-analyse/README.md",
         },
+        {
+          text: "JVM面试题",
+          icon: "star",
+          prefix: "06_JVM面试题/",
+          collapsible: true,
+          children: "structure",
+        },
       ],
     },
     {
       text: "Docker",
-      icon: "docker",
+      icon: "/docker.svg",
       prefix: "notes/Docker/",
       collapsible: true,
       children: [
@@ -238,7 +245,7 @@ export const zhSidebar = sidebar({
     },
     {
       text: "并发编程",
-      icon: "note",
+      icon: "lock",
       prefix: "notes/Concurrent_Programming/",
       collapsible: true,
       children: [
@@ -288,7 +295,7 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Maven基础",
-      icon: "maven",
+      icon: "configuration",
       prefix: "notes/Maven/",
       collapsible: true,
       children: "structure",
