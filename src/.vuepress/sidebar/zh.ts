@@ -6,7 +6,7 @@ export const zhSidebar = sidebar({
     "intro",
     {
       text: "如何使用",
-      icon: "creative",
+      icon: "/icon/use.svg",
       prefix: "demo/",
       link: "demo/",
       collapsible: true, //侧边栏折叠 
@@ -22,7 +22,7 @@ export const zhSidebar = sidebar({
     // "slides", //幻灯片页
     {
       text: "JAVA",
-      icon: "java",
+      icon: "/icon/java.svg",
       prefix: "notes/JAVA/",
       collapsible: true,
       children: [
@@ -82,7 +82,7 @@ export const zhSidebar = sidebar({
 
     {
       text: "基础",
-      icon: "basic",
+      icon: "/icon/codebase.svg",
       prefix: "notes/BASE/",
       collapsible: true,
       children: [
@@ -103,7 +103,7 @@ export const zhSidebar = sidebar({
 
     {
       text: "JVM",
-      icon: "virtual_machine",
+      icon: "/icon/jvm.svg",
       prefix: "notes/JVM/",
       collapsible: true,
       children: [
@@ -143,7 +143,7 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Docker",
-      icon: "/docker.svg",
+      icon: "/icon/docker.svg",
       prefix: "notes/Docker/",
       collapsible: true,
       children: [
@@ -181,12 +181,12 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Linux常用命令",
-      icon: "linux",
+      icon: "/icon/linux.svg",
       link: "notes/Linux.md",
     },
     {
       text: "MySQL",
-      icon: "mysql",
+      icon: "/icon/mysql.svg",
       prefix: "notes/MySQL/",
       collapsible: true,
       children: [
@@ -238,14 +238,14 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Redis",
-      icon: "redis",
+      icon: "/icon/redis.svg",
       prefix: "notes/Redis/",
       collapsible: true,
       children: "structure"
     },
     {
       text: "并发编程",
-      icon: "lock",
+      icon: "/icon/lock.svg",
       prefix: "notes/Concurrent_Programming/",
       collapsible: true,
       children: [
@@ -295,14 +295,14 @@ export const zhSidebar = sidebar({
     },
     {
       text: "Maven基础",
-      icon: "configuration",
+      icon: "/icon/maven.svg",
       prefix: "notes/Maven/",
       collapsible: true,
       children: "structure",
     },
     {
       text: "Nginx",
-      icon: "nginx",
+      icon: "/icon/nginx.svg",
       prefix: "notes/Nginx/",
       collapsible: true,
       children: "structure",
@@ -316,7 +316,7 @@ export const zhSidebar = sidebar({
   "/zh/notes/Spring/": [
     {
       text: "Spring源码",
-      icon: "spring",
+      icon: "/icon/spring.svg",
       prefix: "01-spring-source-code-deeply/",
       collapsible: true,
       children: "structure",
@@ -326,7 +326,7 @@ export const zhSidebar = sidebar({
   "/zh/notes/cfmall-notes/": [
     {
       text: "谷粒商城",
-      icon: "hot",
+      icon: "/icon/springcloud.svg",
       collapsible: true,
       children: [
         {

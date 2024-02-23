@@ -5,13 +5,13 @@ export const zhNavbar = navbar([
   // { text: "演示", icon: "discover", link: "/zh/demo/" },
   {
     text: "谷粒商城",
-    icon: "hot",
+    icon: "/icon/mall.svg",
     link: "/zh/notes/cfmall-notes/",
     // activeMatch: "^/zh/notes/cfmall-notes",
   },
   {
     text: "博文",
-    icon: "edit",
+    icon: "/icon/note-pad.svg",
     prefix: "/zh/notes/",
     children: [
       {
@@ -35,12 +35,12 @@ export const zhNavbar = navbar([
   },
   {
     text: "Spring源码",
-    icon: "hot",
+    icon: "/icon/spring.svg",
     link: "/zh/notes/Spring/01-spring-source-code-deeply/",
   },
   {
     text: "SpringCloud基础教程",
-    icon: "hot",
+    icon: "/icon/springcloud.svg",
     link: "/zh/notes/SpringCloud/",
   },
 ]);
