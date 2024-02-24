@@ -82,7 +82,7 @@ export const zhSidebar = sidebar({
 
     {
       text: "基础",
-      icon: "/icon/codebase.svg",
+      icon: "/icon/base.svg",
       prefix: "notes/BASE/",
       collapsible: true,
       children: [

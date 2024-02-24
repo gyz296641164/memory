@@ -62,9 +62,17 @@ public class ReferenceCountingGC {
 }
 ```
 
-运行结果
+两个对象互相引用，引用次数不可能为0。然后进行代码测试，查看是否被回收
 
-![image-20210612135752233](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357157.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/2dcb484a26fd9137.png)
+
+将 `System.gc();`注释掉运行结果如下：年轻代使用9339k
+
+![image-20240224175131641](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/9c924925cfece439.png)
+
+取消 `System.gc();`注释运行结果如下：进行了一次Full GC后年轻代使用655k
+
+![image-20240224175244373](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/19a77c2041ccd91a.png)
 
 我们能够看到，上述进行了GC收集的行为，将上述的新生代中的两个对象都进行回收了。
 
@@ -73,8 +81,6 @@ PSYoungGen: 15490K->808K(76288K)] 15490K->816K(251392K)
 ```
 
 如果使用引用计数算法，那么这两个对象将会无法回收。而现在两个对象被回收了，说明Java使用的不是引用计数算法来进行标记的。
-
-
 
 ### 1.2 可达性分析算法（或根搜索算法、追踪性垃圾收集）
 

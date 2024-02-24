@@ -10,17 +10,21 @@ date: 2023-02-26
 
 
 
-## 整体架构
+## 一、JVM内存结构
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121155788.png" alt="image-20210611162052821" />
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/de9e9cbc770bbc41.png)
 
+---
 
+## 二、栈、堆、方法区的交互关系
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/ccb14b84f93292dc.png)
 
 ***
 
-## 程序计数器（PC Register）
+## 三、程序计数器（PC Register）
 
-### 程序计数器（Program Counter Register）定义
+### 3.1 程序计数器（Program Counter Register）定义
 
 - 是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在Java虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令，它是程序控制流的指示器，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。（记住下一条JVM指令执行的地址）
 - 特点：
@@ -29,13 +33,13 @@ date: 2023-02-26
     2. 程序计数器是每个线程私有的，当 另一个线程的时间片用完，又返回来执行当前线程的代码时，通过程序计数器就可以知道执行哪一条指令。
   - 唯一一个在《Java虚拟机规范》中没有规定任何OutOfMemoryError情况的区域。
 
-### 作用
+### 3.2 作用
 
 PC寄存器（程序计数器）用来存储指向下一条指令的地址，也即将要执行的指令代码。由执行引擎读取下一条指令。
 
 ![image-20200705155728557](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311423665.png)
 
-### 代码演示
+### 3.3 代码演示
 
 我们首先写一个简单的代码
 
@@ -72,7 +76,7 @@ public class PCRegisterTest {
 
 
 
-###  PC寄存器为什么被设定为私有
+###  3.4 PC寄存器为什么被设定为私有
 
 我们都知道所谓的多线程在一个特定的时间段内只会执行其中某一个线程的方法，CPU会不停地做任务切换，这样必然导致经常中断或恢复，如何保证分毫无差呢？为了能够准确地记录各个线程正在执行的当前字节码指令地址，最好的办法自然是**为每一个线程都分配一个PC寄存器**，这样一来**各个线程之间便可以进行独立计算**，从而不会出现相互干扰的情况。
 
@@ -82,7 +86,7 @@ public class PCRegisterTest {
 
 ![image-20200705161812542](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311438362.png)
 
-### CPU时间片
+### 3.5 CPU时间片
 
 CPU时间片即CPU分配给各个程序的时间，每个线程被分配一个时间段，称作它的时间片。
 
@@ -94,7 +98,7 @@ CPU时间片即CPU分配给各个程序的时间，每个线程被分配一个�
 
 ---
 
-## 虚拟机栈(Java Virtual Machine Stacks)
+## 四、虚拟机栈(Java Virtual Machine Stacks)
 
 
 
@@ -107,15 +111,13 @@ CPU时间片即CPU分配给各个程序的时间，每个线程被分配一个�
 -Xss1k
 ```
 
-
-
-### 定义
+### 4.1 定义
 
 - 每个线程运行所需要的内存空间，称为**虚拟机栈**
 - 每个栈由多个**栈帧**组成，对应着每次调用方法时所占用的内存
 - 每个线程只能有**一个活动栈帧**，对应着当前正在执行的方法
 
-### 演示代码
+### 4.2 演示代码
 
 ```java
 public  class Main { 
@@ -138,7 +140,7 @@ public  class Main {
 
 
 
-### 问题辨析
+### 4.3 问题辨析
 
 **垃圾回收是否涉及栈内存？**
 
@@ -155,7 +157,7 @@ public  class Main {
 
 
 
-### 线程安全问题
+### 4.4 线程安全问题
 
 **示例代码**
 
@@ -205,7 +207,7 @@ public class Demo1_17 {
 
 
 
-### 栈帧的内部结构
+### 4.5 栈帧的内部结构
 
 **每个栈帧中存储着：**
 
@@ -221,14 +223,14 @@ public class Demo1_17 {
 
 并行每个线程下的栈都是私有的，因此每个线程都有自己各自的栈，并且每个栈里面都有很多栈帧，栈帧的大小主要由`局部变量表`和`操作数栈`决定的。
 
-#### 局部变量表
+#### 4.5.1 局部变量表
 
 - 局部变量表：Local Variables，被称之为`局部变量数组`或`本地变量表`。最基本的存储单元是Slot（变量槽）
 - 定义为一个数字数组，主要用于`存储方法参数`和定义在方法体内的`局部变量`，这些数据类型包括各类基本数据类型、对象引用（reference），以及returnAddress类型。
 - 局部变量表中的变量**只在当前方法调用中有效**。在方法执行时，虚拟机通过使用局部变量表完成参数值到参数变量列表的传递过程。当方法调用结束后，随着方法栈帧的销毁，局部变量表也会随之销毁。
 - 局部变量表所需的**容量大小**是在**编译期确定**下来的，在方法运行期间是不会改变局部变量表的大小的。
 
-####  静态变量与局部变量的对比
+####  4.5.2 静态变量与局部变量的对比
 
 变量的分类：
 
@@ -242,16 +244,16 @@ public class Demo1_17 {
 
 局部变量表中的变量也是重要的垃圾回收根节点，只要被局部变量表中直接或间接引用的对象都不会被回收。
 
-#### 操作数栈
+#### 4.5.3 操作数栈
 
-##### 概念
+**概念**
 
 - 每一个独立的栈帧除了包含局部变量表以外，还包含一个后进先出（Last - In - First -Out）的 操作数栈，也可以称之为 表达式栈（Expression Stack）。
 - 操作数栈，**主要用于保存计算过程的中间结果**，同时作为计算过程中变量临时的存储空间。
 - 操作数栈就是JVM执行引擎的一个工作区，当一个方法刚开始执行的时候，一个新的栈帧也会随之被创建出来，这个方法的操作数栈是空的。
 - 我们说Java虚拟机的解释引擎是基于栈的执行引擎，其中的栈指的就是操作数栈。
 
-#####  代码追踪
+**代码追踪**
 
 我们给定代码
 
@@ -307,9 +309,9 @@ public void testAddOperation() {
 
 最后PC寄存器的位置指向10，也就是return方法，则直接退出方法。
 
-### 栈内存溢出
+### 4.6 栈内存溢出
 
-#### 栈帧过多导致栈内存溢出
+#### 4.6.1 栈帧过多导致栈内存溢出
 
 **示例代码：**
 
@@ -339,7 +341,7 @@ public class Demo1_2 {
 
 
 
-#### 栈帧过大导致栈内存溢出
+#### 4.6.2 栈帧过大导致栈内存溢出
 
 **示例代码**
 
@@ -424,9 +426,9 @@ class Dept {
 
 
 
-### 线程运行诊断
+### 4.7 线程运行诊断
 
-#### 案例一：CPU占用过高
+#### 4.7.1 案例一：CPU占用过高
 
 **Linux环境下运行某些程序的时候，可能导致CPU的占用过高，这时需要定位占用CPU过高的线程。**
 
@@ -483,7 +485,7 @@ public class Demo1_16 {
 
 
 
-#### 案例二：程序运行很长时间没有结果（死锁）
+#### 4.7.2 案例二：程序运行很长时间没有结果（死锁）
 
 **示例代码：**
 
@@ -536,7 +538,7 @@ public class Demo1_3 {
 
 ***
 
-## 本地方法栈(Native Method Stacks)
+## 五、本地方法栈(Native Method Stacks)
 
 一些带有**native关键字**的方法就是需要JAVA去调用本地的C或者C++方法，因为JAVA有时候没法直接和操作系统底层交互，所以需要用到本地方法，**本地方法栈，也是线程私有的**。
 
@@ -559,16 +561,16 @@ public class Demo1_3 {
 
 ***
 
-## 堆（Heap）
+## 六、堆（Heap）
 
-### 定义
+### 6.1 定义
 
 **通过new关键字创建对象都会使用堆内存。特点：**
 
 - 它是线程共享的，堆中对象都需要考虑线程安全的问题。
 - Java堆区在JVM启动的时候即被创建，其空间大小也就确定了。是JVM管理的最大一块内存空间。
 
-### 堆参数设置
+### 6.2 堆参数设置
 
 ```
 -Xms //用来设置堆空间（年轻代+老年代）的初始内存大小
@@ -585,7 +587,7 @@ ms： //memory start
 
 
 
-### 堆内存细分
+### 6.3 堆内存细分
 
 **堆空间内部结构，JDK1.8之前永久代，1.8之后永久代替换成元空间。如下图所示。**
 
@@ -640,7 +642,7 @@ Java堆区进一步细分的话，可以划分为`年轻代（YoungGen）`和`�
 
 
 
-### 图解对象分配过程
+### 6.4 图解对象分配过程
 
 **概念**
 
@@ -682,7 +684,7 @@ Java堆区进一步细分的话，可以划分为`年轻代（YoungGen）`和`�
 - 以当兵为例，正常人的晋升可能是 ： 新兵 -> 班长 -> 排长 -> 连长
 - 但是也有可能有些人因为做了非常大的贡献，直接从 新兵 -> 排长
 
-### 对象分配的特殊情况
+### 6.4 对象分配的特殊情况
 
 ![image-20200707091058346](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208301434451.png)
 
@@ -694,7 +696,7 @@ old区也放不下，需要Full GC。
 
 
 
-### 堆内存溢出
+### 6.5 堆内存溢出
 
 **java.lang.OutofMemoryError** ：java heap space. 堆内存溢出
 
@@ -731,7 +733,7 @@ public class Demo1_5 {
 
 
 
-### 堆内存诊断工具
+### 6.6 堆内存诊断工具
 
 **常用工具**
 
@@ -789,7 +791,7 @@ class Student {
 
 ```
 
-### 堆空间分代思想
+### 6.7 堆空间分代思想
 
 为什么要把Java堆分代？不分代就不能正常工作了吗？经研究，不同对象的生命周期不同。70%-99%的对象是临时对象。
 
@@ -804,7 +806,7 @@ class Student {
 
 
 
-### 内存分配策略
+### 6.8 内存分配策略
 
 如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Survivor容纳的话，将被移动到survivor空间中，并将对象年龄设为1。对象在survivor区中每熬过一次MinorGC，年龄就增加1岁，当它的年龄增加到一定程度（默认为15岁，其实每个JVM、每个GC都有所不同）时，就会被晋升到老年代
 
@@ -837,13 +839,13 @@ class Student {
 
 
 
-### 为对象分配内存TLAB
+### 6.9 为对象分配内存TLAB
 
-#### 堆空间都是共享的么
+#### 6.9.1 堆空间都是共享的么
 
 不一定，因为还有TLAB这个概念，在堆中划分出一块区域，为每个线程所独占。
 
-#### 为什么有TLAB
+#### 6.9.2 为什么有TLAB
 
 **TLAB**：Thread Local Allocation Buffer，也就是为每个线程单独分配了一个缓冲区。
 
@@ -853,7 +855,7 @@ class Student {
 
 为避免多个线程操作同一地址，需要使用加锁等机制，进而影响分配速度。
 
-#### 什么是TLAB
+#### 6.9.3 什么是TLAB
 
 从内存模型而不是垃圾收集的角度，对Eden区域继续进行划分，JVM为每个线程分配了一个私有缓存区域，它包含在Eden空间内。
 
@@ -871,15 +873,15 @@ class Student {
 
 一旦对象在TLAB空间分配内存失败时，JVM就会尝试着通过使用加锁机制确保数据操作的原子性，从而直接在Eden空间中分配内存。
 
-####  TLAB分配过程
+####  6.9.4 TLAB分配过程
 
 对象首先是通过TLAB开辟空间，如果不能放入，那么需要通过Eden来进行分配
 
 ![image-20200707104253530](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208301614001.png)
 
-### 堆是分配对象的唯一选择吗
+### 6.10 堆是分配对象的唯一选择吗
 
-#### 逃逸分析
+#### 6.10.1 逃逸分析
 
 在《深入理解Java虚拟机》中关于Java堆内存有这样一段描述：
 
@@ -983,7 +985,7 @@ public class EscapeAnalysis {
 - 选项`-xx：+DoEscapeAnalysis`显式开启逃逸分析
 - 通过选项`-xx：+PrintEscapeAnalysis`查看逃逸分析的筛选结果
 
-#### 栈上分配
+#### 6.10.2 栈上分配
 
 JIT编译器在编译期间根据逃逸分析的结果，发现如果一个对象并没有逃逸出方法的话，就可能被优化成栈上分配。分配完成后，继续在调用栈内执行，最后线程结束，栈空间被回收，局部变量对象也被回收。这样就无须进行垃圾回收了。
 
@@ -1051,7 +1053,7 @@ public class StackAllocation {
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208301748535.png)
 
-#### 锁消除
+#### 6.10.3 锁消除
 
 线程同步的代价是相当高的，同步的后果是降低并发性和性能。
 
@@ -1081,7 +1083,7 @@ public void f() {
 
 ![image-20200707205634266](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208301753352.png)
 
-#### 分离对象和标量替换
+#### 6.10.4 分离对象和标量替换
 
 标量（scalar）是指一个无法再分解成更小的数据的数据。Java中的原始数据类型就是标量。
 
@@ -1115,7 +1117,7 @@ private static void alloc() {
 
 可以看到，Point这个聚合量经过逃逸分析后，发现他并没有逃逸，就被替换成两个聚合量了。那么标量替换有什么好处呢？就是可以大大减少堆内存的占用。因为一旦不需要创建对象了，那么就不再需要分配堆内存了。 标量替换为栈上分配提供了很好的基础。
 
-#### 代码优化之标量替换
+#### 6.10.5 代码优化之标量替换
 
 上述代码在主函数中进行了1亿次alloc。调用进行对象创建，由于User对象实例需要占据约16字节的空间，因此累计分配空间达到将近1.5GB。如果堆空间小于这个值，就必然会发生GC。使用如下参数运行上述代码：
 
@@ -1131,7 +1133,7 @@ private static void alloc() {
 - 参数-XX:+PrintGC：将打印Gc日志。
 - 参数一xx：+EliminateAllocations：开启了标量替换（默认打开），允许将对象打散分配在栈上，比如对象拥有id和name两个字段，那么这两个字段将会被视为两个独立的局部变量进行分配
 
-#### 逃 逸分析的不足
+#### 6.10.6 逃逸分析的不足
 
 关于逃逸分析的论文在1999年就已经发表了，但直到JDK1.6才有实现，而且这项技术到如今也并不是十分成熟的。
 
@@ -1141,290 +1143,9 @@ private static void alloc() {
 
 目前很多书籍还是基于JDK7以前的版本，JDK已经发生了很大变化，intern字符串的缓存和静态变量曾经都被分配在永久代上，而永久代已经被元数据区取代。但是，intern字符串缓存和静态变量并不是被转移到元数据区，而是直接在堆上分配，所以这一点同样符合前面一点的结论：对象实例都是分配在堆上。
 
-### 小结
+### 6.11 StringTable 字符串常量池
 
-堆空间的参数设置：
-
-- -XX:+PrintFlagsInitial：查看所有的参数的默认初始值
-
-- -XX:+PrintFlagsFinal：查看所有的参数的最终值（可能会存在修改，不再是初始值）
-
-- -Xms:初始堆空间内存（默认为物理内存的1/64）
-
-- -Xmx:最大堆空间内存（默认为物理内存的1/4）
-
-- -Xmn:设置新生代的大小。（初始值及最大值）
-
-- -XX:NewRatio：配置新生代与老年代在堆结构的占比
-
-- -XX:SurvivorRatio：设置新生代中Eden和S0/S1空间的比例
-
-- -XX:MaxTenuringThreshold：设置新生代垃圾的最大年龄
-
-- -XX:+PrintGCDetails：输出详细的GC处理日志
-
-  打印gc简要信息：①-Xx：+PrintGC ② - verbose:gc
-
-- -XX:HandlePromotionFalilure：是否设置空间分配担保
-
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121155799.png" alt="image-20210818153240854" />
-
-总结：
-
-- 针对幸存者s0，s1区的总结：复制之后有交换，谁空谁是to
-- 关于垃圾回收：频繁在新生区收集，很少在老年代收集，几乎不再永久代和元空间进行收集
-- 新生代采用复制算法的目的：是为了减少内碎片
-
-***
-
-## 方法区（Method Area）
-
-### 定义
-
-《Java虚拟机规范》中明确说明：“尽管所有的方法区在逻辑上是属于堆的一部分，但一些简单的实现可能不会选择去进行垃圾收集或者进行压缩。”但对于HotSpotJVM而言，**方法区还有一个别名叫做Non-Heap（非堆）**，目的就是要和堆分开。
-
-方法区主要存放的是 Class，而堆中主要存放的是实例化的对象。
-
-- 方法区（Method Area）与Java堆一样，是各个线程共享的内存区域
-- 方法区在JVM启动的时候被创建，并且它的实际的物理内存空间中和Java堆区一样都可以是不连续的
-- 方法区的大小，跟堆空间一样，可以选择固定大小或者可扩展
-- 方法区的大小决定了系统可以保存多少个类，如果系统定义了太多的类，导致方法区溢出，虚拟机同样会抛出内存溢出错误：java.lang.OutofMemoryError：PermGen space 或者 java.lang.OutOfMemoryError：Metaspace
-  - 加载大量的第三方的jar包
-  - Tomcat部署的工程过多（30~50个）
-  - 大量动态的生成反射类
-
-
-- 关闭JVM就会释放这个区域的内存。
-
-
-
-### 方法区的演进与内部结构
-
-### HotSpot中方法区的演进
-
-Hotspot中方法区的变化：
-
-| JDK1.6及以前 | 有永久代，静态变量存储在永久代上                             |
-| ------------ | ------------------------------------------------------------ |
-| JDK1.7       | 有永久代，但已经逐步 “去永久代”，字符串常量池，静态变量移除，保存在堆中 |
-| JDK1.8       | 无永久代，类型信息，字段，方法，常量保存在本地内存的元空间，但字符串常量池、静态变量仍然在堆中。 |
-
-JDK6的时候
-
-![image-20200708211541300](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311123713.png)
-
-JDK7的时候
-
-![image-20200708211609911](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311124485.png)
-
-JDK8的时候，元空间大小只受物理内存影响
-
-![image-20220901215910350](https://studyimages.oss-cn-beijing.aliyuncs.com/others/20220901215910.png)
-
-- 在JDK 1.7及以前，习惯上把`方法区`，称为`永久代`。jdk8开始，使用元空间取代了永久代。元空间与永久代最大的区别在于：元空间不在虚拟机设置的内存中，而是使用`本地内存`。
-- JDK 1.8后元空间存放在堆外内存中，把方法区的`StringTable`转移到了堆中。
-
-####  为什么永久代要被元空间替代
-
-为永久代设置空间大小是很难确定的。
-
-- 在某些场景下，如果动态加载类过多，容易产生Perm区的oom。比如某个实际Web工 程中，因为功能点比较多，在运行过程中，要不断动态加载很多类，经常出现致命错误：`Exception in thread‘dubbo client x.x connector'java.lang.OutOfMemoryError:PermGen space`
-- 而元空间和永久代之间最大的区别在于：**元空间并不在虚拟机中，而是使用本地内存**。 因此，默认情况下，元空间的大小仅受本地内存限制。
-
-对永久代进行调优是很困难的
-
-- 主要是为了降低Full GC
-
-#### StringTable为什么要调整位置
-
-- jdk7中将StringTable放到了堆空间中。因为永久代的回收效率很低，在full gc的时候才会触发。而full gc是老年代的空间不足、永久代不足时才会触发。
-
-- 这就导致StringTable回收效率不高。而我们开发中会有大量的字符串被创建，回收效率低，导致永久代内存不足。放到堆里，能及时回收内存。
-
-### 方法区内部结构
-
-![image-20200708161728320](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311101078.png)
-
-《深入理解Java虚拟机》书中对方法区（Method Area）存储内容描述如下：它用于存储已被虚拟机加载的类型信息、常量、静态变量、即时编译器编译后的代码缓存等。
-
-![image-20200708161856504](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311056177.png)
-
-#### 类型信息
-
-对每个加载的类型（类class、接口interface、枚举enum、注解annotation），JVm必须在方法区中存储以下类型信息：
-
-- 这个类型的完整有效名称（全名=包名.类名）
-- 这个类型直接父类的完整有效名（对于interface或是java.lang.object，都没有父类）
-- 这个类型的修饰符（public，abstract，final的某个子集）
-- 这个类型直接接口的一个有序列表
-
-#### 域信息
-
-- JVM必须在方法区中保存类型的所有域的相关信息以及域的声明顺序。
-
-- 域的相关信息包括：`域名称`、`域类型`、`域修饰符`（public，private，protected，static，final，volatile，transient的某个子集）
-
-#### 方法信息
-
-JVM必须保存所有方法的以下信息，同域信息一样包括声明顺序：
-
-- 方法名称
-- 方法的返回类型（或void）
-- 方法参数的数量和类型（按顺序）
-- 方法的修饰符（public，private，protected，static，final，synchronized，native，abstract的一个子集）
-- 方法的字节码（bytecodes）、操作数栈、局部变量表及大小（abstract和native方法除外）
-- 异常表（abstract和native方法除外）
-
-每个异常处理的开始位置、结束位置、代码处理在程序计数器中的偏移地址、被捕获的异常类的常量池索引。
-
-#### non-final的类变量
-
-静态变量和类关联在一起，**随着类的加载而加载**，他们成为类数据在逻辑上的一部分；
-
-类变量被类的所有实例共享，即使没有类实例时，你也可以访问它。
-
-```java
-/**
- * non-final的类变量
- *
- */
-public class MethodAreaTest {
-    public static void main(String[] args) {
-        Order order = new Order();
-        order.hello();
-        System.out.println(order.count);
-    }
-}
-class Order {
-    public static int count = 1;
-    public static final int number = 2;
-    public static void hello() {
-        System.out.println("hello!");
-    }
-}
-```
-
-如上代码所示，即使我们把order设置为null，也不会出现空指针异常。
-
-#### 全局常量
-
-全局常量就是使用 static final 进行修饰
-
-**被声明为final的类变量**的处理方法则不同，每个全局常量**在编译的时候就会被分配**了。
-
-#### 运行时常量池 VS 常量池
-
-运行时将常量池加载到方法区，就是运行时常量池。
-
-![image-20200708171151384](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311115963.png)
-
-- 方法区，内部包含了运行时常量池
-- 字节码文件，内部包含了常量池
-- 要弄清楚方法区，需要理解清楚ClassFile，因为加载类的信息都在方法区。
-- 要弄清楚方法区的运行时常量池，需要理解清楚ClassFile中的常量池。
-
-### 方法区内存大小与OOM
-
-#### 设置方法区大小
-
-- **JDK7及以前**
-  1. 通过`-XX:Permsize`来设置永久代初始分配空间。默认值是20.75M。
-  2. `-XX:MaxPermsize`来设定永久代最大可分配空间。32位机器默认是64M，64位机器模式是82M。
-  3. 当JVM加载的类信息容量超过了这个值，会报异常`OutofMemoryError:PermGen space`。
-
-- **JDK8以后**
-
-  元数据区大小可以使用以下两个参数指定
-
-  ```
-  -XX:MetaspaceSize
-  -XX:MaxMetaspaceSize
-  ```
-
-  默认值依赖于平台。windows下，`-XX:MetaspaceSize`是21M，`-XX:MaxMetaspaceSize`的值是-1，即没有限制。
-  
-  - -XX:MetaspaceSize：设置初始的元空间大小。对于一个64位的服务器端JVM来说，其默认的`-xx:MetaspaceSize`值为21MB。这就是初始的高水位线，一旦触及这个水位线，Full GC将会被触发并卸载没用的类（即这些类对应的类加载器不再存活）然后这个高水位线将会重置。新的高水位线的值取决于GC后释放了多少元空间。如果释放的空间不足，那么在不超过`MaxMetaspaceSize`时，适当提高该值。如果释放空间过多，则适当降低该值。
-  - 如果初始化的高水位线设置过低，上述高水位线调整情况会发生很多次。通过垃圾回收器的日志可以观察到FullGC多次调用。**为了避免频繁地GC，建议将`-XX:MetaspaceSize`设置为一个相对较高的值**。
-
-#### 方法区内存溢出示例代码
-
-```java
-package cn.itcast.jvm.t1.metaspace;
-
-import jdk.internal.org.objectweb.asm.ClassWriter;
-import jdk.internal.org.objectweb.asm.Opcodes;
-
-/**
- * 演示元空间内存溢出 java.lang.OutOfMemoryError: Metaspace
- * -XX:MaxMetaspaceSize=8m
- */
-public class Demo1_8 extends ClassLoader { // 可以用来加载类的二进制字节码
-    public static void main(String[] args) {
-        int j = 0;
-        try {
-            Demo1_8 test = new Demo1_8();
-            for (int i = 0; i < 10000; i++, j++) {
-                // ClassWriter 作用是生成类的二进制字节码
-                ClassWriter cw = new ClassWriter(0);
-                // 版本号， public， 类名, 包名, 父类， 接口
-                cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, "Class" + i, null, "java/lang/Object", null);
-                // 返回 byte[]
-                byte[] code = cw.toByteArray();
-                // 执行了类的加载
-                test.defineClass("Class" + i, code, 0, code.length); // Class 对象
-            }
-        } finally {
-            System.out.println(j);
-        }
-    }
-}
-
-```
-
-
-
-#### 如何解决这些OOM
-
-- 要解决OOM异常或Heap Space的异常，一般的手段是首先通过内存映像分析工具（如jvisualvm）对dump出来的堆转储快照进行分析，重点是确认内存中的对象是否是必要的，也就是要先分清楚到底是出现了`内存泄漏`（Memory Leak）还是`内存溢出`（Memory Overflow，简称OOM）。
-  - **内存泄漏**：有大量的引用指向某些对象，但是这些对象以后不会使用了，但是因为它们还和GC ROOT有关联，所以导致以后这些对象也不会被回收，这就是内存泄漏的问题。
-  - **内存溢出**：是指应用系统中存在无法回收的[内存](https://baike.baidu.com/item/内存/103614?fromModule=lemma_inlink)或使用的[内存](https://baike.baidu.com/item/内存/103614?fromModule=lemma_inlink)过多，最终使得程序运行要用到的[内存](https://baike.baidu.com/item/内存/103614?fromModule=lemma_inlink)大于能提供的最大内存。此时[程序](https://baike.baidu.com/item/程序/13831935?fromModule=lemma_inlink)就运行不了，系统会提示内存溢出。
-- 如果是内存泄漏，可进一步通过工具查看泄漏对象到GC Roots的引用链。于是就能找到泄漏对象是通过怎样的路径与GC Roots相关联并导致垃圾收集器无法自动回收它们的。掌握了泄漏对象的类型信息，以及GC Roots引用链的信息，就可以比较准确地定位出泄漏代码的位置。
-- 如果不存在内存泄漏，换句话说就是内存中的对象确实都还必须存活着，那就应当检查虚拟机的堆参数（-Xmx与-Xms），与机器物理内存对比看是否还可以调大，从代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况，尝试减少程序运行期的内存消耗。
-
-**容易OOM的场景**
-
-- Spring
-- MyBatis
-
-### 常量池
-
-**常量池**：就是一张表，虚拟机指令根据这张常量表找到要执行的`类名`、`方法名`、`参数类型`、`字面量`等信息！
-
-![image-20200708172357052](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311118693.png)
-
-一个有效的字节码文件中除了包含`类的版本信息`、`字段`、`方法`以及`接口`等描述符信息外，还包含一项信息就是`常量池表`（Constant Pool Table），包括各种`字面量`和对`类型`、`域`和`方法的符号引用`。
-
-**为什么需要常量池**
-
-一个java源文件中的类、接口，编译后产生一个字节码文件。而Java中的字节码需要数据支持，通常这种数据会很大以至于不能直接存到字节码里，换另一种方式，可以存到常量池，这个字节码包含了指向常量池的引用。在动态链接的时候会用到运行时常量池。
-
-
-
-### 运行时常量池
-
-**运行时常量池**：常量池是 *.class 文件中的，当该类被加载，它的常量池信息就会放入运行时常量池，并把里面的符号地址变为真实地址（即#1这种符号）！
-
-- 运行时常量池是方法区的一部分
-- 常量池表是class文件的一部分，用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中
-- 在加载类和接口到虚拟机后，就会创建对应的运行时常量池
-- JVM为每个已加载的类型都维护一个常量池，池中的数据像数组项一样，通过索引访问
-- 运行时常量池，相对于class文件常量池的另一个重要特征是：具备动态性（例如：`String.intern`可以将字符串也放入运行时常量池）
-- 当创建类或接口的运行时常量池，如果构造运行时常量池所需的内存空间超过了方法区所能提供的最大值。则JVM会抛出OOM异常
-- 这里注意，常量池数量为N，则索引为1到N-1，
-
-
-
-### StringTable 特性
+#### 6.11.1 StringTable 特性
 
 [文章引荐](https://zhuanlan.zhihu.com/p/260939453)
 
@@ -1518,7 +1239,7 @@ public class TestString(){
 
 
 
-### StringTable 位置
+#### 6.11.2 StringTable 位置
 
 **jdk1.6存在于常量池中，jdk1.8存在于堆中。**
 
@@ -1562,7 +1283,7 @@ public class Demo1_6 {
 
 
 
-### StringTable垃圾回收调优
+#### 6.11.3 StringTable垃圾回收调优
 
 因为StringTable是由HashTable实现的，所以可以**适当增加HashTable桶的个数**，来减少字符串放入串池所需要的时间。
 
@@ -1572,13 +1293,302 @@ public class Demo1_6 {
 
 考虑是否需要将字符串对象入池, 可以通过**intern方法减少重复入池** 。
 
+---
 
+### 6.12 小结
+
+堆空间的参数设置：
+
+- -XX:+PrintFlagsInitial：查看所有的参数的默认初始值
+
+- -XX:+PrintFlagsFinal：查看所有的参数的最终值（可能会存在修改，不再是初始值）
+
+- -Xms:初始堆空间内存（默认为物理内存的1/64）
+
+- -Xmx:最大堆空间内存（默认为物理内存的1/4）
+
+- -Xmn:设置新生代的大小。（初始值及最大值）
+
+- -XX:NewRatio：配置新生代与老年代在堆结构的占比
+
+- -XX:SurvivorRatio：设置新生代中Eden和S0/S1空间的比例
+
+- -XX:MaxTenuringThreshold：设置新生代垃圾的最大年龄
+
+- -XX:+PrintGCDetails：输出详细的GC处理日志
+
+  打印gc简要信息：①-Xx：+PrintGC ② - verbose:gc
+
+- -XX:HandlePromotionFalilure：是否设置空间分配担保
+
+<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121155799.png" alt="image-20210818153240854" />
+
+总结：
+
+- 针对幸存者s0，s1区的总结：复制之后有交换，谁空谁是to
+- 关于垃圾回收：频繁在新生区收集，很少在老年代收集，几乎不再永久代和元空间进行收集
+- 新生代采用复制算法的目的：是为了减少内碎片
 
 ***
 
-## 直接内存
+## 七、方法区（Method Area）
 
-### 定义
+> 关于静态变量存放位置的说明：
+>
+> - JDK1.6及以前：静态变量存储在永久代上
+> - JDK1.7及JDK1.8版本：静态变量保存在堆中
+>
+> 至于 `6.2.2 方法区内部结构`中的《深入理解Java虚拟机》书中对于方法区构成的说明中包含了静态变量，则是JDK1.7版本之前。
+>
+> ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/274d506551242a15.png)
+
+### 7.1 定义
+
+《Java虚拟机规范》中明确说明：“尽管所有的方法区在逻辑上是属于堆的一部分，但一些简单的实现可能不会选择去进行垃圾收集或者进行压缩。”但对于HotSpotJVM而言，**方法区还有一个别名叫做Non-Heap（非堆）**，目的就是要和堆分开。
+
+方法区主要存放的是 Class，而堆中主要存放的是实例化的对象。
+
+- 方法区（Method Area）与Java堆一样，是各个线程共享的内存区域
+- 方法区在JVM启动的时候被创建，并且它的实际的物理内存空间中和Java堆区一样都可以是不连续的
+- 方法区的大小，跟堆空间一样，可以选择固定大小或者可扩展
+- 方法区的大小决定了系统可以保存多少个类，如果系统定义了太多的类，导致方法区溢出，虚拟机同样会抛出内存溢出错误：java.lang.OutofMemoryError：PermGen space 或者 java.lang.OutOfMemoryError：Metaspace
+  - 加载大量的第三方的jar包
+  - Tomcat部署的工程过多（30~50个）
+  - 大量动态的生成反射类
+
+
+- 关闭JVM就会释放这个区域的内存。
+
+### 7.2 方法区的演进与内部结构
+
+### 7.3 HotSpot中方法区的演进
+
+Hotspot中方法区的变化：
+
+| JDK版本      | 区别                                                         |
+| ------------ | ------------------------------------------------------------ |
+| JDK1.6及以前 | 有永久代，静态变量存储在永久代上                             |
+| JDK1.7       | 有永久代，但已经逐步 “去永久代”，字符串常量池，静态变量移除，保存在堆中 |
+| JDK1.8       | 无永久代，类型信息，字段，方法，常量保存在本地内存的元空间，但字符串常量池、静态变量仍然在堆中。 |
+
+JDK6的时候
+
+![image-20200708211541300](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311123713.png)
+
+JDK7的时候
+
+![image-20200708211609911](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311124485.png)
+
+JDK8的时候，元空间大小只受物理内存影响
+
+![image-20220901215910350](https://studyimages.oss-cn-beijing.aliyuncs.com/others/20220901215910.png)
+
+- 在JDK 1.7及以前，习惯上把`方法区`，称为`永久代`。jdk8开始，使用元空间取代了永久代。元空间与永久代最大的区别在于：元空间不在虚拟机设置的内存中，而是使用`本地内存`。
+- JDK 1.8后元空间存放在堆外内存中，把方法区的`StringTable`转移到了堆中。
+
+####  7.3.1 为什么永久代要被元空间替代
+
+为永久代设置空间大小是很难确定的。
+
+- 在某些场景下，如果动态加载类过多，容易产生Perm区的oom。比如某个实际Web工 程中，因为功能点比较多，在运行过程中，要不断动态加载很多类，经常出现致命错误：`Exception in thread‘dubbo client x.x connector'java.lang.OutOfMemoryError:PermGen space`
+- 而元空间和永久代之间最大的区别在于：**元空间并不在虚拟机中，而是使用本地内存**。 因此，默认情况下，元空间的大小仅受本地内存限制。
+
+对永久代进行调优是很困难的
+
+- 主要是为了降低Full GC
+
+#### 7.3.2 StringTable为什么要调整位置
+
+- jdk7中将StringTable放到了堆空间中。因为永久代的回收效率很低，在full gc的时候才会触发。而full gc是老年代的空间不足、永久代不足时才会触发。
+
+- 这就导致StringTable回收效率不高。而我们开发中会有大量的字符串被创建，回收效率低，导致永久代内存不足。放到堆里，能及时回收内存。
+
+### 7.4 方法区内部结构
+
+![image-20200708161728320](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311101078.png)
+
+《深入理解Java虚拟机》书中对方法区（Method Area）存储内容描述如下：它用于存储已被虚拟机加载的类型信息、常量、==静态变量==(JDK1.7之前在方法区，JDK1.7及之后在堆中)、即时编译器编译后的代码缓存等。
+
+![image-20200708161856504](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311056177.png)
+
+#### 7.4.1 类型信息
+
+对每个加载的类型（类class、接口interface、枚举enum、注解annotation），JVM必须在方法区中存储以下类型信息：
+
+- 这个类型的完整有效名称（全名=包名.类名）
+- 这个类型直接父类的完整有效名（对于interface或是java.lang.object，都没有父类）
+- 这个类型的修饰符（public，abstract，final的某个子集）
+- 这个类型直接接口的一个有序列表
+
+#### 7.4.2 域信息
+
+- JVM必须在方法区中保存类型的所有域的相关信息以及域的声明顺序。
+
+- 域的相关信息包括：`域名称`、`域类型`、`域修饰符`（public，private，protected，static，final，volatile，transient的某个子集）
+
+#### 7.4.3 方法信息
+
+JVM必须保存所有方法的以下信息，同域信息一样包括声明顺序：
+
+- 方法名称
+- 方法的返回类型（或void）
+- 方法参数的数量和类型（按顺序）
+- 方法的修饰符（public，private，protected，static，final，synchronized，native，abstract的一个子集）
+- 方法的字节码（bytecodes）、操作数栈、局部变量表及大小（abstract和native方法除外）
+- 异常表（abstract和native方法除外）
+
+每个异常处理的开始位置、结束位置、代码处理在程序计数器中的偏移地址、被捕获的异常类的常量池索引。
+
+#### 7.4.4 non-final的类变量
+
+静态变量和类关联在一起，**随着类的加载而加载**，他们成为类数据在逻辑上的一部分；
+
+类变量被类的所有实例共享，即使没有类实例时，你也可以访问它。
+
+```java
+/**
+ * non-final的类变量
+ *
+ */
+public class MethodAreaTest {
+    public static void main(String[] args) {
+        Order order = new Order();
+        order.hello();
+        System.out.println(order.count);
+    }
+}
+class Order {
+    public static int count = 1;
+    public static final int number = 2;
+    public static void hello() {
+        System.out.println("hello!");
+    }
+}
+```
+
+如上代码所示，即使我们把order设置为null，也不会出现空指针异常。
+
+#### 7.4.5 全局常量
+
+全局常量就是使用 static final 进行修饰
+
+**被声明为final的类变量**的处理方法则不同，每个全局常量**在编译的时候就会被分配**了。
+
+#### 7.4.6 运行时常量池 VS 常量池
+
+运行时将常量池加载到方法区，就是运行时常量池。
+
+![image-20200708171151384](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311115963.png)
+
+- 方法区，内部包含了运行时常量池
+- 字节码文件，内部包含了常量池
+- 要弄清楚方法区，需要理解清楚ClassFile，因为加载类的信息都在方法区。
+- 要弄清楚方法区的运行时常量池，需要理解清楚ClassFile中的常量池。
+
+### 7.5 方法区内存大小与OOM
+
+#### 7.5.1 设置方法区大小
+
+- **JDK7及以前**
+  1. 通过`-XX:Permsize`来设置永久代初始分配空间。默认值是20.75M。
+  2. `-XX:MaxPermsize`来设定永久代最大可分配空间。32位机器默认是64M，64位机器模式是82M。
+  3. 当JVM加载的类信息容量超过了这个值，会报异常`OutofMemoryError:PermGen space`。
+
+- **JDK8以后**
+
+  元数据区大小可以使用以下两个参数指定
+
+  ```
+  -XX:MetaspaceSize
+  -XX:MaxMetaspaceSize
+  ```
+
+  默认值依赖于平台。windows下，`-XX:MetaspaceSize`是21M，`-XX:MaxMetaspaceSize`的值是-1，即没有限制。
+  
+  - -XX:MetaspaceSize：设置初始的元空间大小。对于一个64位的服务器端JVM来说，其默认的`-xx:MetaspaceSize`值为21MB。这就是初始的高水位线，一旦触及这个水位线，Full GC将会被触发并卸载没用的类（即这些类对应的类加载器不再存活）然后这个高水位线将会重置。新的高水位线的值取决于GC后释放了多少元空间。如果释放的空间不足，那么在不超过`MaxMetaspaceSize`时，适当提高该值。如果释放空间过多，则适当降低该值。
+  - 如果初始化的高水位线设置过低，上述高水位线调整情况会发生很多次。通过垃圾回收器的日志可以观察到FullGC多次调用。**为了避免频繁地GC，建议将`-XX:MetaspaceSize`设置为一个相对较高的值**。
+
+#### 7.5.2 方法区内存溢出示例代码
+
+```java
+package cn.itcast.jvm.t1.metaspace;
+
+import jdk.internal.org.objectweb.asm.ClassWriter;
+import jdk.internal.org.objectweb.asm.Opcodes;
+
+/**
+ * 演示元空间内存溢出 java.lang.OutOfMemoryError: Metaspace
+ * -XX:MaxMetaspaceSize=8m
+ */
+public class Demo1_8 extends ClassLoader { // 可以用来加载类的二进制字节码
+    public static void main(String[] args) {
+        int j = 0;
+        try {
+            Demo1_8 test = new Demo1_8();
+            for (int i = 0; i < 10000; i++, j++) {
+                // ClassWriter 作用是生成类的二进制字节码
+                ClassWriter cw = new ClassWriter(0);
+                // 版本号， public， 类名, 包名, 父类， 接口
+                cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, "Class" + i, null, "java/lang/Object", null);
+                // 返回 byte[]
+                byte[] code = cw.toByteArray();
+                // 执行了类的加载
+                test.defineClass("Class" + i, code, 0, code.length); // Class 对象
+            }
+        } finally {
+            System.out.println(j);
+        }
+    }
+}
+
+```
+
+
+
+#### 7.5.3 如何解决这些OOM
+
+- 要解决OOM异常或Heap Space的异常，一般的手段是首先通过内存映像分析工具（如jvisualvm）对dump出来的堆转储快照进行分析，重点是确认内存中的对象是否是必要的，也就是要先分清楚到底是出现了`内存泄漏`（Memory Leak）还是`内存溢出`（Memory Overflow，简称OOM）。
+  - **内存泄漏**：有大量的引用指向某些对象，但是这些对象以后不会使用了，但是因为它们还和GC ROOT有关联，所以导致以后这些对象也不会被回收，这就是内存泄漏的问题。
+  - **内存溢出**：是指应用系统中存在无法回收的[内存](https://baike.baidu.com/item/内存/103614?fromModule=lemma_inlink)或使用的[内存](https://baike.baidu.com/item/内存/103614?fromModule=lemma_inlink)过多，最终使得程序运行要用到的[内存](https://baike.baidu.com/item/内存/103614?fromModule=lemma_inlink)大于能提供的最大内存。此时[程序](https://baike.baidu.com/item/程序/13831935?fromModule=lemma_inlink)就运行不了，系统会提示内存溢出。
+- 如果是内存泄漏，可进一步通过工具查看泄漏对象到GC Roots的引用链。于是就能找到泄漏对象是通过怎样的路径与GC Roots相关联并导致垃圾收集器无法自动回收它们的。掌握了泄漏对象的类型信息，以及GC Roots引用链的信息，就可以比较准确地定位出泄漏代码的位置。
+- 如果不存在内存泄漏，换句话说就是内存中的对象确实都还必须存活着，那就应当检查虚拟机的堆参数（-Xmx与-Xms），与机器物理内存对比看是否还可以调大，从代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况，尝试减少程序运行期的内存消耗。
+
+**容易OOM的场景**
+
+- Spring
+- MyBatis
+
+### 7.6 常量池
+
+**常量池**：就是一张表，虚拟机指令根据这张常量表找到要执行的`类名`、`方法名`、`参数类型`、`字面量`等信息！
+
+![image-20200708172357052](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202208311118693.png)
+
+一个有效的字节码文件中除了包含`类的版本信息`、`字段`、`方法`以及`接口`等描述符信息外，还包含一项信息就是`常量池表`（Constant Pool Table），包括各种`字面量`和对`类型`、`域`和`方法的符号引用`。
+
+**为什么需要常量池**
+
+一个java源文件中的类、接口，编译后产生一个字节码文件。而Java中的字节码需要数据支持，通常这种数据会很大以至于不能直接存到字节码里，换另一种方式，可以存到常量池，这个字节码包含了指向常量池的引用。在动态链接的时候会用到运行时常量池。
+
+
+
+### 7.7 运行时常量池
+
+**运行时常量池**：常量池是 *.class 文件中的，当该类被加载，它的常量池信息就会放入运行时常量池，并把里面的符号地址变为真实地址（即#1这种符号）！
+
+- 运行时常量池是方法区的一部分
+- 常量池表是class文件的一部分，用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中
+- 在加载类和接口到虚拟机后，就会创建对应的运行时常量池
+- JVM为每个已加载的类型都维护一个常量池，池中的数据像数组项一样，通过索引访问
+- 运行时常量池，相对于class文件常量池的另一个重要特征是：具备动态性（例如：`String.intern`可以将字符串也放入运行时常量池）
+- 当创建类或接口的运行时常量池，如果构造运行时常量池所需的内存空间超过了方法区所能提供的最大值。则JVM会抛出OOM异常
+- 这里注意，常量池数量为N，则索引为1到N-1，
+
+---
+
+## 八、直接内存
+
+### 8.1 定义
 
 - **不是虚拟机运行时数据区的一部分**，也不是《Java虚拟机规范》中定义的内存区域
 - 直接内存是在Java堆外的、直接向系统申请的内存区间
@@ -1606,9 +1616,7 @@ ByteBuffer byteBuffer = ByteBuffer.allocateDirect(BUFFER);
 - 分配回收成本较高
 - 不受JVM内存回收管理
 
-
-
-### 基本使用
+### 8.2 基本使用
 
 **文件读写流程**
 
@@ -1622,7 +1630,7 @@ ByteBuffer byteBuffer = ByteBuffer.allocateDirect(BUFFER);
 
 
 
-### 内存溢出
+### 8.3 内存溢出
 
 **示例代码**
 
@@ -1658,7 +1666,7 @@ public class Demo1_10 {
 
 
 
-### 释放原理
+### 8.4 释放原理
 
 直接内存的回收不是通过JVM的垃圾回收来释放的，而是通过**unsafe.freeMemory**来手动释放。
 
