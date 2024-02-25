@@ -1,5 +1,5 @@
 ---
-title: A_synchronized-原子性-可见性-有序性
+title: 01_synchronized-原子性-可见性-有序性
 category:
   - 并发编程
 order: 8

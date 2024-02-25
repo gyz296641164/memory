@@ -310,7 +310,12 @@ export const zhSidebar = sidebar({
   ],
   
   "/zh/notes/SpringCloud/": [
-    "01-SpringCloud-Hoxton.SR1", "02-SpringCloud-Hoxton.SR1", "03-SpringCloudAlibaba"
+    {
+      text: "Spring Cloud && Spring Cloud Alibaba ",
+      icon: "/icon/springcloud.svg",
+      collapsible: true,
+      children: "structure",
+    }
   ],
 
   "/zh/notes/Spring/": [

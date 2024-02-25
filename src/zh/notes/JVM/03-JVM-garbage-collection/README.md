@@ -416,17 +416,38 @@ obj 是 null
     - 虚拟机需要维护一个列表
     - 空闲列表分配
 
-#### 2.1.1  指针碰撞（Bump the Pointer）
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/5e3e840e476fe6ec.png)
 
-如果内存空间以规整和有序的方式分布，即已用和未用的内存都各自一边，彼此之间维系着一个记录下一次分配起始点的标记指针，当为新对象分配内存时，只需要通过修改指针的偏移量将新对象分配在第一个空闲内存的位置上，这种分配方式就叫`指针碰撞`。
+#### 2.1.1 指针碰撞（Bump the Pointer）
+
+Java中提到指针碰撞主要是在GC中，GC的标记/整理（标记/压缩）算法在每次执行完之后会通过一个指针将堆内存分为两个区域，分别是`已用区域`和`未用区域`。指针的左边已用区域内部存满了对象（其实就是经过上一次GC之后存活下来的对象），指针的右边为可用区域。之后当需要new一个对象时，JVM会在当前指针所指位置为新对象分配内存，并将指针向后移动对象所对应size位。
+
+比如一个new的对象需要128字节的内存空间，那么JVM将会从当前指针所指位置开始，之后的128字节分配给该对象，同时指针后移128个字节。但由于堆内存本身是线程共享的，在多线程场景下，当一个线程需要创建对象，**这时指针还没来得及修改（指针是在新对象占完位之后才能进行修改）**，如果另一个线程也需要分配空间，就会造成两个对象空间冲突，这就称之为**指针碰撞**。那如何解决呢？TLAB（Thread Local Allocation Buffer 线程本地分配缓存区）。
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/56e8bf182e3ed58c.png)
+
+> **TALB的思路**
+>
+> [关于TALB的讲解详见【内存结构】篇章【堆】中的【为对象分配内存TLAB】](https://www.yznotes.cn/zh/notes/JVM/02-JVM-memory/#_6-9-%E4%B8%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98tlab)
+
+TALB的解决思路比较简单粗暴，既然是因为堆内存多线程共享引发了问题，那我就直接给每个线程在堆中分配一个私有的区域分配对象不就解决了嘛！！！
+
+> TALB的局限性
+
+虽然TALB解决了指针碰撞在多线程场景下的问题，并且通过最大浪费空间可以减少内存泄漏，但其本身依旧有一些缺点：
+
+1. GC更频繁： 由于每个TALB所占用的空间都要比线程实际需要的空间大小大一些（因为不可能每个TALB都刚好存满，也就是TALB空间浪费更严重），所以一批对象直接存储在Eden区会比存储在TALB区占用更少的空间，进而容易引发Minor GC。
+2. TALB允许内存浪费，会导致Eden区内存不连续。
 
 ### 2.2 复制（Copying）算法
 
 **概述：**
 
-将内存分为等大小的两个区域：`From`和`To`区。当from域内存不够了，开始执行GC操作，先将被`GC Roots`引用的对象从From区放入To区中，然后直接把from域进行内存清理，最后交换`From和To`。如图所示。
+将内存分为等大小的两个区域：`From`和`To`区。当From域内存不够了，开始执行GC操作，先将被`GC Roots`引用的对象从From区复制到To区中，相当于进行了一次碎片整理，然后直接把From域进行内存清理，最后交换`From和To`。如图所示。
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357162.png" alt="image-20210613161014625" />
+
+![image-20240225125453455](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/9d8d11354f268fb9.png)
 
 **优点：**
 
@@ -442,8 +463,6 @@ obj 是 null
 
 - 如果系统中的垃圾对象很多，复制算法需要复制的存活对象数量并不会太大，或者说非常低才行。
 - 即特别适合垃圾对象很多，存活对象很少的场景；例如：Young区的Survivor0和Survivor1区。
-
-
 
 ### 2.3 标记-压缩（或标记-整理、Mark-Compact）算法
 
@@ -626,10 +645,10 @@ obj 是 null
 #### 4.2.1 概述
 
 - **吞吐量**：运行用户代码的时间占总运行时间的比例（总运行时间 = 程序的运行时间 + 内存回收的时间）
-- 垃圾收集开销：吞吐量的补数，垃圾收集所用时间与总运行时间的比例。
+- **垃圾收集开销**：吞吐量的补数，垃圾收集所用时间与总运行时间的比例。
 - **暂停时间**：执行垃圾收集时，程序的工作线程被暂停的时间。
-- 收集频率：相对于应用程序的执行，收集操作发生的频率。
-- 内存占用：Java堆区所占的内存大小。
+- **收集频率**：相对于应用程序的执行，收集操作发生的频率。
+- **内存占用**：Java堆区所占的内存大小。
 - **快速**：一个对象从诞生到被回收所经历的时间。
 
 吞吐量、暂停时间、内存占用 这三者共同构成一个“不可能三角”。三者总体的表现会随着技术进步而越来越好。一款优秀的收集器通常最多同时满足其中的两项。 
@@ -643,7 +662,7 @@ obj 是 null
 
 #### 4.2.2  性能指标：吞吐量
 
-- 吞吐量就是CPU用于运行用户代码的时间与CPU总消耗时间的比值，即吞吐量=运行用户代码时间 /（运行用户代码时间+垃圾收集时间）
+- 吞吐量就是CPU用于运行用户代码的时间与CPU总消耗时间的比值，即`吞吐量=运行用户代码时间 /（运行用户代码时间+垃圾收集时间）`
   - 比如：虚拟机总共运行了100分钟，其中垃圾收集花掉1分钟，那吞吐量就是99%。
 - 这种情况下，应用程序能容忍较高的暂停时间，因此，高吞吐量的应用程序有更长的时间基准，快速响应是不必考虑的。
 - 吞吐量优先，意味着在单位时间内，STW的时间最短：0.2 + 0.2 = 0.4。
@@ -684,8 +703,8 @@ obj 是 null
 ### 5.1  七种经典的垃圾收集器
 
 - 串行回收器：Serial、Serial old
-- 并行回收器：ParNew、Parallel Scavenge、Parallel old
-- 并发回收器：CMS、G11
+- 并行回收器：ParNew、Parallel Scavenge、Parallel Old
+- 并发回收器：CMS、G1
 
 
 
@@ -707,28 +726,40 @@ obj 是 null
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357171.png" alt="image-20210613183552941" />
 
-- 两个收集器间有连线，表明它们可以搭配使用：Serial/Serial old、Serial/CMS、ParNew/Serial Old、ParNew/CMS、Parallel Scavenge/Serial 0ld、Parallel Scavenge/Parallel 0ld、G1；
+- 两个收集器间有连线，表明它们可以搭配使用：Serial/Serial Old、Serial/CMS、ParNew/Serial Old、ParNew/CMS、Parallel Scavenge/Serial Old、Parallel Scavenge/Parallel Old、G1；
 - 其中Serial Old作为CMS出现"Concurrent Mode Failure"失败的后备预案。
-- （红色虚线）由于维护和兼容性测试的成本，在JDK 8时将Serial+CMS、ParNew+Serial old这两个组合声明为废弃（JEP173），并在JDK9中完全取消了这些组合的支持（JEP214），即：移除。
-- （绿色虚线）JDK14中：弃用Parallel Scavenge和Serial Old GC组合（JEP366）。
-- （青色虚线）JDK14中：删除CMS垃圾回收器（JEP363）。
+- (红色虚线)由于维护和兼容性测试的成本，在JDK 8时将Serial+CMS、ParNew+Serial Old这两个组合声明为废弃（JEP173），并在JDK9中完全取消了这些组合的支持（JEP214），即：移除。
+- (绿色虚线)JDK14中：弃用Parallel Scavenge和Serial Old GC组合（JEP366）。
+- (青色虚线)JDK14中：删除CMS垃圾回收器（JEP363）。
 
 **为什么要有很多收集器，一个不够吗？**
 
 1. 因为Java的使用场景很多，移动端，服务器等。所以就需要针对不同的场景，提供不同的垃圾收集器，提高垃圾收集的性能。
 2. 虽然我们会对各个收集器进行比较，但并非为了挑选一个最好的收集器出来。没有一种放之四海皆准、任何场景下都适用的完美收集器存在，更加没有万能的收集器。所以我们选择的只是对具体应用最合适的收集器。
 
-
-
 ### 5.4 如何查看默认垃圾收集器
 
 两种方式：
 
-- `-XX:+PrintCommandLineFlags`：查看命令行相关参数（包含使用的垃圾收集器）
+- `java -XX:+PrintCommandLineFlags -version`：查看命令行相关参数，包含使用的垃圾收集器
+
+  ```
+  C:\Users\lenovo>java -XX:+PrintCommandLineFlags -version
+  -XX:InitialHeapSize=266359616 -XX:MaxHeapSize=4261753856 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC
+  java version "1.8.0_212"
+  Java(TM) SE Runtime Environment (build 1.8.0_212-b10)
+  Java HotSpot(TM) 64-Bit Server VM (build 25.212-b10, mixed mode)
+  ```
+
 - 使用命令行指令：`jinfo -flag `相关垃圾回收器参数 进程ID
-- <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357173.png" alt="image-20210819224501888"  />
 
+  <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357173.png" alt="image-20210819224501888"  />
 
+几个主流Java版本的GC情况如下：
+
+- jdk1.7 默认垃圾收集器：Parallel Scaveng『新生代(标记-复制算法)』+Parallel Old『老年代(标记-整理算法)』
+- jdk1.8 默认垃圾收集器：Parallel Scavenge『新生代』+ Parallel Old『老年代』
+- jdk1.9 默认垃圾收集器：G1『从局部(两个Region之间)来看是基于"标记—复制"算法实现，从整体来看是基于"标记-整理"算法实现』
 
 ### 5.5 Serial 收集器：串行回收
 
@@ -739,9 +770,9 @@ obj 是 null
 -XX:UseSerialGC = Serial + SerialOld
 ```
 
-**Serial收集器采用复制算法**、串行回收和"stop-the-World"机制的方式执行内存回收。
+**Serial收集器采用复制算法**、串行回收和"Stop-The-World"机制的方式执行内存回收。
 
-除了年轻代之外，Serial收集器还提供用于执行老年代垃圾收集的Serial Old收集器。**Serial Old收集器**同样也采用了串行回收和"stop the World"机制，只不过内存回收算法使用的是**标记-压缩算法**。
+除了年轻代之外，Serial收集器还提供用于执行老年代垃圾收集的Serial Old收集器。**Serial Old收集器**同样也采用了串行回收和"Stop The World"机制，只不过内存回收算法使用的是**标记-压缩算法**。
 
 - Serial Old是运行在Client模式下默认的老年代的垃圾回收器
 
@@ -751,9 +782,7 @@ obj 是 null
 
   - 作为老年代CMS收集器的后备垃圾收集方案
 
-    
-
-    <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357174.png" alt="image-20200713100703799" />
+    ![](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357174.png)
 
   
 
@@ -779,10 +808,11 @@ obj 是 null
 -XX:ParallelGCThreads
 ```
 
-**如果说Serial GC是年轻代中的单线程垃圾收集器，那么ParNew收集器则是serial收集器的多线程版本。**
+**如果说Serial GC是年轻代中的单线程垃圾收集器，那么ParNew收集器则是Serial收集器的多线程版本。**
 
 - Par是Parallel的缩写，New：只能处理的是新生代。
-  - ParNew 收集器除了采用并行回收的方式执行内存回收外，两款垃圾收集器之间几乎没有任何区别。ParNew收集器在年轻代中同样也是采用`复制算法、`"stop-the-World"机制。
+  - ParNew 收集器除了采用并行回收的方式执行内存回收外，两款垃圾收集器之间几乎没有任何区别。
+  - ParNew收集器在年轻代中同样也是采用`复制算法、`"Stop-The-World"机制。
 - 对于新生代，回收次数频繁，使用并行方式高效。
 - 对于老年代，回收次数少，使用串行方式节省资源。（CPU并行需要切换线程，串行可以省去切换线程的资源）
 
@@ -796,16 +826,16 @@ obj 是 null
 
 ### 5.7 Parallel Scavenge回收器：吞吐量优先
 
-`Parallel Scavenge收集器`同样也采用了`复制算法`、`并行回收`和`"Stop the World"`机制。
+`Parallel Scavenge收集器`同样也采用了`复制算法`、`并行回收`和`"Stop The World"`机制。
 
 那么Parallel 收集器的出现是否多此一举？
 
 - 和ParNew收集器不同，Parallel Scavenge收集器的目标则是达到一个可控制的吞吐量（Throughput），它也被称为吞吐量优先的垃圾收集器。
 - **自适应调节策略也是Parallel Scavenge与ParNew一个重要区别。**
 
-Parallel收集器在JDK1.6时提供了用于执行老年代垃圾收集的`Parallel Old收集器`，用来代替老年代的`serial old收集器。`
+Parallel收集器在JDK1.6时提供了用于执行老年代垃圾收集的`Parallel Old收集器`，用来代替老年代的`Serial Old收集器。`
 
-Parallel Old收集器采用了`标记-压缩算法`，但同样也是基于并行回收和"stop-the-World"机制。
+Parallel Old收集器采用了`标记-压缩算法`，但同样也是基于并行回收和"Stop-The-World"机制。
 
 高吞吐量则可以高效率地利用CPU时间，尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的任务。因此，常见在服务器环境中使用。例如，那些执行批量处理、订单处理、工资支付、科学计算的应用程序。
 
@@ -819,10 +849,10 @@ Parallel Old收集器采用了`标记-压缩算法`，但同样也是基于并�
 
   ```
   //手动指定年轻代使用Parallel并行收集器执行内存回收任务。
-  -XX：+UseParallelGC 
+  -XX:+UseParallelGC 
   
   //手动指定老年代都是使用并行回收收集器。
-  -XX：+UseParallelOldGC
+  -XX:+UseParallelOldGC
   ```
 
   ```
@@ -839,9 +869,9 @@ Parallel Old收集器采用了`标记-压缩算法`，但同样也是基于并�
   -XX:MaxGCPauseMillis
   ```
 
-- 取值范围（0，100）。默认值99，也就是垃圾回收时间不超过1。
+- 取值范围(0，100)，默认值99，也就是垃圾回收时间不超过1。
 
-- 与前一个-XX:MaxGCPauseMillis参数有一定矛盾性。暂停时间越长，Radio参数就容易超过设定的比例。
+- 与前一个`-XX:MaxGCPauseMillis`参数有一定矛盾性。暂停时间越长，Radio参数就容易超过设定的比例。
 
   ```
   //垃圾收集时间占总时间的比例（=1/（N+1））。用于衡量吞吐量的大小。
@@ -857,17 +887,15 @@ Parallel Old收集器采用了`标记-压缩算法`，但同样也是基于并�
   XX:+UseAdaptivesizepplicy
   ```
 
-在程序吞吐量优先的应用场景中，Parallel收集器和Parallel old收集器的组合，在server模式下的内存回收性能很不错。**在Java8中，默认是此垃圾收集器。**
-
-
+在程序吞吐量优先的应用场景中，Parallel Scavenge收集器(新生代)和Parallel Old收集器(老年代)的组合，在server模式下的内存回收性能很不错。**在Java8中，默认是此垃圾收集器。**查看命令：`java -XX:+PrintCommandLineFlags -version`，输出结果：`-XX:+UseParallelGC`，即Parallel Scavenge（新生代） + Parallel Old（老生代）
 
 ### 5.8 CMS回收器：低延迟（响应时间优先）
 
 #### 5.8.1 概述
 
-`CMS（Concurrent-Mark-Sweep）收集器`，这款收集器是HotSpot虚拟机中第一款真正意义上的并发收集器，**它第一次实现了让垃圾收集线程与用户线程同时工作**。
+`CMS(Concurrent-Mark-Sweep)收集器`，这款收集器是HotSpot虚拟机中第一款真正意义上的并发收集器，**它第一次实现了让垃圾收集线程与用户线程同时工作**。
 
-- CMS收集器的关注点是`尽可能缩短垃圾收集时用户线程的停顿时间`。停顿时间越短（低延迟）就越适合与用户交互的程序，良好的响应速度能提升用户体验。很大一部分的Java应用集中在互联网站或者B/S系统的服务端上!
+- CMS收集器的关注点是==尽可能缩短垃圾收集时用户线程的停顿时间==。停顿时间越短（低延迟）就越适合与用户交互的程序，良好的响应速度能提升用户体验。很大一部分的Java应用集中在互联网站或者B/S系统的服务端上!
 - 不幸的是，CMS作为老年代的收集器，却`无法与JDK1.4.0中已经存在的新生代收集器Parallel Scavenge配合工作`，所以在JDK1.5中使用CMS来收集老年代的时候，新生代只能选择ParNew或者Serial收集器中的一个。
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357176.png" alt="image-20200713205154007" />
@@ -879,11 +907,9 @@ CMS整个过程比之前的收集器要复杂，整个过程分为4个主要阶�
 - **重新标记**（Remark）阶段：由于在并发标记阶段中，程序的工作线程会和垃圾收集线程同时运行或者交叉运行，因此为了修正并发标记期间，因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间通常会比初始标记阶段稍长一些，但也远比并发标记阶段的时间短。
 - **并发清除**（Concurrent-Sweep）阶段：此阶段清理删除掉标记阶段判断的已经死亡的对象，释放内存空间。由于不需要移动存活对象，所以这个阶段也是可以与用户线程同时并发的!
 
-目前所有的垃圾收集器都做不到完全不需要“stop-the-World”，只是尽可能地缩短暂停时间。
+**目前所有的垃圾收集器都做不到完全不需要“stop-the-World”，只是尽可能地缩短暂停时间。**
 
 由于最耗费时间的并发标记与并发清除阶段都不需要暂停工作，所以整体的回收是低停顿的。
-
-
 
 #### 5.8.2 CMS为什么不使用标记整理算法？
 
@@ -891,32 +917,24 @@ CMS整个过程比之前的收集器要复杂，整个过程分为4个主要阶�
 
 CMS收集器的垃圾收集算法采用的是**标记清除算法**，这意味着每次执行完内存回收后，由于被执行内存回收的无用对象所占用的内存空间极有可能是不连续的一些内存块，不可避免地将会产生一些内存碎片。那么CMS在为新对象分配内存空间时，将无法使用指针碰撞（Bump the Pointer）技术，而只能够选择空闲列表（Free List）执行内存分配。
 
-
-
 #### 5.8.3 参数设置
 
-- -XX：+UseConcMarkSweepGC 
-
-  - 手动指定使用CMS收集器执行内存回收任务。开启该参数后会自动将-xx：+UseParNewGC打开。即：ParNew（Young区用）+CMS（old区用）+Serial old的组合。
-
-- -XX:CMSInitiatingoccupanyFraction
-
+- **-XX:+UseConcMarkSweepGC** 
+  - 手动指定使用CMS收集器执行内存回收任务。开启该参数后会自动将`-XX:+UseParNewGC`打开。即：ParNew『Young区』+ CMS『Old区』+ Serial Old的组合。
+  
+- **-XX:CMSInitiatingoccupanyFraction**
   - 设置堆内存使用率的阈值，一旦达到该阈值，便开始进行回收。JDK5及以前版本的默认值为68，即当老年代的空间使用率达到68%时，会执行一次CMS回收。JDK6及以上版本默认值为92%。
   - 如果内存增长缓慢，则可以设置一个稍大的值，大的阀值可以有效降低CMS的触发频率，减少老年代回收的次数可以较为明显地改善应用程序性能。反之，如果应用程序内存使用率增长很快，则应该降低这个阈值，以避免频繁触发老年代串行收集器。因此通过该选项便可以有效降低Ful1Gc的执行次数。
-
-- -XX：+UseCMSCompactAtFullCollection
-
+  
+- **-XX:+UseCMSCompactAtFullCollection**
   - 用于指定在执行完Full GC后对内存空间进行压缩整理，以此避免内存碎片的产生。不过由于内存压缩整理过程无法并发执行，所带来的问题就是停顿时间变得更长了。
-
-- -XX:CMSFullGCsBeforecompaction
-
+  
+- **-XX:CMSFullGCsBeforecompaction**
   - 设置在执行多少次Ful1GC后对内存空间进行压缩整理。
-
-- -XX:ParallelCMSThreads
-
+  
+- **-XX:ParallelCMSThreads**
   - 设置CMS的线程数量。
-  - CMS默认启动的线程数是（Paralle1GCThreads+3）/4，ParallelGCThreads是年轻代并行收集器的线程数。当CPU资源比较紧张时，受到CMS收集器线程的影响，应用程序的性能在垃圾回收阶段可能会非常糟糕。
-
+  - CMS默认启动的线程数是：(ParallelGCThreads+3)/4，ParallelGCThreads是年轻代并行收集器的线程数。当CPU资源比较紧张时，受到CMS收集器线程的影响，应用程序的性能在垃圾回收阶段可能会非常糟糕。
   
 
 #### 5.8.4 CMS的优点与弊端
@@ -936,7 +954,7 @@ CMS收集器的垃圾收集算法采用的是**标记清除算法**，这意味�
 
 #### 5.8.5 小结
 
-HotSpot有这么多的垃圾回收器，Serial GC、Parallel GC、Concurrent Mark Sweep GC这三个GC有什么不同呢？
+HotSpot有这么多的垃圾回收器，Serial GC、Parallel GC、CMS GC这三个GC有什么不同呢？
 
 **口令：**
 
@@ -946,19 +964,23 @@ HotSpot有这么多的垃圾回收器，Serial GC、Parallel GC、Concurrent Mar
 
 
 
-### 5.9 G1（Garbage First）回收器：区域化分代式
+### 5.9 G1(Garbage First)回收器：区域化分代式
 
 #### 5.9.1 为什么还要发布Garbage First（G1）？
 
-- 原因就在于应用程序所应对的业务越来越庞大、复杂，用户越来越多，没有GC就不能保证应用程序正常进行，而经常造成STW的GC又跟不上实际的需求，所以才会不断地尝试对GC进行优
-- G1（Garbage-First）垃圾回收器是在Java7 update4之后引入的一个新的垃圾回收器，JDK 9 中默认！是当今收集器技术发展的最前沿成果之一。
-- **官方给G1设定的目标是在延迟可控的情况下获得尽可能高的吞吐量，所以才担当起“全功能收集器”的重任与期望**。
+原因就在于应用程序所应对的业务越来越庞大、复杂，用户越来越多，没有GC就不能保证应用程序正常进行，而经常造成STW的GC又跟不上实际的需求，所以才会不断地尝试对GC进行优
+
+G1(Garbage-First)垃圾回收器是在Java7 update4之后引入的一个新的垃圾回收器，JDK9中默认！是当今收集器技术发展的最前沿成果之一。
+
+官方给G1设定的目标是在**延迟可控的情况下获得尽可能高的吞吐量**，所以才担当起“全功能收集器”的重任与期望。
 
 #### 5.9.2 为什么名字叫 Garbage First(G1)呢？
 
-- 因为G1是一个并行回收器，它把堆内存分割为很多不相关的区域（Region）（物理上不连续的）。使用不同的Region来表示Eden、幸存者0区，幸存者1区，老年代等。
-- G1 GC有计划地避免在整个Java堆中进行全区域的垃圾收集。G1跟踪各个Region里面的垃圾堆积的价值大小（回收所获得的空间大小以及回收所需时间的经验值），在后台维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的Region。
-- 由于这种方式的侧重点在于回收垃圾最大量的区间（Region），所以我们给G1一个名字：垃圾优先（Garbage First）。
+因为G1是一个并行回收器，它把堆内存分割为很多不相关的区域Region（物理上不连续的）。使用不同的Region来表示`Eden`、`幸存者0区`，`幸存者1区`，`老年代`等。
+
+G1 GC有计划地避免在整个Java堆中进行全区域的垃圾收集。G1跟踪各个Region里面的垃圾堆积的价值大小（回收所获得的空间大小以及回收所需时间的经验值），在后台维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的Region。
+
+由于这种方式的侧重点在于回收垃圾最大量的区间(Region)，所以我们给G1一个名字：垃圾优先(Garbage First)。
 
 #### 5.9.3 G1垃圾收集器的优点
 
@@ -969,7 +991,7 @@ HotSpot有这么多的垃圾回收器，Serial GC、Parallel GC、Concurrent Mar
 
 **分代收集**
 
-- 从分代上看，G1依然属于分代型垃圾回收器，它会区分年轻代和老年代，年轻代依然有Eden区和Survivor区。但从堆的结构上看，它不要求整个Eden区、年轻代或者老年代都是连续的，也不再坚持固定大小和固定数量。
+- 从分代上看，G1依然属于分代型垃圾回收器，它会区分年轻代和老年代，年轻代依然有Eden区和Survivor区。但从堆的结构上看，**它不要求整个Eden区、年轻代或者老年代都是连续的，也不再坚持固定大小和固定数量**。
 - 将堆空间分为若干个区域（Region），这些区域中包含了逻辑上的年轻代和老年代。
 - 和之前的各类回收器不同，它同时兼顾年轻代和老年代。对比其他回收器，或者工作在年轻代，或者工作在老年代；
 
@@ -981,32 +1003,32 @@ G1所谓的分代，已经不是下面这样的了：
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357178.png" alt="image-20210615230206527" />
 
-
-
 **空间整合**
 
-- CMS：“标记-清除”算法、内存碎片、若干次Gc后进行一次碎片整理
+- CMS：“标记-清除”算法、内存碎片、若干次GC后进行一次碎片整理
 - G1将内存划分为一个个的region。内存的回收是以region作为基本单位的。Region之间是复制算法，但整体上实际可看作是标记-压缩（Mark-Compact）算法，两种算法都可以避免内存碎片。这种特性有利于程序长时间运行，分配大对象时不会因为无法找到连续内存空间而提前触发下一次GC。尤其是当Java堆非常大的时候，G1的优势更加明显。
 
+**可预测的停顿时间模型(即:软实时softreal-time)**
 
+这是G1相对于CMS的另一大优势，G1除了追求低停顿外，还能建立可预测的停顿时间模型，能让使用者明确指定在一个长度为M毫秒的时间片段内，消耗在垃圾收集上的时间不得超过 N 毫秒。
+
+- 由于分区的原因，G1可以只选取部分区域进行内存回收，这样缩小了回收的范围，因此对于全局停顿情况的发生也能得到较好的控制。
+- G1 跟踪各个 Region 里面的垃圾堆积的价值大小(回收所获得的空间大小以及回收所需时间的经验值)，在后台维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的Region。保证了G1收集器在有限的时间内可以获取尽可能高的收集效率。
+- 相比于CMS GC，G1未必能做到CMS在最好情况下的延时停顿，但是最差情况要好很多。
 
 #### 5.9.4 G1垃圾收集器的缺点
 
 - 相较于CMS，G1还不具备全方位、压倒性优势。比如在用户程序运行过程中，G1无论是为了垃圾收集产生的内存占用（Footprint）还是程序运行时的额外执行负载（overload）都要比CMS要高。
 - 从经验上来说，在小内存应用上CMS的表现大概率会优于G1，而G1在大内存应用上则发挥其优势。平衡点在6-8GB之间。
 
-
-
 #### 5.9.5 G1参数设置
 
-- -XX:+UseG1GC：手动指定使用G1垃圾收集器执行内存回收任务
-- -XX:G1HeapRegionSize设置每个Region的大小。值是2的幂，范围是1MB到32MB之间，目标是根据最小的Java堆大小划分出约2048个区域。默认是堆内存的1/2000。
-- -XX:MaxGCPauseMillis 设置期望达到的最大GC停顿时间指标（JVM会尽力实现，但不保证达到）。默认值是200ms
-- -XX:+ParallelGcThread 设置STW工作线程数的值。最多设置为8
-- -XX:ConcGCThreads 设置并发标记的线程数。将n设置为并行垃圾回收线程数（ParallelGcThreads）的1/4左右。
-- -XX:InitiatingHeapoccupancyPercent 设置触发并发Gc周期的Java堆占用率阈值。超过此值，就触发GC。默认值是45。
-
-
+- `-XX:+UseG1GC`：手动指定使用G1垃圾收集器执行内存回收任务
+- `-XX:G1HeapRegionSize`：设置每个Region的大小。值是2的幂，范围是1MB到32MB之间，目标是根据最小的Java堆大小划分出约2048个区域。默认是堆内存的1/2000。
+- `-XX:MaxGCPauseMillis` ：设置期望达到的最大GC停顿时间指标（JVM会尽力实现，但不保证达到）。默认值是200ms
+- `-XX:+ParallelGcThread`：设置STW工作线程数的值。最多设置为8
+- `-XX:ConcGCThreads`：设置并发标记的线程数。将n设置为并行垃圾回收线程数（ParallelGcThreads）的1/4左右。
+- `-XX:InitiatingHeapoccupancyPercent`：设置触发并发GC周期的Java堆占用率阈值。超过此值，就触发GC。默认值是45。
 
 #### 5.9.6 G1收集器的常见操作步骤
 
@@ -1016,27 +1038,49 @@ G1的设计原则就是简化JVM性能调优，开发人员只需要简单的三
 - 第二步：设置堆的最大内存
 - 第三步：设置最大的停顿时间
 
-G1中提供了三种垃圾回收模式：**YoungGC、Mixed GC和FullGC**，在不同的条件下被触发。
+G1中提供了三种垃圾回收模式：**Young GC、Mixed GC和Full GC**，在不同的条件下被触发。
 
+#### 5.9.7 G1适用场景
 
+- 面向服务端应用，同时注重吞吐量(Throughput)和低延迟(Low latency)，默认的暂停目标是 200 ms。针对具有大内存、多处理器的机器。(在普通大小的堆里表现并不惊喜)
 
-#### 5.9.7 适用场景
+- 最主要的应用是需要低GC延迟，并具有大堆的应用程序提供解决方案;
 
-- 同时注重吞吐量（Throughput）和低延迟（Low latency），默认的暂停目标是 200 ms。
-- 超大堆内存，会将堆划分为多个大小相等的 Region。
-- 整体上是 **标记+整理** 算法，两个区域之间是 复制 算法。
+  如：在堆大小约6GB或更大时，可预测的暂停时间可以低于8.5秒：(G1通过每次只清理一部分而不是全部的Region的增量式清理来保证每次GC停顿时间不会过长)。
 
+- 用来替换掉JDK1.5中的CMS收集器，在下面的情况时，使用G1可能比CMS好：
 
+  - 超过50%的Java堆被活动数据占用:
+  - 对象分配频率或年代提升频率变化很大;
+  - GC停顿时间过长(长于0.5至1秒)。
 
-#### 5.9.8 G1垃圾回收器的回收过程
+- Hotspot垃圾收集器里，除了G1以外，其他的垃圾收集器使用内置的IVM线程执行GC的多线程操作，而G1 GC可以采用应用线程承担后台运行的GC工作，即当JVM的GC线程处理速度慢时，系统会调用应用程序线程帮助加速垃圾回收过程。
 
-（1）G1 GC的垃圾回收过程主要包括如下三个环节：
+#### 5.9.8 分区Region使用
 
-- 年轻代GC（Young GC）
-- 老年代GC+并发标记过程（Concurrent Marking）
-- 混合回收（Mixed GC）
+使用 G1收集器时，它将整个Java堆划分成约2048个大小相同的独立Region块，每个Region块大小根据堆空间的实际大小而定，整体被控制在1MB到32MB之间，且为2的N次幂，即1MB，2MB，4MB，8MB，16MB，32MB。可以通过`-XX:G1HeapRegionsize`设定。**所有的Region大小相同，且在IVM生命周期内不会被改变**。
 
-如果需要，单线程、独占式、高强度的FullGC还是继续存在的。它针对GC的评估失败提供了一种失败保护机制，即强力回收。
+虽然还保留有新生代和老年代的概念，但新生代和老年代不再是物理隔离的了它们都是一部分Region(不需要连续)的集合。通过Region的动态分配方式实现逻辑上的连续。
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/d6679dc64a5a08ae.png)
+
+一个region有可能属于Eden，Survivor或者0ld/Tenured 内存区域。但是一个region只可能属于一个角色。图中的E表示该reqion属于Eden内存区域，s表示属于survivor内存区域，0表示属于old内存区域。图中空白的表示未使用的内存空间。
+
+G1垃圾收集器还增加了一种新的内存区域，叫做Humongous 内存区域，如图中的H块。主要用于存储大对象，如果超过1.5个region，就放到H。
+
+> **设置H的原因**
+
+对于堆中的大对象，默认直接会被分配到老年代，但是如果它是一个短期存在的大对象，就会对垃圾收集器造成负面影响。为了解决这个问题，**G1划分了一个Humongous区它用来专门存放大对象。如果一个H区装不下一个大对象，那么G1会寻找连续的H区来存储**。为了能找到连续的H区，有时候不得不启动Fu11 GC。G1的大多数行为都把H区作为老年代的一部分来看待。
+
+#### 5.9.9 G1垃圾回收器的回收过程
+
+G1 GC的垃圾回收过程主要包括如下三个环节：
+
+1. 年轻代GC（Young GC）
+2. 老年代GC + 并发标记过程（Concurrent Marking）
+3. 混合回收（Mixed GC）
+
+如果需要，单线程、独占式、高强度的Full GC还是继续存在的。它针对GC的评估失败提供了一种失败保护机制，即强力回收。
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357179.png" alt="image-20210615230734500" />
 
@@ -1051,7 +1095,7 @@ G1中提供了三种垃圾回收模式：**YoungGC、Mixed GC和FullGC**，在�
 
 
 
-##### 5.9.8.1 G1回收过程-年轻代GC（重要）
+##### 5.9.9.1 G1回收过程-年轻代GC（重要）
 
 JVM启动时，G1先准备好Eden区，程序在运行过程中不断创建对象到Eden区，当Eden空间耗尽时，G1会启动一次年轻代垃圾回收过程。YGC时，首先G1停止应用程序的执行（Stop-The-World），G1创建回收集（Collection Set），回收集是指需要被回收的内存分段的集合，年轻代回收过程的回收集包含年轻代Eden区和Survivor区所有的内存分段。
 
@@ -1079,7 +1123,7 @@ JVM启动时，G1先准备好Eden区，程序在运行过程中不断创建对�
 
 处理Soft，Weak，Phantom，Final，JNI Weak 等引用。最终Eden空间的数据为空，GC停止工作，而目标内存中的对象都是连续存储的，没有碎片，所以复制过程可以达到内存整理的效果，减少碎片。
 
-##### 5.9.8.2  G1回收过程-并发标记过程
+##### 5.9.9.2  G1回收过程-老年代并发标记过程
 
 - 初始标记阶段：标记从根节点直接可达的对象。这个阶段是STW的，并且会触发一次年轻代GC。
 - 根区域扫描（Root Region Scanning）：G1 GC扫描survivor区直接可达的老年代区域对象，并标记被引用的对象。这一过程必须在Young GC之前完成。
@@ -1088,7 +1132,7 @@ JVM启动时，G1先准备好Eden区，程序在运行过程中不断创建对�
 - 独占清理（cleanup，STW）：计算各个区域的存活对象和GC回收比例，并进行排序，识别可以混合回收的区域。为下阶段做铺垫。是STW的。这个阶段并不会实际上去做垃圾的收集。
 - 并发清理阶段：识别并清理完全空闲的区域。
 
-#####  5.9.8.2  G1回收过程 - 混合回收
+#####  5.9.9.3  G1回收过程 - 混合回收
 
 - 当越来越多的对象晋升到老年代old region时，为了避免堆内存被耗尽，虚拟机会触发一个混合的垃圾收集器，即Mixed GC，该算法并不是一个Old GC，除了回收整个Young Region，还会回收一部分的Old Region。这里需要注意：**是一部分老年代，而不是全部老年代**。可以选择哪些Old Region进行收集，从而可以对垃圾回收的耗时时间进行控制。也要注意的是Mixed GC并不是Full GC。
 
@@ -1102,7 +1146,7 @@ JVM启动时，G1先准备好Eden区，程序在运行过程中不断创建对�
 - XX:G1MixedGCLiveThresholdPercent，默认为65%，意思是垃圾占内存分段比例要达到65%才会被回收。如果垃圾占比太低，意味着存活的对象占比高，在复制的时候会花费更多的时间。
 - 混合回收并不一定要进行8次。有一个阈值-XX:G1HeapWastePercent，默认值为1%，意思是允许整个堆内存中有10%的空间被浪费，意味着如果发现可以回收的垃圾占堆内存的比例低于1%，则不再进行混合回收。因为GC会花费很多的时间但是回收到的内存却很少。
 
-#####  5.9.8.3 G1回收可选的过程4 - Full GC
+#####  5.9.9.4 G1回收可选的过程4 - Full GC
 
 G1的初衷就是要避免Full GC的出现。但是如果上述方式不能正常工作，G1会停止应用程序的执行（stop-the-world），使用单线程的内存回收算法进行垃圾回收，性能会非常差，应用程序停顿时间会很长。
 
@@ -1111,7 +1155,7 @@ G1的初衷就是要避免Full GC的出现。但是如果上述方式不能正�
 - EVacuation的时候没有足够的to-space来存放晋升的对象；
 - 并发处理过程完成之前空间耗尽。
 
-#####   5.9.8.4 G1回收的优化建议
+####   5.9.10 G1回收的优化建议
 
 考虑到G1不是仅仅面向低延迟，停顿用户线程能够最大幅度提高垃圾收集效率，为了保证吞吐量所以才选择了完全暂停用户线程的实现方案。
 
@@ -1127,7 +1171,7 @@ G1的初衷就是要避免Full GC的出现。但是如果上述方式不能正�
 
 
 
-#### 5.9.9 Remembered Set（记忆集）
+#### 5.9.11 Remembered Set（记忆集）
 
 **一个对象被不同区域引用的问题**。
 
