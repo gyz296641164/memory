@@ -8,6 +8,12 @@ date: 2023-02-26
 
 <!-- more -->
 
+## 开篇
+
+名词不懂看最底下的**附录**章节。。。
+
+---
+
 ## 1、如何判断对象是否可以被回收
 
 > 判断对象存活一般有两种方式：**引用计数算法** 和 **可达性分析算法。**
@@ -513,6 +519,14 @@ TALB的解决思路比较简单粗暴，既然是因为堆内存多线程共享�
 
 ## 3、分代垃圾回收
 
+> **部分收集（Partial GC）**：指目标不是完整收集整个Java堆的垃圾收集，其中又分为：
+>
+> - **`新生代收集（Minor GC/Young GC）`**：指目标只是新生代的垃圾收集。
+> - **`老年代收集（Major GC/Old GC）`**：指目标只是老年代的垃圾收集。目前只有CMS收集器会有单 独收集老年代的行为。另外请注意“Major GC”这个说法现在有点混淆，在不同资料上常有不同所指， 读者需按上下文区分到底是指老年代的收集还是整堆收集。
+> - **`混合收集（Mixed GC）`**：指目标是收集整个新生代以及部分老年代的垃圾收集。目前只有G1收 集器会有这种行为。
+>
+> **整堆收集（Full GC）**：收集整个Java堆和方法区的垃圾收集。
+
 ### 3.1 概述
 
 **分代收集算法：**
@@ -705,8 +719,6 @@ TALB的解决思路比较简单粗暴，既然是因为堆内存多线程共享�
 - 串行回收器：Serial、Serial old
 - 并行回收器：ParNew、Parallel Scavenge、Parallel Old
 - 并发回收器：CMS、G1
-
-
 
 ###  5.2  七款经典收集器与垃圾分代之间的关系
 
@@ -1058,27 +1070,27 @@ G1中提供了三种垃圾回收模式：**Young GC、Mixed GC和Full GC**，在
 
 #### 5.9.8 分区Region使用
 
-使用 G1收集器时，它将整个Java堆划分成约2048个大小相同的独立Region块，每个Region块大小根据堆空间的实际大小而定，整体被控制在1MB到32MB之间，且为2的N次幂，即1MB，2MB，4MB，8MB，16MB，32MB。可以通过`-XX:G1HeapRegionsize`设定。**所有的Region大小相同，且在IVM生命周期内不会被改变**。
+使用 G1收集器时，它将整个Java堆划分成约2048个大小相同的独立Region块，每个Region块大小根据堆空间的实际大小而定，整体被控制在1MB到32MB之间，且为2的N次幂，即1MB，2MB，4MB，8MB，16MB，32MB。可以通过`-XX:G1HeapRegionsize`设定。**所有的Region大小相同，且在JVM生命周期内不会被改变**。
 
 虽然还保留有新生代和老年代的概念，但新生代和老年代不再是物理隔离的了它们都是一部分Region(不需要连续)的集合。通过Region的动态分配方式实现逻辑上的连续。
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/d6679dc64a5a08ae.png)
 
-一个region有可能属于Eden，Survivor或者0ld/Tenured 内存区域。但是一个region只可能属于一个角色。图中的E表示该reqion属于Eden内存区域，s表示属于survivor内存区域，0表示属于old内存区域。图中空白的表示未使用的内存空间。
+一个region有可能属于Eden，Survivor或者Old/Tenured 内存区域。但是一个region只可能属于一个角色。图中的E表示该reqion属于Eden内存区域，S表示属于survivor内存区域，O表示属于old内存区域。图中空白的表示未使用的内存空间。
 
 G1垃圾收集器还增加了一种新的内存区域，叫做Humongous 内存区域，如图中的H块。主要用于存储大对象，如果超过1.5个region，就放到H。
 
 > **设置H的原因**
 
-对于堆中的大对象，默认直接会被分配到老年代，但是如果它是一个短期存在的大对象，就会对垃圾收集器造成负面影响。为了解决这个问题，**G1划分了一个Humongous区它用来专门存放大对象。如果一个H区装不下一个大对象，那么G1会寻找连续的H区来存储**。为了能找到连续的H区，有时候不得不启动Fu11 GC。G1的大多数行为都把H区作为老年代的一部分来看待。
+对于堆中的大对象，默认直接会被分配到老年代，但是如果它是一个短期存在的大对象，就会对垃圾收集器造成负面影响。为了解决这个问题，**G1划分了一个Humongous区它用来专门存放大对象。如果一个H区装不下一个大对象，那么G1会寻找连续的H区来存储**。为了能找到连续的H区，有时候不得不启动Full GC。G1的大多数行为都把H区作为老年代的一部分来看待。
 
 #### 5.9.9 G1垃圾回收器的回收过程
 
 G1 GC的垃圾回收过程主要包括如下三个环节：
 
-1. 年轻代GC（Young GC）
-2. 老年代GC + 并发标记过程（Concurrent Marking）
-3. 混合回收（Mixed GC）
+1. 年轻代GC(Young GC)：指目标只是新生代的垃圾收集。
+2. 年轻代GC(Young GC) + 并发标记过程(Concurrent Marking)：指目标只是老年代的垃圾收集。
+3. 混合回收(Mixed GC)：指目标是收集整个新生代以及部分老年代的垃圾收集
 
 如果需要，单线程、独占式、高强度的Full GC还是继续存在的。它针对GC的评估失败提供了一种失败保护机制，即强力回收。
 
@@ -1095,7 +1107,7 @@ G1 GC的垃圾回收过程主要包括如下三个环节：
 
 
 
-##### 5.9.9.1 G1回收过程-年轻代GC（重要）
+##### 5.9.9.1 G1回收过程1-年轻代GC（重要）
 
 JVM启动时，G1先准备好Eden区，程序在运行过程中不断创建对象到Eden区，当Eden空间耗尽时，G1会启动一次年轻代垃圾回收过程。YGC时，首先G1停止应用程序的执行（Stop-The-World），G1创建回收集（Collection Set），回收集是指需要被回收的内存分段的集合，年轻代回收过程的回收集包含年轻代Eden区和Survivor区所有的内存分段。
 
@@ -1103,36 +1115,42 @@ JVM启动时，G1先准备好Eden区，程序在运行过程中不断创建对�
 
 然后开始如下回收过程：
 
-- 第一阶段，扫描根
+- **第一阶段：扫描根**
 
-根是指static变量指向的对象，正在执行的方法调用链条上的局部变量等。根引用连同RSet记录的外部引用作为扫描存活对象的入口。
+==根是指static变量指向的对象==，正在执行的方法调用链条上的局部变量等。根引用连同RSet(记忆集)记录的外部引用作为扫描存活对象的入口。
 
-- 第二阶段，更新RSet
+- **第二阶段：更新RSet**
 
-处理dirty card queue（见备注）中的card，更新RSet。此阶段完成后，RSet可以准确的反映老年代对所在的内存分段中对象的引用。
+处理dirty card queue（脏卡表）中的card，更新RSet。此阶段完成后，**RSet可以准确的反映老年代对所在的内存分段中对象的引用**。
 
-- 第三阶段，处理RSet
+> **dirty card queue（脏卡表）：**
+>
+> 对于应用程序的引用赋值语句`Obiect.field=obiect`，JVM会在之前和之后执行特殊的操作以在dity card queue中入队一个保存了对象引用信息的card。在年轻代回收的时候，G1会对Dirty Card Queue中所有的card进行处理，以更新RSet，保证RSet实时准确的反映引用关系。
+>
+> 那为什么不在引用赋值语句处直接更新RSet呢？这是为了性能的需要，RSet的处理需要线程同步，开销会很大，使用队列性能会好很多。
+
+- **第三阶段：处理RSet**
 
 识别被老年代对象指向的Eden中的对象，这些被指向的Eden中的对象被认为是存活的对象。
 
-- 第四阶段，复制对象。
+- **第四阶段：复制对象**
 
 此阶段，对象树被遍历，Eden区内存段中存活的对象会被复制到Survivor区中空的内存分段，Survivor区内存段中存活的对象如果年龄未达阈值，年龄会加1，达到阀值会被会被复制到o1d区中空的内存分段。如果Survivor空间不够，Eden空间的部分数据会直接晋升到老年代空间。
 
-- 第五阶段，处理引用
+- **第五阶段：处理引用**
 
 处理Soft，Weak，Phantom，Final，JNI Weak 等引用。最终Eden空间的数据为空，GC停止工作，而目标内存中的对象都是连续存储的，没有碎片，所以复制过程可以达到内存整理的效果，减少碎片。
 
-##### 5.9.9.2  G1回收过程-老年代并发标记过程
+##### 5.9.9.2  G1回收过程2-年轻代GC+并发标记过程
 
-- 初始标记阶段：标记从根节点直接可达的对象。这个阶段是STW的，并且会触发一次年轻代GC。
-- 根区域扫描（Root Region Scanning）：G1 GC扫描survivor区直接可达的老年代区域对象，并标记被引用的对象。这一过程必须在Young GC之前完成。
-- 并发标记（Concurrent Marking）：在整个堆中进行并发标记（和应用程序并发执行），此过程可能被YoungGC中断。在并发标记阶段，若发现区域对象中的所有对象都是垃圾，那这个区域会被立即回收。同时，并发标记过程中，会计算每个区域的对象活性（区域中存活对象的比例）。
-- 再次标记（Remark）：由于应用程序持续进行，需要修正上一次的标记结果。是STW的。G1中采用了比CMS更快的初始快照算法：snapshot-at-the-beginning（SATB）。
-- 独占清理（cleanup，STW）：计算各个区域的存活对象和GC回收比例，并进行排序，识别可以混合回收的区域。为下阶段做铺垫。是STW的。这个阶段并不会实际上去做垃圾的收集。
-- 并发清理阶段：识别并清理完全空闲的区域。
+- **初始标记阶段：**标记从根节点直接可达的对象。这个阶段是STW的，并且会触发一次年轻代GC。
+- **根区域扫描（Root Region Scanning）：**G1 GC扫描survivor区直接可达的老年代区域对象，并标记被引用的对象。这一过程必须在Young GC之前完成。
+- **并发标记（Concurrent Marking）：**在整个堆中进行并发标记（和应用程序并发执行），此过程可能被YoungGC中断。在并发标记阶段，若发现区域对象中的所有对象都是垃圾，那这个区域会被立即回收。同时，并发标记过程中，会计算每个区域的对象活性（区域中存活对象的比例）。
+- **再次标记（Remark）：**由于应用程序持续进行，需要修正上一次的标记结果。是STW的。G1中采用了比CMS更快的初始快照算法：snapshot-at-the-beginning（SATB）。
+- **独占清理（cleanup，STW）：**计算各个区域的存活对象和GC回收比例，并进行排序，识别可以混合回收的区域。为下阶段做铺垫。是STW的。这个阶段并不会实际上去做垃圾的收集。
+- **并发清理阶段：**识别并清理完全空闲的区域。
 
-#####  5.9.9.3  G1回收过程 - 混合回收
+#####  5.9.9.3  G1回收过程3 - 混合回收
 
 - 当越来越多的对象晋升到老年代old region时，为了避免堆内存被耗尽，虚拟机会触发一个混合的垃圾收集器，即Mixed GC，该算法并不是一个Old GC，除了回收整个Young Region，还会回收一部分的Old Region。这里需要注意：**是一部分老年代，而不是全部老年代**。可以选择哪些Old Region进行收集，从而可以对垃圾回收的耗时时间进行控制。也要注意的是Mixed GC并不是Full GC。
 
@@ -1150,9 +1168,13 @@ JVM启动时，G1先准备好Eden区，程序在运行过程中不断创建对�
 
 G1的初衷就是要避免Full GC的出现。但是如果上述方式不能正常工作，G1会停止应用程序的执行（stop-the-world），使用单线程的内存回收算法进行垃圾回收，性能会非常差，应用程序停顿时间会很长。
 
-要避免Full GC的发生，一旦发生需要进行调整。什么时候会发生Full GC呢？比如堆内存太小，当G1在复制存活对象的时候没有空的内存分段可用，则会回退到Full GC，这种情况可以通过增大内存解决。 导致Full GC的原因可能有两个：
+要避免Full GC的发生，一旦发生需要进行调整。
 
-- EVacuation的时候没有足够的to-space来存放晋升的对象；
+> **什么时候会发生Full GC呢？**
+
+比如堆内存太小，当G1在复制存活对象的时候没有空的内存分段可用，则会回退到Full GC，这种情况可以通过增大内存解决。 导致Full GC的原因可能有两个：
+
+- Evacuation的时候没有足够的to-space来存放晋升的对象；
 - 并发处理过程完成之前空间耗尽。
 
 ####   5.9.10 G1回收的优化建议
@@ -1173,7 +1195,7 @@ G1的初衷就是要避免Full GC的出现。但是如果上述方式不能正�
 
 #### 5.9.11 Remembered Set（记忆集）
 
-**一个对象被不同区域引用的问题**。
+**一个对象被不同区域引用的问题：**
 
 - 一个Region不可能是孤立的，一个Region中的对象可能被其他任意Region中对象引用，判断对象存活时，是否需要扫描整个Java堆才能保证准确？
 
@@ -1189,7 +1211,34 @@ G1的初衷就是要避免Full GC的出现。但是如果上述方式不能正�
 
   <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357182.png" alt="image-20210615231344841"  />
 
+### 5.10 ZGC收集器
 
+> [官网](https://docs.oracle.com/en/java/javase/12/gctuning/z-garbage-collector1.html#GUID-A5A42691-095E-47BA-B6DC-FB4E5FAA43D0)
+
+ZGC与Shenandoah目标高度相似，在尽可能对吞吐量影响不大的前提下，实现在任意堆内存大小下都可以把垃圾收集的停顿时间限制在十毫秒以内的低延迟，
+
+ZGC收集器是一款基于Region内存布局的，(暂时)不设分代的，使用了读屏障、染色指针和内存多重映射等技术来实现**可并发的标记-压缩算法**的，以**低延迟为首要目标**的一款垃圾收集器。
+
+ZGC的工作过程可以分为4个阶段：
+
+1. 并发标记
+2. 并发预备重分配
+3. 并发重分配
+4. 并发重映射等
+
+ZGC几乎在所有地方并发执行的，除了初始标记的是STW的。所以停顿时间几乎就耗费在初始标记上，这部分的实际时间是非常少的。
+
+> **性能方面**
+
+在性能方面，尽管目前还处于实验状态，还没有完成所有特性，稳定性打磨和性能调优也仍在进行，但即使是这种状态下的ZGC，其性能表现已经相当亮眼，从官方给出的测试结果[14]来看，用“令人震惊的、革命性的ZGC”来形容都不为过。
+
+图3-23和图3-24是ZGC与Parallel Scavenge、G1三款收集器通过SPECjbb 2015[15]的测试结果。在ZGC的“弱项”吞吐量方面，以低延迟为首要目标的ZGC已经达到了以高吞吐量为目标Parallel Scavenge的99%，直接超越了G1。如果将吞吐量测试设定为面向SLA（Service Level Agreements）应用的“Critical Throughput”的话[16]，ZGC的表现甚至还反超了Parallel Scavenge收集器。
+
+而在ZGC的强项停顿时间测试上，它就毫不留情地与Parallel Scavenge、G1拉开了两个数量级的差距。不论是平均停顿，还是95%停顿、99%停顿、99.9%停顿，抑或是最大停顿时间，ZGC均能毫不费劲地控制在十毫秒之内，以至于把它和另外两款停顿数百近千毫秒的收集器放到一起对比，就几乎显示不了ZGC的柱状条（图3-24a），必须把结果的纵坐标从线性尺度调整成对数尺度（图3-24b，纵坐标轴的尺度是对数增长的）才能观察到ZGC的测试结果。
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/1befc32d7c5806e6.png)
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/ff99c3b7a8dcd9c8.png)
 
 ***
 
@@ -1204,8 +1253,6 @@ GC发展阶段：Serial => Parallel（并行）=> CMS（并发）=> G1 => ZGC
 不同厂商、不同版本的虚拟机实现差距比较大。HotSpot虚拟机在JDK7/8后所有收集器及组合如下图：
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357184.png" alt="image-20210615232536530" />
-
-
 
 ### 6.1  怎么选择垃圾回收器
 
@@ -1227,14 +1274,14 @@ Java垃圾收集器的配置对于JVM优化来说是一个很重要的选择，�
 
 ##  7、GC日志分析
 
-通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。 内存分配与垃圾回收的参数列表
-
-- -XX:+PrintGC输出GC日志。类似：-verbose:gc
-- -XX:+PrintGCDetails输出GC的详细日志
-- -XX:+PrintGCTimestamps 输出GC的时间戳（以基准时间的形式）
-- -XX:+PrintGCDatestamps 输出GC的时间戳（以日期的形式，如2013-05-04T21：53：59.234+0800）
-- -XX:+PrintHeapAtGC在进行GC的前后打印出堆的信息
-- -Xloggc:../logs/gc.1og日志文件的输出路径
+> 通过阅读GC日志，我们可以了解Java虚拟机内存分配与回收策略。 内存分配与垃圾回收的参数列表
+>
+> - `-XX:+PrintGC`：输出GC日志。类似：-verbose:gc
+> - `-XX:+PrintGCDetails`：输出GC的详细日志
+> - `-XX:+PrintGCTimestamps`：输出GC的时间戳（以基准时间的形式）
+> - `-XX:+PrintGCDatestamps`：输出GC的时间戳（以日期的形式，如2013-05-04T21：53：59.234+0800）
+> - `-XX:+PrintHeapAtGC`：在进行GC的前后打印出堆的信息
+> - `-Xloggc:../logs/gc.1og`：日志文件的输出路径
 
 ### 7.1  verbose:gc
 
@@ -1260,7 +1307,7 @@ Java垃圾收集器的配置对于JVM优化来说是一个很重要的选择，�
 -verbose:gc -XX:+PrintGCDetails
 ```
 
-输入信息如下：
+输出信息如下：
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357187.png" alt="image-20210615233100501" />
 
@@ -1270,7 +1317,7 @@ Java垃圾收集器的配置对于JVM优化来说是一个很重要的选择，�
 
 ### 7.3  补充
 
-- GC和Full GC说明了这次垃圾收集的停顿类型，如果有"Full"则说明GC发生了"stop The World"
+- GC和Full GC说明了这次垃圾收集的停顿类型，如果有"Full"则说明GC发生了"Stop The World"
 - 使用Serial收集器在新生代的名字是Default New Generation，因此显示的是"DefNew"
 - 使用ParNew收集器在新生代的名字会变成"ParNew"，意思是"Parallel New Generation"
 - 使用Parallel Scavenge收集器在新生代的名字是”PSYoungGen"
@@ -1279,21 +1326,21 @@ Java垃圾收集器的配置对于JVM优化来说是一个很重要的选择，�
 
 Allocation Failure表明本次引起GC的原因是因为在年轻代中没有足够的空间能够存储新的数据了。
 
-[PSYoungGen：5986K->696K（8704K）]5986K->704K（9216K）中括号内：GC回收前年轻代大小，回收后大小，（年轻代总大小）括号外：GC回收前年轻代和老年代大小，回收后大小，（年轻代和老年代总大小）
+> [PSYoungGen：5986K->696K(8704K)]5986K->704K(9216K)中括号内：GC回收前年轻代大小，回收后大小，（年轻代总大小）括号外：GC回收前年轻代和老年代大小，回收后大小，（年轻代和老年代总大小）
 
 user代表用户态回收耗时，sys内核态回收耗时，rea实际耗时。由于多核的原因，时间总和可能会超过real时间。
 
-### 7.4  Young GC图片
+### 7.4  Young GC解析
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357189.png" alt="image-20210615233315260" />
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357189.png)
 
+### 7.5  Full GC解析
 
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357190.png)
 
-### 7.5  FullGC图片
+---
 
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121357190.png" alt="image-20210615233333482" />
-
-## 8、 面试
+## 8、面试
 
 对于垃圾收集，面试官可以循序渐进从理论、实践各种角度深入，也未必是要求面试者什么都懂。但如果你懂得原理，一定会成为面试中的加分项。 这里较通用、基础性的部分如下：
 
@@ -1306,9 +1353,9 @@ user代表用户态回收耗时，sys内核态回收耗时，rea实际耗时。�
 
 ***
 
-## 附录：
+## 9、附录
 
-### Stop The World
+### 9.1 Stop The World
 
 **概述**
 
@@ -1324,17 +1371,13 @@ Stop-the-World，简称STW，指的是GC事件发生过程中，会产生应用�
 - STW时JVM在后台自动发起和自动完成的。在用户不可见的情况下，把用户正常的工作线程全部停掉。
 - 开发中不要用System.gc()；会导致Stop-the-world的发生。
 
-
-
-### System.gc()的理解
+### 9.2 System.gc()的理解
 
 - `System.gc`或`Runtime.getRuntime().gc()`的调用，会显示触发`Full GC`，同时会对老年代和新生代进行回收，尝试释放被丢对象占用的内存
 - `System.gc`调用无法保证对垃圾收集器的调用
 - 一些特殊情况下，比如编写性能基准，我们可以在运行之间调用`System.gc`
 
-
-
-### 内存溢出与内存泄露
+### 9.3 内存溢出与内存泄露
 
 **OOM**
 
@@ -1349,9 +1392,7 @@ Stop-the-World，简称STW，指的是GC事件发生过程中，会产生应用�
   - **单例**的生命周期和程序是一样长，如果单例程序中，持有对外部对象的引用的话，那么这个外部对象是不能被回收的，导致内存泄露
   - 一些提供close的资源**未关闭**导致内存泄露，如`数据库链接`，`网络链接`，和`IO`
 
-
-
-### 垃圾回收的并行与并发
+### 9.4 垃圾回收的并行与并发
 
 **并发**
 
@@ -1372,9 +1413,7 @@ Stop-the-World，简称STW，指的是GC事件发生过程中，会产生应用�
 - 并行：多条垃圾收集器并行工作，用户线程处于等待状态
 - 串行：单线程执行
 
-
-
-### 安全点与安全区域
+### 9.5 安全点与安全区域
 
 **安全点**
 
@@ -1393,28 +1432,25 @@ Stop-the-World，简称STW，指的是GC事件发生过程中，会产生应用�
 - 当线程运行到安全区域代码时，首先标志已经进入了安全区域，如果GC，JVM会忽略标识为安全区域状态的线程
 - 当线程即将离开安全区域时，会检查JVM是否已经完成GC，如果完成了，则继续运行。否则线程必须等待直到收到可以安全离开安全区域的信号为止
 
+### 9.6 Major GC和Full GC的区别是什么？触发条件呢？
 
+针对HotSpot VM的实现，它里面的GC其实准确分类只有两大种：
 
-### Major GC和Full GC的区别是什么？触发条件呢？
+- 部分收集（Partial GC）：指目标不是完整收集整个Java堆的垃圾收集，其中又分为：
+  - 新生代收集（Minor GC/Young GC）：指目标只是新生代（young gen）的垃圾收集。
+  - 老年代收集（Major GC/Old GC）：只收集老年代（old gen）的GC。只有CMS的concurrent collection是这个模式
+  - 混合收集（Mixed GC）：收集整个young gen以及部分old gen的GC。只有G1有这个模式
 
-**针对HotSpot VM的实现，它里面的GC其实准确分类只有两大种**：
+- 整堆收集（Full GC）：收集整个堆，包括young gen、old gen、perm gen（如果存在的话）等所有部分的模式。
 
-- **Partial GC**：并不收集整个GC堆的模式
+**Major GC通常是跟Full GC是等价的，收集整个GC堆**。
 
-- - Young GC：只收集young gen的GC
-  - Old GC：只收集old gen的GC。只有CMS的concurrent collection是这个模式
-  - Mixed GC：收集整个young gen以及部分old gen的GC。只有G1有这个模式
+**最简单的分代式GC策略，按HotSpot VM的Serial GC的实现来看，触发条件是**：
 
-- **Full GC**：收集整个堆，包括young gen、old gen、perm gen（如果存在的话）等所有部分的模式。
-
-**Major GC通常是跟full GC是等价的，收集整个GC堆**。
-
-**最简单的分代式GC策略，按HotSpot VM的serial GC的实现来看，触发条件是**：
-
-- Young GC：当young gen中的eden区分配满的时候触发。注意young GC中有部分存活对象会晋升到old gen，所以Young GC后old gen的占用量通常会有所升高；
+- Young GC：当young gen中的eden区分配满的时候触发。注意Young GC中有部分存活对象会晋升到old gen，所以Young GC后old gen的占用量通常会有所升高；
 
 - Full GC：当准备要触发一次Young GC时，如果发现统计数据说之前`Young GC的平均晋升大小比目前old gen剩余的空间大`，则不会触发young GC而是转为触发full GC`（因为HotSpot VM的GC里，除了CMS的concurrent collection之外，其它能收集old gen的GC都会同时收集整个GC堆，包括young gen，所以不需要事先触发一次单独的young GC）或者，如果有perm gen的话，要在perm gen分配空间但已经没有足够空间时，也要触发一次full GC；或者System.gc()、heap dump带GC，默认也是触发full GC`；
 
-- Parallel Scavenge（-XX:+UseParallelGC）框架下，默认是在要触发full GC前先执行一次young GC，并且两次GC之间能让应用程序稍微运行一小下，以期降低full GC的暂停时间（因为young GC会尽量清理了young gen的死对象，减少了full GC的工作量）。控制这个行为的VM参数是-XX:+ScavengeBeforeFullGC。这是HotSpot VM里的奇葩
+- Parallel Scavenge（-XX:+UseParallelGC）框架下，默认是在要触发Full GC前先执行一次Young GC，并且两次GC之间能让应用程序稍微运行一小下，以期降低Full GC的暂停时间（因为Young GC会尽量清理了young gen的死对象，减少了Full GC的工作量）。控制这个行为的VM参数是`-XX:+ScavengeBeforeFullGC`。这是HotSpot VM里的奇葩
 
   

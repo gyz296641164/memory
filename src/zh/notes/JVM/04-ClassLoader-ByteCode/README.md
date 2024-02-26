@@ -8,15 +8,17 @@ date: 2023-02-26
 
 <!-- more -->
 
+## 开篇
+
+笔记参考：https://www.yuque.com/u21195183/jvm/uwc1qd#6592094f
+
 ## 1、类加载子系统图示
 
+### 1.1 运行时数据区域
 
+![image-20240226163958305](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/9829e34e62427071.png)
 
-### 1.1 运行时数据区域如图所示：
-
-<img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121359206.png" alt="image-20210615162908521" />
-
-### 1.2 类加载如图所示：
+### 1.2 类加载图示
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121359207.png" alt="image-20210615162944141" />
 
@@ -29,7 +31,7 @@ date: 2023-02-26
 
 ***
 
-## 2、 类加载器子系统详解
+## 2、类加载器子系统详解
 
 ### 2.1 类加载器子系统作用
 
@@ -45,7 +47,7 @@ date: 2023-02-26
 
 2. Class File 加载到JVM中，被称为DNA元数据模板（在下图中就是内存中的Car Class），放在方法区。
 
-3. 在.class文件–>JVM–>最终成为元数据模板，此过程就要一个运输工具（类装载器Class Loader），扮演一个快递员的角色。
+3. 在.class文件–>JVM–>最终成为元数据模板，此过程就要一个运输工具（类装载器ClassLoader），扮演一个快递员的角色。
 
    <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/JVM/202207121359208.png" alt="image-20210615165053099"  />
 
@@ -146,7 +148,7 @@ date: 2023-02-26
    
        public static void main(String[] args) {
            System.out.println(ClassInitTest.num);//2
-           System.out    .println(ClassInitTest.number);//10
+           System.out.println(ClassInitTest.number);//10
        }
    }
    ```
@@ -501,7 +503,7 @@ sun.misc.Launcher$ExtClassLoader@14ae5a5
 
 ***
 
-## 4、 双亲委派机制
+## 4、双亲委派机制
 
 ### 4.1 双亲委派机制原理
 
@@ -669,10 +671,328 @@ Process finished with exit code 1
 2. **加载这个类的ClassLoader（指ClassLoader实例对象）必须相同**。
 3. 换句话说，在JVM中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要加载它们的ClassLoader实例对象不同，那么这两个类对象也是不相等的。
 
-
-
 #### 4.5.2 对类加载器的引用
 
 1. JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的。
 2. **如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中**。
 3. 当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的。
+
+---
+
+## 5、字节码文件解析
+
+### 开篇
+
+#### 字节码文件的跨平台性
+
+**1、Java语言：跨平台的语言(write once，run anywhere)**
+
+- 当Java源代码成功编译成字节码后，如果想在不同的平台上面运行，则无须再次编译。
+- 这个优势不再那么吸引人了。Python、PHP、Per1、Ruby、Lisp等有强大的解释器。
+- 跨平台似乎已经快成为一门语言必选的特性。
+
+**2、Java 虚拟机：跨语言的平台**
+
+Java 虚拟机不和包括 Java 在内的任何语言绑定，它只与“class 文件”这种特定的二进制文件格式所关联。无论使用何种语言进行软件开发，只要能将源文件编译为正确的c1ass文件，那么这种语言就可以在Java虚拟机上执行。可以说，统一而强大的Class文件结构，就是Java虚拟机的基石、桥梁。
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/5c6266f07bb8e827.png)
+
+https://docs.oracle.com/javase/specs/index.html
+
+所有的JVM全部遵守]ava虚拟机规范，也就是说所有的JVM环境都是一样的，这样一来字节码文件可以在各种JVM上运行。
+
+**3、要想要让一个]ava程序正确地运行在JVM中，Java源码就必须要被编译为符合JVM规范的字节码。**
+
+- 前端编译器的主要任务就是负责将符合]ava语法规范的Java代码转换为符合JVM规范的字节码文件。
+- javac是一种能够将Java源码编译为字节码的前端编译器。
+- Javac编译器在将]ava源码编译为一个有效的字节码文件过程中经历了4个步骤，分别是：
+  - 词法解析
+  - 语法解析
+  - 语义解析
+  - 生成字节码
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/03213e17095e3868.png)
+
+Oracle的JDK软件包括两部分内容:
+
+- 一部分是将Java源代码编译成Java虚拟机的指令集的编译器
+- 另一部分是用于实现Java虚拟机的运行时环境。
+
+#### Java的前端编译器
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/f1ae743b1a131d3f.png)
+
+> **前端编译器 vs 后端编译器**
+
+Java源代码的编译结果是字节码，那么肯定需要有一种编译器能够将]ava源码编译为字节码，承担这个重要责任的就是配置在path环境变量中的javac编译器。javac是一种能够将]ava源码编译为字节码的**前端编译器**。
+
+Hotspot 并没有强制要求前端编译器只能使用javac来编译字节码，其实只要编译结果符合JVM规范都可以被JVM所识别即可。在]ava的前端编译器领域，除了javac之外，还有一种被大家经常用到的前端编译器，那就是内置在Ec1ipse中的ECJ(Ec1ipseCompiler for Java)编译器。和javac的全量式编译不同，ECJ是一种增量式编译器。
+
+- 在Ec1ipse中，当开发人员编写完代码后，使用“ctr1+s”快捷键时，ECJ编译器所采取的编译方案是把未编译部分的源码逐行进行编译，而非每次都全量编译。因此ECJ的编译效率会比javac更加迅速和高效，当然编译质量和javac相比大致还是一样的。
+- ECJ不仅是Ec1ipse的默认内置前端编译器，在Tomcat中同样也是使用ECJ编译器来编译jsp文件。由于ECJ编译器是采用GPLv2的开源协议进行源代码公开，所以，大家可以登录eclipse官网下载ECJ编译器的源码进行二次开发。
+- 默认情况下，Intelli] IDEA 使用 javac 编译器。(还可以自己设置为Aspectj编译器 ajc)
+
+前端编译器并不会直接涉及编译优化等方面的技术，而是将这些具体优化细节移交给HotSpot的JIT编译器负责。
+
+复习:AOT(静态提前编译器，Ahead Of Time compiler)
+
+#### 透过字节码指令看代码细节
+
+> IDEA 中安装 JClassLib Bytecode viewer 插件，可以很方便的看字节码。
+
+①类文件结构有几个部分?
+
+② 知道字节码吗?字节码都有哪些?Integer x= 5; int y=5; 比较 x == y 都经过哪些步骤?
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/b4118476b510c4d7.png)
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/d7ead31d0997afec.png)
+
+代码举例三：
+
+```java
+package com.gyz.interview.jvm;
+
+public class Test3 {
+    public static void main(String[] args) {
+        Father f = new Son();
+        System.out.println(f.x);
+    }
+}
+
+class Father {
+    int x = 10;
+
+    public Father() {
+        this.print();
+        x = 20;
+    }
+
+    public void print() {
+        System.out.println("Father.x = " + x);
+    }
+}
+
+class Son extends Father {
+    int x = 30;
+
+    public Son() {
+        this.print();
+        x = 40;
+    }
+
+    @Override
+    public void print() {
+        System.out.println("Son.x = " + x);
+    }
+}
+```
+
+输出结果：
+
+```
+Son.x = 0
+Son.x = 30
+20
+```
+
+### Class文件概述
+
+> 官方文档位置：https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html
+
+> **Class 类的本质**
+
+任何一个class文件都对应着唯一一个类或接口的定义信息，但反过来说，class文件实际上它并不一定以磁盘文件的形式存在。Class 文件是一组以8位字节为基础单位的**二进制流**。
+
+> **Class文件格式**
+
+Class 的结构不像 XML等描述语言，由于它没有任何分隔符号。所以在其中的数据项，无论是字节顺序还是数量，都是被严格限定的，哪个字节代表什么含义，长度是多少，先后顺如何，都不允许改变。
+
+Class 文件格式采用一种类似于 C语言结构体的方式进行数据存储，这种结构中只有两种数据类型：**无符号数**和**表**。
+
+- 无符号数属于基本的数据类型，以 u1、u2、u4、u8 来分别代表 1 个字节、2个字节、4 个字节和 8 个字节的无符号数，无符号数可以用来描述数字、索引引用、数量值或者按照 UTF-8 编码构成字符串值。
+- 表是由多个无符号数或者其他表作为数据项构成的复合数据类型，所有表都习惯性地以“_info”结尾。表用于描述有层次关系的复合结构的数据，整个 class 文件本质上就是一张表。 由于表没有固定长度，所以通常会在其前面加上个数说明。
+
+> **代码举例**
+
+```java
+public class TestClass {
+    private int num = 1;
+
+    public int add() {
+        num = num + 2;
+        return num;
+    }
+}
+```
+
+对应的字节码文件（记住这个文件，在后续分析Class文件结构时用得上）：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/dbce3d7aa726b55a.png)
+
+**换句话说，充分理解了每一个字节码文件的细节，自己也可以反编译出Java源文件来。**
+
+> **字节码文件里是什么?**
+
+源代码经过编译器编译之后便会生成一个字节码文件，字节码是一种二进制的类文件，它的内容是JVM的指令，而不像C、C++经由编译器直接生成机器码。
+
+> **什么是字节码指令(byte code)?**
+
+Java虚拟机的指令由一个字节长度的、代表着某种特定操作含义的**操作码**(opcode)以及跟随其后的零至多个代表此操作所需参数的**操作数**(operand)所构成。虚拟机中许多指令并不包含操作数，只有一个操作码。比如:
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/12cabb372dff17d2.png)
+
+> **如何解读供虚拟机解释执行的二进制字节码?**
+
+方式一：一个一个二进制的看。这里用到的是Notepad++（下载最新版本为好，否则用HEX-Editor插件打开.class文件闪退），需要安装一个HEX-Editor插件，或者使用Binary Viewer
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/bfd3c92106747daa.png)
+
+方式二：使用javap指令：jdk自带的反解析工具
+
+方式三:【使用IDEA插件：jclasslib 或jclasslib bytecode viewer客户端工具。(可视化更好)
+
+- 使用方式：编写完代码进行build，然后选择“view”->“Show Bytecode With Jclasslib”
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/5b770c4192d24e3b.png)
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/f3dc131ca93be0fa.png)
+
+### Class文件结构
+
+> [官方文档描述如下：](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html)
+
+A `class` file consists of a single `ClassFile` structure:
+
+```
+ClassFile {
+    u4             magic;
+    u2             minor_version;
+    u2             major_version;
+    u2             constant_pool_count;
+    cp_info        constant_pool[constant_pool_count-1];
+    u2             access_flags;
+    u2             this_class;
+    u2             super_class;
+    u2             interfaces_count;
+    u2             interfaces[interfaces_count];
+    u2             fields_count;
+    field_info     fields[fields_count];
+    u2             methods_count;
+    method_info    methods[methods_count];
+    u2             attributes_count;
+    attribute_info attributes[attributes_count];
+}
+```
+
+`注： u1、u2、u4、u8 来分别代表 1 个字节、2个字节、4 个字节和 8 个字节的无符号数，无符号数可以用来描述数字、索引引用、数量值或者按照 UTF-8 编码构成字符串值。`
+
+c1ass文件的结构并不是一成不变的，随着]ava虚拟机的不断发展，总是不可避免地会对class文件结构做出一些调整，但是其基本结构和框架是非常稳定的。
+
+Class文件的总体结构如下:
+
+- 魔数
+- Class文件版本
+- 常量池：常量池计数器+常量池表
+- 访问标志
+- 类索引，父类索引，接口索引集合
+- 字段表集合
+- 方法表集合
+- 属性表集合
+
+| 类型           | 名称                | 说明                   | 长度    | 数量                    |
+| -------------- | ------------------- | ---------------------- | ------- | ----------------------- |
+| u4             | magic               | 魔数,识别Class文件格式 | 4个字节 | 1                       |
+| u2             | minor_version       | 副版本号(小版本)       | 2个字节 | 1                       |
+| u2             | major_version       | 主版本号(大版本)       | 2个字节 | 1                       |
+| u2             | constant_pool_count | 常量池计数器           | 2个字节 | 1                       |
+| cp_info        | constant_pool       | 常量池表               | n个字节 | constant_pool_count - 1 |
+| u2             | access_flags        | 访问标识               | 2个字节 | 1                       |
+| u2             | this_class          | 类索引                 | 2个字节 | 1                       |
+| u2             | super_class         | 父类索引               | 2个字节 | 1                       |
+| u2             | interfaces_count    | 接口计数器             | 2个字节 | 1                       |
+| u2             | interfaces          | 接口索引集合           | 2个字节 | interfaces_count        |
+| u2             | fields_count        | 字段计数器             | 2个字节 | 1                       |
+| field_info     | fields              | 字段表                 | n个字节 | fields_count            |
+| u2             | methods_count       | 方法计数器             | 2个字节 | 1                       |
+| method_info    | methods             | 方法表                 | n个字节 | methods_count           |
+| u2             | attributes_count    | 属性计数器             | 2个字节 | 1                       |
+| attribute_info | attributes          | 属性表                 | n个字节 | attributes_count        |
+
+> TestClass字节码解析。
+>
+> 后文对Class文件结构的说明参考此图！！！
+
+![image-20240227011016169](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/39431853d73ed13a.png)
+
+#### Magic Number（魔数）
+
+- 每个Class文件开头的4个字节的无符号整数称为魔数（Magic Number）
+
+- 它的唯一作用是确定这个文件是否为一个能被虚拟机接受的有效合法的Class文件。即：魔数是Class文件的标识符。
+
+- 魔数值固定为0xCAFEBABE。不会改变。
+
+- 如果一个Class文件不以0xCAFEBABE开头，虚拟机在进行文件校验的时候就会直接抛出以下错误：
+
+  ```
+  Error: A JNI error has occurred, please check your installation and try again
+  Exception in thread "main" java.lang.ClassFormatError: Incompatible magic value 1885430635 in class file StringTest
+  ```
+
+- 使用魔数而不是扩展名来进行识别主要是基于安全方面的考虑，因为文件扩展名可以随意地改动。
+
+#### Class文件版本号
+
+紧接着魔数的4个字节存储的是Class文件的版本号。同样也是4个字节。第5个和第6个字节所代表的含义就是编译的副版本号minor_version，而第7个和第8个字节就是编译的主版本号major_version。
+
+它们共同构成了class文件的格式版本号。譬如某个Class文件的主版本号为M，副版本号为m，那么这个Class文件的格式版本号就确定为M.m。
+
+版本号和Java编译器的对应关系如下表：
+
+| 主版本（十进制） | 副版本（十进制） | 编译器版本 |
+| ---------------- | ---------------- | ---------- |
+| 45               | 3                | 1.1        |
+| 46               | 0                | 1.2        |
+| 47               | 0                | 1.3        |
+| 48               | 0                | 1.4        |
+| 49               | 0                | 1.5        |
+| 50               | 0                | 1.6        |
+| 51               | 0                | 1.7        |
+| 52               | 0                | 1.8        |
+| 53               | 0                | 1.9        |
+| 54               | 0                | 1.10       |
+| 55               | 0                | 1.11       |
+
+Java的版本号是从45开始的，JDK1.1之后的每个JDK大版本发布主版本号向上加1。
+
+不同版本的Java编译器编译的Class文件对应的版本是不一样的。目前，高版本的Java虚拟机可以执行由低版本编译器生成的Class文件，但是低版本的Java虚拟机不能执行由高版本编译器生成的Class文件。否则JVM会抛出`java.lang.UnsupportedClassVersionError`异常。（向下兼容）
+
+在实际应用中，由于开发环境和生产环境的不同，可能会导致该问题的发生。因此，需要我们在开发时，特别注意开发编译的JDK版本和生产环境中的JDK版本是否一致。
+
+- 虚拟机JDK版本为1.k（k>=2）时，对应的class文件格式版本号的范围为45.0 - 44+k.0（含两端）。
+
+#### 常量池
+
+常量池是Class文件中内容最为丰富的区域之一。常量池对于Class文件中的字段和方法解析也有着至关重要的作用。
+
+随着Java虚拟机的不断发展，常量池的内容也日渐丰富。可以说，常量池是整个Class文件的基石。
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/d288333df8e9cc09.png)
+
+在版本号之后，紧跟着的是常量池的数量，以及若干个常量池表项。
+
+常量池中常量的数量是不固定的，所以在常量池的入口需要放置一项u2类型的无符号数，代表常量池容量计数值（constant_pool_count）。与Java中语言习惯不一样的是，这个容量计数是从1而不是0开始的。
+
+| 类型           | 名称                | 数量                    |
+| -------------- | ------------------- | ----------------------- |
+| u2（无符号数） | constant_pool_count | 1                       |
+| cp_info（表）  | constant_pool       | constant_pool_count - 1 |
+
+由上表可见，Class文件使用了一个前置的容量计数器（constant_pool_count）加若干个连续的数据项（constant_pool）的形式来描述常量池内容。我们把这一系列连续常量池数据称为常量池集合。
+
+- 常量池表项中，用于存放编译时期生成的各种字面量和符号引用，这部分内容将在类加载后进入方法区的运行时常量池中存放
+
+##### 常量池计数器
+
+- [ ] TODO：。。。
