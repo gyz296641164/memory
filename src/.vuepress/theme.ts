@@ -94,19 +94,20 @@ export default hopeTheme({
     },
   },
 
+
   plugins: {
     blog: true,
 
     //版权信息
     copyright:{
       author: "gong_yuzhuo",
-      license: "MIT"
+      license: "MIT",
+      global: true,
     },
 
     //评论插件
     comment: {
       provider: "Giscus", //评论插件
-      comment: true, //启用评论功能
       repo: "Giscus/Giscus", //远程仓库
       repoId: "MDEwOlJlcG9zaXRvcnkzNTE5NTgwNTM=", //对应自己的仓库Id
       category: "Announcements",
