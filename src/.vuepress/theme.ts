@@ -19,18 +19,18 @@ export default hopeTheme({
 
   docsDir: "docs",
 
-  themeColor: {
-    blue: "#2196f3",
-    red: "#f26d6d",
-    green: "#3eaf7c",
-    orange: "#fb9b5f",
-  },
+  // themeColor: {
+  //   blue: "#2196f3",
+  //   red: "#f26d6d",
+  //   green: "#3eaf7c",
+  //   orange: "#fb9b5f",
+  // },
 
 
   blog: {
     medias: {
       // Email: "https://example.com",
-      Gitee: "https://example.com",
+      // Gitee: "https://example.com",
       GitHub: "https://github.com/gyz296641164/memory",
       // QQ: "https://example.com",
     },
@@ -57,9 +57,9 @@ export default hopeTheme({
       },
 
       // page meta
-      metaLocales: {
-        editLink: "在 GitHub 上编辑此页",
-      },
+      // metaLocales: {
+      //   editLink: "在 GitHub 上编辑此页",
+      // },
     },
 
     "/en/": {
@@ -85,6 +85,7 @@ export default hopeTheme({
 
   },
 
+  //文章加密
   encrypt: {
     config: {
       "/demo/encrypt.html": ["1234"],
@@ -108,10 +109,10 @@ export default hopeTheme({
     //评论插件
     comment: {
       provider: "Giscus", //评论插件
-      repo: "Giscus/Giscus", //远程仓库
-      repoId: "MDEwOlJlcG9zaXRvcnkzNTE5NTgwNTM=", //对应自己的仓库Id
+      repo: "gyz296641164/NotesGiscus", //远程仓库
+      repoId: "R_kgDOLY-oVA", //对应自己的仓库Id
       category: "Announcements",
-      categoryId: "DIC_kwDOFPp0Jc4CcjOR" //对应自己的分类Id
+      categoryId: "DIC_kwDOLY-oVM4Cdk7T" //对应自己的分类Id
     },
     
     photoSwipe: true,

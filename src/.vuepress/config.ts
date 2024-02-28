@@ -1,7 +1,9 @@
 import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
-
+import MarkdownIt from 'markdown-it';
+import { headersPlugin } from '@mdit-vue/plugin-headers';
+import type { MarkdownItEnv } from '@mdit-vue/types';
 
 export default defineUserConfig({
   base: '/',
@@ -14,17 +16,12 @@ export default defineUserConfig({
   },
 
   theme,
+
   port: 8099, //自定义项目启动端口号  
 
-  //标题层级
-  extendsMarkdownOptions: (markdownOptions, app) => {
-    if (markdownOptions.headers === false) return
-    markdownOptions.headers ??= {}
-    if (markdownOptions.headers.level) return
-    markdownOptions.headers.level = [1, 2, 3, 4]
-  },
-
   plugins: [
+
+
 
     //搜索插件
     searchProPlugin({
