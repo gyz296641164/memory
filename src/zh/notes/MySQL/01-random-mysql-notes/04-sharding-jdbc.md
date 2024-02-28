@@ -7,7 +7,7 @@ date: 2023-02-27
 
 <!-- more -->
 
-## 什么是 ShardingSphere  ？
+## 1. 什么是 ShardingSphere  ？
 
 1. 一套开源的分布式数据库中间件解决方案 
 2. 有三个产品： Sharding-JDBC 和 Sharding-Proxy 和 Sharding-Sidecar（规划中）
@@ -19,7 +19,7 @@ date: 2023-02-27
 
 
 
-## 什么是分库分表  ?
+## 2. 什么是分库分表  ?
 
 - 数据库数据量不可控的，随着时间和业务发展，造成表里面数据越来越多，如果再去对数 据库表 curd 操作时候，造成性能问题。
 
@@ -35,7 +35,7 @@ date: 2023-02-27
 
 
 
-## 分库分表的方式  
+## 3. 分库分表的方式
 
 > **分库分表有两种方式：垂直切分和水平切分**
 
@@ -78,7 +78,7 @@ date: 2023-02-27
 
 
 
-## 分库分表应用和问题  
+## 4. 分库分表应用和问题
 
 - 应用 
   1. 在数据库设计时候考虑垂直分库和垂直分表 
@@ -92,7 +92,7 @@ date: 2023-02-27
 
 ***
 
-## Sharding-JDBC 简介  
+## 5. Sharding-JDBC 简介
 
 - 概念：定位为轻量级Java框架，在Java的JDBC层提供的额外服务。 它使用客户端直连数据库，以jar包形式提供服务，无需额外部署和依赖，可理解为增强版的JDBC驱动，完全兼容JDBC和各种ORM框架。
 
@@ -104,9 +104,9 @@ date: 2023-02-27
 
 ***
 
-## Sharding-JDBC 实现水平分表  
+## 6. Sharding-JDBC 实现水平分表
 
-### （一）搭建环境
+### 6.1. （一）搭建环境
 
 1. 技术： SpringBoot 2.2.1+ MyBatisPlus + Sharding-JDBC + Druid 连接池 
 
@@ -186,7 +186,7 @@ date: 2023-02-27
 
 
 
-### （二）配置对应实体类以及 Mapper
+### 6.2. （二）配置对应实体类以及 Mapper
 
 **entity：**
 
@@ -219,7 +219,7 @@ public interface CourseMapper extends BaseMapper<Course> {
 
 
 
-### （三）配置 Sharding-JDBC 分片策略
+### 6.3. （三）配置 Sharding-JDBC 分片策略
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/mysql/other/202207151316374.png" alt="image-20210710172822493" />
 
@@ -256,7 +256,7 @@ spring.shardingsphere.props.sql.show=true
 
 
 
-### （四）测试代码运行
+### 6.4. （四）测试代码运行
 
 ```java
 package com.gyz.shardingjdbcdemo;
@@ -324,7 +324,7 @@ spring.main.allow-bean-definition-overriding=true
 
 ***
 
-## Sharding-JDBC 实现水平分库
+## 7. Sharding-JDBC 实现水平分库
 
 需求：
 
@@ -333,7 +333,7 @@ spring.main.allow-bean-definition-overriding=true
 3. 数据库规则：userid 为偶数添加到 edu_db_1 库，奇数添加到 edu_db_2。
 4. 表规则：如果添加的 cid 为偶数添加到 course_1 中，奇数添加到 course_2 中。
 
-### （一）创建数据库和表结构
+### 7.1. （一）创建数据库和表结构
 
 ```sql
 create database edu_db_1;
@@ -356,7 +356,7 @@ create table course_2 (
 
 ```
 
-### （二）在 SpringBoot 配置文件配置数据库分片规则
+### 7.2. （二）在 SpringBoot 配置文件配置数据库分片规则
 
 ```properties
 # 配置真实数据源
@@ -433,9 +433,9 @@ spring.main.allow-bean-definition-overriding=true
 
 ***
 
-## Sharding-JDBC 实现垂直分库
+## 8. Sharding-JDBC 实现垂直分库
 
-### （一）建库建表
+### 8.1. （一）建库建表
 
 **垂直分库就是专库专表**
 
@@ -455,7 +455,7 @@ create table t_user(
 
 
 
-### （二）配置对应实体类和 Mapper
+### 8.2. （二）配置对应实体类和 Mapper
 
 `@TableName("t_user")`不配置的话找不到表！
 
@@ -542,7 +542,7 @@ spring.main.allow-bean-definition-overriding=true
 
 
 
-### （三）测试代码
+### 8.3. （三）测试代码
 
 ```java
  @Test
@@ -565,7 +565,7 @@ spring.main.allow-bean-definition-overriding=true
 
 ***
 
-## Sharding-JDBC 公共表
+## 9. Sharding-JDBC 公共表
 
 **概念**
 
@@ -573,7 +573,7 @@ spring.main.allow-bean-definition-overriding=true
 2. **在每个数据库中都创建出相同结构公共表**。
 3. 操作公共表时，同时操作添加了公共表的数据库中的公共表，添加记录时，同时添加，删除时，同时删除。
 
-### （一）在多个数据库创建表
+### 9.1. （一）在多个数据库创建表
 
 ```sql
 # use user_db;
@@ -589,7 +589,7 @@ create table t_dict(
 
 
 
-### （二）配置公共表的实体类和 mapper
+### 9.2. （二）配置公共表的实体类和 mapper
 
 ```java
 @Data
@@ -681,7 +681,7 @@ spring.main.allow-bean-definition-overriding=true
 
 
 
-### （三）测试
+### 9.3. （三）测试
 
 ```java
  @Test
@@ -712,17 +712,17 @@ spring.main.allow-bean-definition-overriding=true
 
 ***
 
-## 什么是读写分离  
+## 10. 什么是读写分离
 
 **主从复制：**当主服务器有写入（update/delete/insert）语句的时候，从服务器自动获取。
 
 **读写分离：**update/delete/insert 操作一台服务器，select 另一台服务器。
 
-### （一）先了解下什么是主从复制
+### 10.1. （一）先了解下什么是主从复制
 
 主从复制，是用来建立一个和主数据库完全一样的数据库环境，称为**从数据库**，主数据库一般是准实时的业务数据库。在赋值过程中，一台服务器充当主服务器，而另外一台服务器充当从服务器。此时主服务器会将更新信息写入到一个特定的二进制文件中。并会维护文件的一个索引用来跟踪日志循环。这个日志可以记录并发送到从服务器的更新中去。当一台从服务器连接到主服务器时，从服务器会通知主服务器从服务器的日志文件中读取最后一次成功更新的位置。然后从服务器会接收从哪个时刻起发生的任何更新，然后锁住并等到主服务器通知新的更新。
 
-### （二）主从复制原理
+### 10.2. （二）主从复制原理
 
 **原理**
 
@@ -743,7 +743,7 @@ spring.main.allow-bean-definition-overriding=true
 
 
 
-### （三）主从同步延迟问题
+### 10.3. （三）主从同步延迟问题
 
 MySQL 可以通过命令 `show slave status` 获知当前是否主从同步正常工作。其中一个重要指标就是 **Seconds_Behind_Master**，根据输出的 Seconds_Behind_Master 参数的值来判断：
 
@@ -755,7 +755,7 @@ MySQL 可以通过命令 `show slave status` 获知当前是否主从同步正�
 
   
 
-### （四）导致主从同步延迟情况
+### 10.4. （四）导致主从同步延迟情况
 
 - 主库的从库太多，导致复制延迟。
 - 从库硬件比主库差，导致复制延迟。
@@ -765,7 +765,7 @@ MySQL 可以通过命令 `show slave status` 获知当前是否主从同步正�
 
 
 
-### （五）主从同步解决方案
+### 10.5. （五）主从同步解决方案
 
 - 使用 PXC 架构
 - 避免一些无用的 IO 消耗，可以上 SSD。
@@ -777,7 +777,7 @@ MySQL 可以通过命令 `show slave status` 获知当前是否主从同步正�
 
 
 
-### （六）搭建一主一从 MySQL 环境
+### 10.6. （六）搭建一主一从 MySQL 环境
 
 使用的是两台 Centos7 虚拟机，主服务器 IP 为：192.168.3.107，从服务器 IP：192.168.3.108。
 
@@ -899,9 +899,9 @@ show slave status \G;
 
 ***
 
-## Sharding-JDBC 实现读写分离
+## 11. Sharding-JDBC 实现读写分离
 
-### （一）建库建表
+### 11.1. （一）建库建表
 
 Sharding-JDBC 实现读写分离则是根据**sql 语句语义分析**，当 sql 语句有 insert、update、delete 时，Sharding-JDBC 就把这次操作在主数据库上执行；当 sql 语句有 select 时，就会把这次操作在从数据库上执行，从而实现读写分离过程。
 
@@ -921,7 +921,7 @@ create table t_user(
 );
 ```
 
-### （二）配置读写分离策略
+### 11.2. （二）配置读写分离策略
 
 ```properties
 # 配置数据源，给数据源起别名
@@ -967,7 +967,7 @@ spring.shardingsphere.props.sql.show=true
 
 
 
-### （三）测试代码运行
+### 11.3. （三）测试代码运行
 
 ```java
 @Autowired
@@ -993,7 +993,7 @@ public void findUser() {
 
 ***
 
-## 什么是 ShardingSphere-Proxy
+## 12. 什么是 ShardingSphere-Proxy
 
 定位为透明化的数据库代理端，提供封装了数据库二进制协议的服务端版本，用于完成对异构语言的支持。 目前提供 MySQL 和 PostgreSQL 版本，它可以使用任何兼容 MySQL/PostgreSQL 协议的访问客户端(如：MySQL Command Client, MySQL Workbench, Navicat 等)操作数据，对 DBA 更加友好。
 
@@ -1003,7 +1003,7 @@ public void findUser() {
 - 适用于任何兼容 MySQL/PostgreSQL 协议的的客户端。
 - 简单理解为：之前我们要配置多个数据源，而现在我们使用 ShardingSphere-Proxy 之后，我们相当于只操作一个库一个表，而多库多表操作被封装在了 ShardingSphere-Proxy 里面。是一个透明化的代理端。
 
-### （一）下载 ShardingSphere-Proxy
+### 12.1. （一）下载 ShardingSphere-Proxy
 
 下载地址：
 
@@ -1015,7 +1015,7 @@ public void findUser() {
 
 
 
-### （二）Sharding-Proxy 配置（分表）
+### 12.2. （二）Sharding-Proxy 配置（分表）
 
 进入到 conf 中打开`server.yaml`。
 
@@ -1104,7 +1104,7 @@ insert into t_order(`order_id`,`user_id`,`status`)values(11,1,'jack');
 
 
 
-### （三）Sharding-Proxy 配置（分库）
+### 12.3. （三）Sharding-Proxy 配置（分库）
 
 我们在**主库**创建数据库：
 
@@ -1191,7 +1191,7 @@ insert into t_order(`order_id`,`user_id`,`status`)values(11,1,'jack');
 
 
 
-### （四）配置 Sharding-Proxy 读写分离
+### 12.4. （四）配置 Sharding-Proxy 读写分离
 
 我们还是使用之前的一主一从搭配主从复制，在主和从上创建数据库：
 

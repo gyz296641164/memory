@@ -7,9 +7,9 @@ date: 2023-02-27
 
 <!-- more -->
 
-## DockerFile解析
+## 1. DockerFile解析
 
-### 是什么
+### 1.1. 是什么
 
 - Dockerfile是用来构建Docker镜像的文本文件，是由一条条构建镜像所需的指令和参数构成的脚本。
 
@@ -27,7 +27,7 @@ date: 2023-02-27
 
 ---
 
-### DockerFile构建过程解析
+### 1.2. DockerFile构建过程解析
 
 Dockerfile内容基础知识
 
@@ -46,7 +46,7 @@ Docker执行Dockerfile的大致流程
 
 ---
 
-### 小总结
+### 1.3. 小总结
 
 从应用软件的角度来看，Dockerfile、Docker镜像与Docker容器分别代表软件的三个不同阶段：
 
@@ -64,19 +64,19 @@ Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及�
 
 ---
 
-## DockerFile常用保留字指令
+## 2. DockerFile常用保留字指令
 
 > 参考tomcat8的dockerfile入门：https://github.com/docker-library/tomcat
 
-### FROM
+### 2.1. FROM
 
 基础镜像，当前新镜像是基于哪个镜像的，指定一个已经存在的镜像作为模板，第一条必须是from。
 
-### MAINTAINER
+### 2.2. MAINTAINER
 
 镜像维护者的姓名和邮箱地址。
 
-### RUN
+### 2.3. RUN
 
 - 容器构建时需要运行的命令
 
@@ -93,19 +93,19 @@ Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及�
     - ![image-20220410231905208](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Docker/Advance1/image-20220410231905208.png)
     - RUN是在 docker build时运行
 
-### EXPOSE
+### 2.4. EXPOSE
 
 当前容器对外暴露出的端口
 
-### WORKDIR
+### 2.5. WORKDIR
 
 指定在创建容器后，终端默认登陆的进来工作目录，一个落脚点
 
-### USER
+### 2.6. USER
 
 指定该镜像以什么样的用户去执行，如果都不指定，默认是root
 
-### ENV
+### 2.7. ENV
 
 用来在构建镜像过程中设置环境变量。
 
@@ -113,11 +113,11 @@ Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及�
   - 这个环境变量可以在后续的任何RUN指令中使用，这就如同在命令前面指定了环境变量前缀一样；也可以在其它指令中直接使用这些环境变量，
   - 比如：WORKDIR $MY_PATH
 
-### ADD
+### 2.8. ADD
 
 将宿主机目录下的文件拷贝进镜像且会自动处理URL和解压tar压缩包。
 
-### COPY
+### 2.9. COPY
 
 - 类似ADD，拷贝文件和目录到镜像中。 将从构建上下文目录中 <源路径> 的文件/目录复制到新的一层的镜像内的 <目标路径> 位置。
 - COPY src dest
@@ -125,11 +125,11 @@ Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及�
   - <src源路径>：源文件或者源目录
   - <dest目标路径>：容器内的指定路径，该路径不用事先建好，路径不存在的话，会自动创建。
 
-### VOLUME
+### 2.10. VOLUME
 
 容器数据卷，用于数据保存和持久化工作。
 
-### CMD
+### 2.11. CMD
 
 指定容器启动后的要干的事情。
 
@@ -152,7 +152,7 @@ Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及�
 - CMD是在docker run 时运行。
 - RUN是在 docker build时运行。
 
-### ENTRYPOINT
+### 2.12. ENTRYPOINT
 
 **也是用来指定一个容器启动时要运行的命令**。
 
@@ -187,15 +187,15 @@ Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及�
 
 **如果 Dockerfile 中如果存在多个 ENTRYPOINT 指令，仅最后一个生效**。
 
-### 小总结
+### 2.13. 小总结
 
 ![image-20220411110550617](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Docker/Advance1/image-20220411110550617.png)
 
 ---
 
-## 案例
+## 3. 案例
 
-### 自定义镜像mycentosjava8
+### 3.1. 自定义镜像mycentosjava8
 
 > **要求**
 
@@ -257,9 +257,9 @@ UnionFS（联合文件系统）：Union文件系统（UnionFS）是一种分层�
 
 ---
 
-## Docker微服务实战
+## 4. Docker微服务实战
 
-### 通过IDEA新建一个普通微服务模块
+### 4.1. 通过IDEA新建一个普通微服务模块
 
 **建Module**：docker_boot
 
@@ -398,7 +398,7 @@ public class OrderController {
 
 ---
 
-### 通过Dockerfile发布微服务部署到docker容器
+### 4.2. 通过Dockerfile发布微服务部署到docker容器
 
 **IDEA工具里面搞定微服务jar包**
 
@@ -446,9 +446,9 @@ EXPOSE 6001
 
 ---
 
-## Docker网络
+## 5. Docker网络
 
-### 是什么
+### 5.1. 是什么
 
 > **docker不启动，默认网络情况**
 
@@ -484,7 +484,7 @@ EXPOSE 6001
 
 ---
 
-### 常用基本命令
+### 5.2. 常用基本命令
 
 > **更多参考**：https://m.php.cn/manual/view/36067.html
 
@@ -526,7 +526,7 @@ docker network rm XXX网络名字
 
 ---
 
-### 能干嘛
+### 5.3. 能干嘛
 
 - 容器间的互联和通信以及端口映射
 
@@ -534,9 +534,9 @@ docker network rm XXX网络名字
 
 ---
 
-### 网络模式
+### 5.4. 网络模式
 
-#### 总体介绍
+#### 5.4.1. 总体介绍
 
 ![image-20220414151213376](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Docker/Advance1/image-20220414151213376.png)
 
@@ -547,7 +547,7 @@ docker network rm XXX网络名字
 
 ---
 
-#### 容器实例内默认网络IP生产规则
+#### 5.4.2. 容器实例内默认网络IP生产规则
 
 **说明**
 
@@ -575,7 +575,7 @@ docker容器内部的ip是有可能会发生改变的。
 
 ---
 
-#### 案例说明
+#### 5.4.3. 案例说明
 
 > **bridge**
 
@@ -760,13 +760,13 @@ Alpine操作系统是一个面向安全的轻型 Linux发行版。
 
 ---
 
-## Docker平台架构图解
+## 6. Docker平台架构图解
 
-### 整体架构
+### 6.1. 整体架构
 
 ![image-20220414211351620](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Docker/Advance1/image-20220414211351620.png)
 
-### 整体说明
+### 6.2. 整体说明
 
 从其架构和运行流程来看，Docker 是一个 C/S 模式的架构，后端是一个松耦合架构，众多模块各司其职。
 
