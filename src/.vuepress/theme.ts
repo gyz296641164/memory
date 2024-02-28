@@ -85,6 +85,8 @@ export default hopeTheme({
 
   },
 
+  fullscreen: true, //全屏按钮
+
   //文章加密
   encrypt: {
     config: {

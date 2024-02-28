@@ -43,4 +43,9 @@ export const zhNavbar = navbar([
     icon: "/icon/springcloud.svg",
     link: "/zh/notes/SpringCloud/",
   },
+  {
+    text: "面试区",
+    icon: "note",
+    link: "/zh/notes/Interview/",
+  },
 ]);
