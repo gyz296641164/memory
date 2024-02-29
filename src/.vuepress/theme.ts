@@ -97,7 +97,6 @@ export default hopeTheme({
     },
   },
 
-
   plugins: {
     blog: true,
 

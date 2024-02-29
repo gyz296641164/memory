@@ -307,6 +307,13 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: "structure",
     },
+    {
+      text: "Mybatis",
+      icon: "/icon/Mybatis.svg",
+      prefix: "notes/Mybatis/SourceCode/",
+      collapsible: true,
+      children: "structure",
+    },
   ],
   
   "/zh/notes/SpringCloud/": [

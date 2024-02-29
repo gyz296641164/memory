@@ -45,7 +45,7 @@ export const zhNavbar = navbar([
   },
   {
     text: "面试区",
-    icon: "note",
+    icon: "/icon/interview.svg",
     link: "/zh/notes/Interview/",
   },
 ]);

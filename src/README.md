@@ -2,7 +2,7 @@
 home: true
 title: 主页
 icon: home
-# bgImage: /222.jpeg
+bgImage: /aef6dd1d20888078061f0ca31c945c5f.jpg
 heroImage: /logo2.svg
 heroText: Memory's Notes
 tagline: 不积跬步，无以至千里；不积小流，无以成江海。

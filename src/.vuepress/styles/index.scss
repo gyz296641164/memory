@@ -1,1 +1,8 @@
 // place your custom styles here
+#toc {
+    position: absolute;
+    left: calc(100% + 1rem);
+    display: none;
+    min-width: 10rem;
+    max-width: 18rem;
+}
