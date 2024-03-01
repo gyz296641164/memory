@@ -1,8 +1,68 @@
 // place your custom styles here
+// 文章右侧目录宽度调节
 #toc {
     position: absolute;
     left: calc(100% + 1rem);
     display: none;
     min-width: 10rem;
     max-width: 18rem;
+}
+
+//搜索框样式优化
+.search-pro-box input {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    -webkit-padding-start: 2.5rem;
+    padding-inline-start: 2.5rem;
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    border: 0;
+    border: 2px solid #3eaf7c;
+    border-radius: 8px;
+    background: var(--vp-bg);
+    color: var(--vp-c);
+    outline: none;
+    font-size: 1.25rem;
+    line-height: 2.5;
+}
+
+
+.search-pro-result-item:hover, .search-pro-result-item.active {
+    background-color: #3eaf7c;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.search-pro-modal-wrapper .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    width: 100vw;
+    height: 100vh;
+    animation: .25s search-pro-fade-in;
+    -webkit-backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(0px); */
+    background-color: rgb(9 10 17 / 80%);
+}
+
+.search-pro-result-item {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    background: lightgrey;
+    color: inherit;
+    box-shadow: 0 1px 3px 0 var(--card-shadow);
+    font-weight: 400;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.search-pro-result-title {
+    font-size: 1em;
 }

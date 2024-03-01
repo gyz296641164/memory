@@ -310,7 +310,7 @@ export const zhSidebar = sidebar({
     {
       text: "Mybatis",
       icon: "/icon/Mybatis.svg",
-      prefix: "notes/Mybatis/SourceCode/",
+      prefix: "notes/JAVAEE/Mybatis/SourceCode/",
       collapsible: true,
       children: "structure",
     },
