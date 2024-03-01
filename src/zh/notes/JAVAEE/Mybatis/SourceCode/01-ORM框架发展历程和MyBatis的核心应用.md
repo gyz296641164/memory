@@ -2399,9 +2399,9 @@ MyBatis-Plus是原生MyBatis的一个增强工具，可以在使用原生MyBatis
 
 MyBatis-Plus的核心功能：
 
-**通用 CRUD**：定义好Mapper接口后，只需要继承BaseMapper<T> 接口即可获得通用的增删改查功能，无需编写任何接口方法与配置文件。
+**通用 CRUD**：定义好Mapper接口后，只需要继承`BaseMapper<T>` 接口即可获得通用的增删改查功能，无需编写任何接口方法与配置文件。
 
-**条件构造器**：通过EntityWrapper<T>（实体包装类），可以用于拼接 SQL 语句，并且支持排序、分组查询等复杂的SQL。
+**条件构造器**：通过`EntityWrapper<T>`（实体包装类），可以用于拼接 SQL 语句，并且支持排序、分组查询等复杂的SQL。
 
 **代码生成器**：支持一系列的策略配置与全局配置，比MyBatis的代码生成更好用。
 
