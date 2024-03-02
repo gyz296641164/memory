@@ -308,6 +308,20 @@ export const zhSidebar = sidebar({
       children: "structure",
     },
     {
+      text: "SpringBoot",
+      icon: "/icon/SPRINGBOOT.svg",
+      prefix: "notes/JAVAEE/SpringBoot/",
+      collapsible: true,
+      children: "structure",
+    },
+    {
+      text: "SpringMVC",
+      icon: "/icon/SpringMVC.svg",
+      prefix: "notes/JAVAEE/SpringMVC/",
+      collapsible: true,
+      children: "structure",
+    },
+    {
       text: "Mybatis",
       icon: "/icon/Mybatis.svg",
       prefix: "notes/JAVAEE/Mybatis/SourceCode/",

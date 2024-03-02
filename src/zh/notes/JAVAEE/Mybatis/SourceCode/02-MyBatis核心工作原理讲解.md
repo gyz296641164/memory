@@ -16,11 +16,13 @@ date: 2024-02-29
 工欲善其事必先利其器。为了方便我们在看源码的过程中能够方便的添加注释，我们可以自己来从官网下载源码编译生成对应的Jar包，然后上传到本地maven仓库，再引用这个Jar。大家可以自行去官网下载
 
 > git clone https://github.com/mybatis/parent
+>
 > git clone https://github.com/mybatis/mybatis-3
 
 **也可以通过我们下载好的并且已经添加的有相关注释的源码来使用，可以自行云盘下载，或者在课程源码中也给大家提供了**
 
 > 链接：https://pan.baidu.com/s/13bmU7m4bYREGfHZeDvg0UA
+>
 > 提取码：9ra4
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Mybatis/202402/158d284c35e1fe9d.png)
@@ -270,7 +272,7 @@ build(parser.parse());
 
 然后我们可以看下Configuration初始化做了什么操作
 
-![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/1462/1657799522091/559d82906a7646e3838fc24858978e30.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Mybatis/202402/a0a628b8d5639647.png)
 
 完成了类型别名的注册工作，通过上面的分析我们可以看到XMLConfigBuilder完成了XML文件的解析对应XPathParser和Configuration对象的初始化操作，然后我们再来看下parse方法到底是如何解析配置文件的
 
@@ -1658,7 +1660,7 @@ public <E> List<E> query(Mappedstatement ms, object parameterobject, RowBounds r
 }
 ```
 
-级缓存是和命名空间绑定的，如果多表操作的SQL的话，是会出现脏数据的。同时如果是不同的事务，也可能引起脏读，所以要慎重。
+二级缓存是和命名空间绑定的，如果多表操作的SQL的话，是会出现脏数据的。同时如果是不同的事务，也可能引起脏读，所以要慎重。
 
 如果二级缓存没有命中则会进入到BaseExecutor中继续执行，在这个过程中，会调用一级缓存执行。
 
@@ -1669,8 +1671,8 @@ public <E> List<E> query(Mappedstatement ms, object parameterobject, RowBounds r
 如果一级缓存中没有的话，则需要调用JDBC执行真正的SQL逻辑。我们知道，在调用JDBC之前，是需要建立连接的，如下代码所示:
 
 ```java
-    private statement preparestatement(statementHandler handler, Log statementLog) throws sOLException {
-        statement stmt;
+    private Statement preparestatement(StatementHandler handler, Log statementLog) throws sOLException {
+        Statement stmt;
         Connection connection = getconnection(statementLog);
         stmt = handler.prepare(connection, transaction.getTimeout());
         handler.parameterize(stmt);
@@ -1678,7 +1680,7 @@ public <E> List<E> query(Mappedstatement ms, object parameterobject, RowBounds r
     }
 ```
 
-我们会发现，Mybatis并不是直接从JDBC获取连接的，通过数据源来获取的，Mybatis默认提供了是那种种数据源:JNDl，PooledDataSource和UnpooledDataSource，我们也可以引入第二方数据源，如Druid等。包括驱动等都是通过数据源获取的。
+我们会发现，Mybatis并不是直接从JDBC获取连接的，通过数据源来获取的，Mybatis默认提供了是很多种数据源：JNDl，PooledDataSource和UnpooledDataSource，我们也可以引入第二方数据源，如Druid等。包括驱动等都是通过数据源获取的。
 
 获取到Connection之后，还不够，因为JDBC的数据库操作是需要Statement的，所以Mybatis专门抽象出来了tatementHandler 处理类来专门处理和JDBC的交互，如下所示:
 
@@ -1692,7 +1694,7 @@ public <E> List<E> query(Statement statement, ResultHandler resultHandler) throw
 
 其实这三行代码就代表了Mybatis执行SQL的核心逻辑：组装SQL，执行SQL，组装结果。仅此而已。
 
-具体Sql是如何组装的呢?是通过Boundsql来完成的，具体组装的逻辑大家可以从`org.apache.ibatis.mapping.Mappedstatement#getBoundsql` 中了解，这里不再赘述。
+具体Sql是如何组装的呢？是通过Boundsql来完成的，具体组装的逻辑大家可以从`org.apache.ibatis.mapping.Mappedstatement#getBoundsql` 中了解，这里不再赘述。
 
 ### 5. 处理查询结果
 
@@ -1701,6 +1703,6 @@ public <E> List<E> query(Statement statement, ResultHandler resultHandler) throw
 因为此时我们已经拿到了执行结果ResultSet，同时我们也在应用启动的时候在配置文件中配置了DO到数据库字段的映射ResultMap，所以通过这两个配置就可以转换。核心的转换逻辑是通过TypeHandler完成的，流程如下所示:
 
 1. 创建返回的实体类对象，如果该类是延迟加载，则先生成代理类
-2. 根据ResultMap中配置的数据库字段，将该字段从Resultset取出来
+2. 根据ResultMap中配置的数据库字段，将该字段从ResultSet取出来
 3. 从ResultMap中获取映射关系，如果没有，则默认将下划线转为驼峰式命名来映射
 4. 通过setter方法反射调用，将数据库的值设置到实体类对象当中
