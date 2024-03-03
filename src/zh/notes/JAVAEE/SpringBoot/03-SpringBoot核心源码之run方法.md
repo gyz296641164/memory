@@ -7,9 +7,9 @@ date: 2024-03-02
 
 <!-- more -->
 
-# 一、AutoConfigurationImportSelector
+## 一、AutoConfigurationImportSelector
 
-## 1.问题分析
+### 1.问题分析
 
 我们之前在分析SpringBoot自动装配源码的时候讲过在 `@EnableAutoConfiguration`注解上通过 `@Import`注解导入了一个 `ImportSelector`接口的实现类 `AutoConfigurationImportSelector`。按照之前对 `@Import` 注解的理解，应该会执行重写的 `selectImports` 方法，但调试的时候，执行的流程好像和我们期待的不一样哦，没有走 `selectImports`方法。
 
@@ -23,7 +23,7 @@ date: 2024-03-02
 
 这是什么原因呢？他不是实现了ImportSelector接口吗？怎么和我们之前理解的不一样呢？这就需要我们再来细说下@Import注解了。
 
-## 2.@Import
+### 2.@Import
 
 我们前面介绍过@Import注解可以根据添加的不同类型做出不同的操作
 
@@ -39,7 +39,7 @@ date: 2024-03-02
 
 那这个DeferredImportSelector这个接口的作用是什么呢？字面含义是延迟导入的意思。具体怎么实现的后面再说，我们先来说下他的作用。
 
-## 3.DeferredImportSelector接口
+### 3.DeferredImportSelector接口
 
 DeferredImportSelector接口本身也有ImportSelector接口的功能，如果我们仅仅是实现了DeferredImportSelector接口，重写了selectImports方法，那么selectImports方法还是会被执行的，来看代码。
 
@@ -113,7 +113,7 @@ public class MyDeferredImportSelector implements DeferredImportSelector {
 
 通过上面的效果解释了为什么在SpringBoot自动装配的时候没有走selectImports方法。那么DeferredImportSelector接口的作用是什么呢？为什么要这么设计呢？我们接下来继续分析
 
-## 4.DeferredImportSelector的作用
+### 4.DeferredImportSelector的作用
 
 通过前面的类图结构我们知道DeferredImportSelector是ImportSelector接口的一个扩展。
 
@@ -129,7 +129,7 @@ public class MyDeferredImportSelector implements DeferredImportSelector {
 
 上面代码有两个非常重要的分支，我们在下面逐一的介绍
 
-### 4.1 parse方法
+#### 4.1 parse方法
 
 我们先看parse方法，也就是解析注解类的方法。进入
 
@@ -169,7 +169,7 @@ public class MyDeferredImportSelector implements DeferredImportSelector {
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/fd9a96f2f735a3fc.png)
 
-### 4.2 process方法
+#### 4.2 process方法
 
 好了上面的代码分析清楚了，然后我们再回到process方法中来看下DeferredImportSelectorHandler是如何处理的。
 
@@ -201,11 +201,11 @@ public class MyDeferredImportSelector implements DeferredImportSelector {
 
 ---
 
-# 二、SpringBoot源码环境
+## 二、SpringBoot源码环境
 
 对于想要研究SpringBoot源码的小伙伴来说，在本地编译源码环境，然后在研究源码的时候可以添加对应的注释是必须的，本文就给大家来介绍下如何来搭建我们的源码环境。
 
-## 1.官方源码下载
+### 1.官方源码下载
 
 首先大家要注意SpringBoot项目在2.3.0之前是使用Maven构建项目的，在2.3.0之后是使用Gradle构建项目的。后面分析的源码以SpringBoot2.2.5为案例，所以本文就介绍下SpringBoot2.2.5的编译过程。
 
@@ -219,7 +219,7 @@ public class MyDeferredImportSelector implements DeferredImportSelector {
 
 下载后直接解压缩即可
 
-## 2.本地源码编译
+### 2.本地源码编译
 
 把解压缩的源码直接导入到IDEA中，修改pom文件中的版本号。
 
@@ -260,7 +260,7 @@ mvn clean install -DskipTests
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/83fd2b817a085e65.png)
 
-## 3.源码环境使用
+### 3.源码环境使用
 
 既然源码已经编译好之后我们就可以在这个项目中来创建我们自己的SpringBoot项目了，我们在 `spring-boot-project`项目下创建 `module`,
 
@@ -302,11 +302,11 @@ mvn clean install -DskipTests
 
 ---
 
-# 三、SpringBoot源码主线分析
+## 三、SpringBoot源码主线分析
 
 我们要分析一个框架的源码不可能通过一篇文章就搞定的，本文我们就来分析下SpringBoot源码中的主线流程。先掌握SpringBoot项目启动的核心操作，然后我们再深入每一个具体的实现细节，注：本系列源码都以SpringBoot2.2.5.RELEASE版本来讲解
 
-## 1.SpringBoot启动的入口
+### 1.SpringBoot启动的入口
 
 当我们启动一个SpringBoot项目的时候，入口程序就是main方法，而在main方法中就执行了一个run方法。
 
@@ -320,7 +320,7 @@ public class StartApp {
 }
 ```
 
-## 2.run方法
+### 2.run方法
 
 然后我们进入run()方法中看。代码比较简单
 
@@ -342,13 +342,11 @@ public class StartApp {
 	}
 ```
 
-br
-
-![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/1462/1640171593000/e70d3fe03ded4228abaf0abeb83ac7c0.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/483573ab38e2b6de.png)
 
 在该方法中创建了一个SpringApplication对象。同时调用了SpringApplication对象的run方法。这里的逻辑有分支，先看下SpringApplication的构造方法中的逻辑
 
-## 3.SpringApplication构造器
+### 3.SpringApplication构造器
 
 我们进入SpringApplication的构造方法，看的核心代码为
 
@@ -380,7 +378,7 @@ br
 
 上面的核心操作具体的实现细节我们在后面的详细文章会给大家剖析
 
-## 4.run方法
+### 4.run方法
 
 接下来我们在回到SpringApplication.run()方法中。
 
@@ -473,7 +471,7 @@ br
 
 ---
 
-# 四、SpringApplication构造器
+## 四、SpringApplication构造器
 
 前面给大家介绍了SpringBoot启动的核心流程，本文开始给大家详细的来介绍SpringBoot启动中的具体实现的相关细节。 https://www.processon.com/view/link/61eab8f47d9c085d604e614d
 
@@ -503,7 +501,7 @@ br
 	}
 ```
 
-## 1.webApplicationType
+### 1.webApplicationType
 
 首先来看下webApplicationType是如何来推导出当前启动的项目的类型。通过代码可以看到是通过deduceFromClassPath()方法根据ClassPath来推导出来的。
 
@@ -541,7 +539,7 @@ this.webApplicationType = WebApplicationType.deduceFromClasspath();
 
 ![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/8dd8202b39444b65.png)
 
-## 2.setInitializers
+### 2.setInitializers
 
 然后我们再来看下如何实现加载初始化器的。
 
@@ -630,7 +628,7 @@ org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingL
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/219231671137b046.png)
 
-## 3.setListeners
+### 3.setListeners
 
 清楚了 `setInitializers()`方法的作用后，再看 `setListeners()`方法就非常简单了，都是调用了 `getSpringFactoriesInstances`方法，只是传入的类型不同。也就是要获取的 `META-INF/spring.factories`文件中定义的不同信息罢了。
 
@@ -644,7 +642,7 @@ org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingL
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/21e62505ec0f8a52.png)
 
-## 4.mainApplicationClass
+### 4.mainApplicationClass
 
 最后我们来看下 `duduceMainApplicaitonClass()`方法是如何反推导出main方法所在的Class对象的。通过源码我们可以看到是通过 `StackTrace`来实现的。
 

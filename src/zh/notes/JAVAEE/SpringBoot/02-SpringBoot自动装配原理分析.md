@@ -8,7 +8,7 @@ date: 2024-03-02
 <!-- more -->
 
 
-# 1. SPI源码分析
+## 1. SPI源码分析
 
 为什么要讲SPI呢？因为在SpringBoot的自动装配中其实有使用到SPI机制，所以掌握了这部分对于SpringBoot的学习还是很有帮助的。
 
@@ -180,14 +180,16 @@ private class LazyIterator implements Iterator<S>{
 
 ---
 
-# 2. 自动装配源码分析
+## 2. 自动装配源码分析
 
 
-在前面的分析中，Spring Framework一直在致力于解决一个问题，就是如何让bean的管理变得更简单，如何让开发者尽可能的少关注一些基础化的bean的配置，从而实现自动装配。所以，所谓的自动装配，实际上就是如何自动将bean装载到Ioc容器中来。
+在前面的分析中，Spring Framework一直在致力于解决一个问题，就是如何让bean的管理变得更简单，如何让开发者尽可能的少关注一些基础化的bean的配置，从而实现自动装配。所以，**所谓的自动装配，实际上就是如何自动将bean装载到Ioc容器中来**。
 
 实际上在spring 3.x版本中，Enable模块驱动注解的出现，已经有了一定的自动装配的雏形，而真正能够实现这一机制，还是在spirng 4.x版本中，conditional条件注解的出现。ok，我们来看一下spring boot的自动装配是怎么一回事。
 
-## 2.1. 自动装配的演示
+**注意**：**自动装配最最核心的实现方法---`getAutoConfigurationEntry(annotationMetadata)`**
+
+### 2.1. 自动装配的演示
 
 ```xml
  <dependency>
@@ -208,9 +210,9 @@ spring:
  private RedisTemplate<String,String> redisTemplate;
 ```
 
-按照下面的顺序添加starter，然后添加配置，使用RedisTemplate就可以使用了？ 那大家想没想过一个问题，为什么RedisTemplate可以被直接注入？它是什么时候加入到Ioc容器的呢？ 这就是自动装配。自动装配可以使得classpath下依赖的包相关的bean，被自动装载到Spring Ioc容器中，怎么做到的呢?
+按照上面的顺序添加starter，然后添加配置，使用RedisTemplate就可以使用了？ 那大家想没想过一个问题，为什么RedisTemplate可以被直接注入？它是什么时候加入到Ioc容器的呢？ 这就是自动装配。自动装配可以使得classpath下依赖的包相关的bean，被自动装载到Spring Ioc容器中，怎么做到的呢?
 
-## 2.2. 深入分析EnableAutoConfiguration
+### 2.2. 深入分析EnableAutoConfiguration
 
 EnableAutoConfiguration的主要作用其实就是帮助springboot应用把所有符合条件的@Configuration配置都加载到当前SpringBoot创建并使用的IoC容器中。
 
@@ -219,12 +221,13 @@ EnableAutoConfiguration的主要作用其实就是帮助springboot应用把所�
 ```java
 @Import(AutoConfigurationImportSelector.class)
 public @interface EnableAutoConfiguration {
-
+ 
+}
 ```
 
 但是从EnableAutoCOnfiguration上面的import注解来看，这里面并不是引入另外一个Configuration。而是一个ImportSelector。这个是什么东西呢？
 
-## 2.3. AutoConfigurationImportSelector是什么？
+### 2.3. AutoConfigurationImportSelector是什么？
 
 Enable注解不仅仅可以像前面演示的案例一样很简单的实现多个Configuration的整合，还可以实现一些复杂的场景，比如可以根据上下文来激活不同类型的bean，@Import注解可以配置三种不同的class
 
@@ -233,21 +236,21 @@ Enable注解不仅仅可以像前面演示的案例一样很简单的实现多�
 
 实现ImportBeanDefinitionRegistrar接口进行动态注入
 
-### 2.3.1. CacheService
+#### 2.3.1. CacheService
 
 ```java
 public class CacheService {
 }
 ```
 
-### 2.3.2. LoggerService
+#### 2.3.2. LoggerService
 
 ```java
 public class LoggerService {
 }
 ```
 
-### 2.3.3. EnableDefineService
+#### 2.3.3. EnableDefineService
 
 ```java
 @Target(ElementType.TYPE)
@@ -261,7 +264,7 @@ public @interface EnableDefineService {
 }
 ```
 
-### 2.3.4. MyDefineImportSelector
+#### 2.3.4. MyDefineImportSelector
 
 ```java
 public class MyDefineImportSelector implements ImportSelector {
@@ -280,7 +283,7 @@ annotationMetadata.getAllAnnotationAttributes(EnableDefineService.class.getName(
 }
 ```
 
-### 2.3.5. EnableDemoTest
+#### 2.3.5. EnableDemoTest
 
 ```java
 @SpringBootApplication
@@ -296,7 +299,7 @@ public class EnableDemoTest {
 
 了解了selector的基本原理之后，后续再去分析AutoConfigurationImportSelector的原理就很简单了，它本质上也是对于bean的动态加载。
 
-## 2.4. @EnableAutoConfiguration注解的实现原理
+### 2.4. @EnableAutoConfiguration注解的实现原理
 
 了解了ImportSelector和ImportBeanDefinitionRegistrar后，对于EnableAutoConfiguration的理解就容易一些了
 
@@ -310,7 +313,7 @@ public class EnableDemoTest {
 
 那么可以猜想到这里的实现原理也一定是一样的，定位到AutoConfigurationImportSelector这个类中的selectImports方法
 
-### 2.4.1. selectImports
+#### 2.4.1. selectImports
 
 ```java
 public String[] selectImports(AnnotationMetadata annotationMetadata) {
@@ -328,7 +331,7 @@ public String[] selectImports(AnnotationMetadata annotationMetadata) {
 
 ```
 
-### 2.4.2. getAutoConfigurationEntry
+#### 2.4.2. getAutoConfigurationEntry
 
 ```java
 protected AutoConfigurationEntry getAutoConfigurationEntry(
@@ -360,13 +363,15 @@ fireAutoConfigurationImportEvents(configurations, exclusions);
 
 本质上来说，其实EnableAutoConfiguration会帮助springboot应用把所有符合@Configuration配置都加载到当前SpringBoot创建的IoC容器，而这里面借助了Spring框架提供的一个工具类SpringFactoriesLoader的支持。以及用到了Spring提供的条件注解@Conditional，选择性的针对需要加载的bean进行条件过滤
 
-## 2.5. SpringFactoriesLoader
+### 2.5. SpringFactoriesLoader
 
 为了给大家补一下基础，我在这里简单分析一下SpringFactoriesLoader这个工具类的使用。它其实和java中的SPI机制的原理是一样的，不过它比SPI更好的点在于不会一次性加载所有的类，而是根据key进行加载。
 
-首先，SpringFactoriesLoader的作用是从classpath/META-INF/spring.factories文件中，根据key来加载对应的类到spring IoC容器中。接下来带大家实践一下
+首先，SpringFactoriesLoader的作用是从`classpath/META-INF/spring.factories`文件中，根据key来加载对应的类到spring IoC容器中。接下来带大家实践一下
 
-### 2.5.1. 创建外部项目jar
+#### 2.5.1. 创建外部项目jar
+
+工程名称：mashibing-Core
 
 ```xml
 <dependency>
@@ -376,27 +381,30 @@ fireAutoConfigurationImportEvents(configurations, exclusions);
 </dependency>
 ```
 
-### 2.5.2. 创建bean以及config
+#### 2.5.2. 创建bean以及config
 
 ```java
-public class mashibingCore {
+public class MashibingCore {
     public String study(){
         System.out.println("good good study, day day up");
         return "mashibingEdu.com";
     }
 }
+```
+
+```java
 @Configuration
-public class mashibingConfig {
+public class MashibingConfig {
     @Bean
-    public mashibingCore mashibingCore(){
-        return new mashibingCore();
+    public MashibingCore mashibingCore(){
+        return new MashibingCore();
     }
 }
 ```
 
-### 2.5.3. 创建另外一个工程（spring-boot）
+#### 2.5.3. 创建另外一个工程（spring-boot）
 
-把前面的工程打包成jar，当前项目依赖该jar包
+把前面的工程打包成jar，当前项目依赖该jar包。
 
 ```xml
 <dependency>
@@ -406,7 +414,9 @@ public class mashibingConfig {
 </dependency>
 ```
 
-### 2.5.4. 通过下面代码获取依赖包中的属性
+注意：`<groupId>`、`<artifactId>`、`<version>`内容是前面工程pom.xml中定义的。
+
+#### 2.5.4. 通过下面代码获取依赖包中的属性
 
 运行结果会报错，原因是mashibingCore并没有被Spring的IoC容器所加载，也就是没有被EnableAutoConfiguration导入
 
@@ -415,13 +425,13 @@ public class mashibingConfig {
 public class SpringBootStudyApplication {
     public static void main(String[] args) throws IOException {
         ConfigurableApplicationContext ac=SpringApplication.run(SpringBootStudyApplication.class, args);
-        mashibingCore Myc=ac.getBean(mashibingCore.class);
+        MashibingCore Myc=ac.getBean(MashibingCore.class);
         System.out.println(Myc.study());
     }
 }
 ```
 
-### 2.5.5. 解决方案
+#### 2.5.5. 解决方案
 
 在mashibing-Core项目resources下新建文件夹META-INF，在文件夹下面新建spring.factories文件，文件中配置，key为自定配置类EnableAutoConfiguration的全路径，value是配置类的全路径
 
@@ -433,11 +443,11 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.mashibingedu.
 
 可以发现，我们编写的那个类，就被加载进来了。
 
-## 2.6. Spring Boot中的条件过滤
+### 2.6. Spring Boot中的条件过滤
 
-在分析AutoConfigurationImportSelector的源码时，会先扫描spring-autoconfiguration-metadata.properties文件，最后在扫描spring.factories对应的类时，会结合前面的元数据进行过滤，为什么要过滤呢？ 原因是很多的@Configuration其实是依托于其他的框架来加载的，如果当前的classpath环境下没有相关联的依赖，则意味着这些类没必要进行加载，所以，通过这种条件过滤可以有效的减少@configuration类的数量从而降低SpringBoot的启动时间。
+在分析AutoConfigurationImportSelector的源码时，会先扫描`spring-autoconfiguration-metadata.properties`文件，最后在扫描spring.factories对应的类时，会结合前面的元数据进行过滤，为什么要过滤呢？ 原因是很多的@Configuration其实是依托于其他的框架来加载的，**如果当前的classpath环境下没有相关联的依赖，则意味着这些类没必要进行加载**，所以，通过这种条件过滤可以有效的减少@configuration类的数量从而降低SpringBoot的启动时间。
 
-### 2.6.1. 修改mashibing-Core
+#### 2.6.1. 修改mashibing-Core
 
 在META-INF/增加配置文件，spring-autoconfigure-metadata.properties。
 
@@ -449,7 +459,7 @@ com.mashibingedu.practice.mashibingConfig.ConditionalOnClass=com.mashibingedu.Te
 
 上面这段代码的意思就是，如果当前的classpath下存在TestClass，则会对mashibingConfig这个Configuration进行加载
 
-### 2.6.2. 演示过程(spring-boot)
+#### 2.6.2. 演示过程(spring-boot)
 
 1. 沿用前面spring-boot工程的测试案例，直接运行main方法，发现原本能够被加载的mashibingCore，发现在ioc容器中找不到了。
    ```java
@@ -463,12 +473,15 @@ com.mashibingedu.practice.mashibingConfig.ConditionalOnClass=com.mashibingedu.Te
 
 ---
 
-# 3. 手写Starter
-
+## 3. 手写Starter
 
 我们通过手写Starter来加深对于自动装配的理解
 
-## 3.1. 创建一个Maven项目，quick-starter
+项目目录：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/b1f10fdff2d2a2af.png)
+
+### 3.1. 创建一个Maven项目，quick-starter
 
 定义相关的依赖
 
@@ -487,7 +500,7 @@ com.mashibingedu.practice.mashibingConfig.ConditionalOnClass=com.mashibingedu.Te
 </dependency>
 ```
 
-## 3.2. 定义Formate接口
+### 3.2. 定义Formate接口
 
 定义的格式转换的接口，并且定义两个实现类
 
@@ -521,7 +534,7 @@ public class StringFormatProcessor implements FormatProcessor {
 }
 ```
 
-## 3.3. 定义相关的配置类
+### 3.3. 定义相关的配置类
 
 首先定义格式化加载的Java配置类
 
@@ -579,28 +592,31 @@ public class HelloAutoConfiguration {
 }
 ```
 
-## 3.4. 创建spring.factories文件
+### 3.4. 创建spring.factories文件
 
-在resources下创建META-INF目录，再在其下创建spring.factories文件
+在resources下创建`META-INF`目录，再在其下创建`spring.factories`文件
 
 ```
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.mashibingedu.autoconfiguration.HelloAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.gyz.quickstarter.configutation.HelloAutoConfiguration
 ```
 
-install 打包，然后就可以在SpringBoot项目中依赖改项目来操作了。
+通过Maven的install 打包，然后就可以在其它SpringBoot项目中依赖此项目来操作了。
 
-## 3.5. 测试
+### 3.5. 测试
 
-在SpringBoot中引入依赖
+在另外一个SpringBoot项目中引入依赖。
 
 ```xml
 <dependency>
-    <groupId>org.example</groupId>
-    <artifactId>format-spring-boot-starter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.gyz</groupId>
+    <artifactId>quick-starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
+
+注意：依赖的名称取决于Starter中的`<groupId>`、`<artifactId>`、`<version>`。如上方quick-starter中的为：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/a7cfb050a79a631c.png)
 
 在controller中使用
 
@@ -621,7 +637,11 @@ public class UserController {
 }
 ```
 
-## 3.6. 自定义Starter关联配置信息
+测试结果：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/09f98beb6118dc8e.png)
+
+### 3.6. 自定义Starter关联配置信息
 
 有些情况下我们可以需要用户在使用的时候动态的传递相关的配置信息，比如Redis的Ip，端口等等，这些信息显然是不能直接写到代码中的，这时我们就可以通过SpringBoot的配置类来实现。
 
@@ -715,7 +735,7 @@ public class HelloFormatTemplate {
 }
 ```
 
-增加提示
+**application.properties增加提示**
 
 在这个工程的`META-INF/`下创建一个`additional-spring-configuration-metadata.json`，这个是设置属性的提示类型
 
@@ -736,6 +756,8 @@ public class HelloFormatTemplate {
   ]
 }
 ```
+
+==自动装配最重要的源码方法==
 
 ```java
 	protected AutoConfigurationEntry getAutoConfigurationEntry(AnnotationMetadata annotationMetadata) {
@@ -758,5 +780,8 @@ public class HelloFormatTemplate {
 	}
 ```
 
+**测试提示信息**
 
+在使用Starter的项目中application.properties提示信息如下：
 
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/bee3b87a23371f19.png)

@@ -74,3 +74,66 @@ https://cloud.fynote.com/share/s/IXvrMNIN
 1. 回答具体的应用过程
 2. SpringSecurity的工作原理：过滤器
 
+---
+
+## 9. SpringBoot和Spring的区别是什么
+
+Spring是一个非常强大的企业级Java开发框架，提供了一系列模块来支持不同的应用需求，如依赖注入、面向切面编程、事务管理、Web应用程序开发等。而SpringBoot的出现，主要是起到了简化Spring应用程序的开发和部署，特别是用于构建微服务和快速开发的应用程序。
+
+相比于Spring，SpringBoot主要在这几个方面来提升了我们使用Spring的效率，降低开发成本:
+
+1. 自动配置：Spring Boot通过Auto-Configuration来减少开发人员的配置工作。我们可以通过依赖个starter就把一坨东西全部都依赖进来，使开发人员可以更专注于业务逻辑而不是配置。
+2. 内嵌Web服务器：Spring Boot内置了常见的Web服务器(如Tomcat、Jetty)，这意味着您可以轻松创建可运行的独立应用程序，而无需外部Web服务器。
+3. 约定大于配置：SpringBoot中有很多约定大于配置的思想的体现，通过一种约定的方式，来降低开发人员的配置工作。如他默认读取spring.factories来加载Starter、读取application.properties或application.yml文件来进行属性配置等。
+
+---
+
+## 10. SpringBoot如何做优雅停机
+
+在Web应用开发中，确保应用可以平稳可靠的关闭是至关重要的。在我们常用的SpringBoot中其实提供了内置功能来优雅地处理应用程序的关闭的能力。
+
+先说一下啥是优雅停机，其实他指的是以受控方式终止应用程序的过程，允许它完成任何正在进行的任务，释放资源，并确保数据的完整性。与突然终止应用程序不同，优雅停机确保所有进程都得到优雅停止，以防止潜在的数据损坏或丢失。
+
+从Spring Boot 2.3开始，SpringBoot内置了优雅停机的功能。想要启用优雅停机也非常简单，你只需在你的application.properties文件中添加一行代码:
+
+```
+server.shutdown=graceful
+```
+
+通过这个设置，当你停止服务器时，它将不再接受新的请求。并且服务器也不会立即关闭，而是等待正在进行的请求处理完。
+
+这个等待的时间我们是可以自定义的:
+
+```
+spring.lifecycle.timeout-per-shutdown-phase=2m
+```
+
+默认的等待时长是30秒，我们通过以上配置可以将这个等待时长延长直2分钟。
+
+> **Spring Boot Actuator shutdown Endpoint**
+
+想要在Spring Boot Actuator中启用优雅停机，需要做如下配置。
+
+首先增加Maven依赖:
+
+```
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+然后增加配置项,
+
+```
+management.endpoints.web.exposure.include=*
+management.endpoint.shutdown.enabled=true
+```
+
+要优雅停机应用，可以使用HTTP POST请求来调用关闭端点。例如，可以使用curl命令或工具来发送POST请求:
+
+```
+curl -X PosT http://localhost:8080/actuator/shutdown
+```
+
+当你发送POST请求到/actuator/shutdown时，应用将接收到关闭命令并开始进行优雅停机。应用会等待一段时间以完成正在进行的请求处理，然后关闭。
