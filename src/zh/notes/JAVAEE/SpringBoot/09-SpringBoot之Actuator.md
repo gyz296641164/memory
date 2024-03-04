@@ -1,5 +1,5 @@
 ---
-title: 09_SpringBoot中的Actuator应用
+title: 09_SpringBoot中Actuator应用
 category:
   - SpringBoot
 date: 2024-03-04

@@ -4,30 +4,28 @@ layout: BlogHome
 icon: home
 bgImage: /background.jpg
 title: 博客主页
-heroImage: /logo.svg
-heroText: Memory's blog
+heroText: Memory's Blog
 heroFullScreen: true
 tagline: 不积跬步，无以至千里；不积小流，无以成江海✊
 projects:
+  - icon: book
+    name: JAVA基础
+    desc: 基础不牢，地动山摇！
+    link: "/zh/notes/JAVA/JAVASE/"
+
   - icon: project
     name: 谷粒商城
     desc: 内容持续更新中！
-    link: https://你的项目链接
-
-  - icon: book
-    name: 书籍收集
-    desc: 日常学习书籍！
-    link: https://你的书籍链接
+    link: "/zh/notes/cfmall-notes/"
 
   - icon: article
-    name: 文章名称
-    desc: 文章详细描述
-    link: https://你的文章链接
+    name: 并发编程
+    desc: 详细记录学习并发编程过程中的笔记！
+    link: "/zh/notes/Concurrent_Programming/"
 
   - icon: /logo.svg
-    name: 自定义项目
-    desc: 自定义详细介绍
-    link: https://你的自定义链接
+    name: 面试专区
+    desc: 常见面试题资料整理！
+    link: "/zh/notes/Interview/"  
 
-footer: 做好自己的事
 ---

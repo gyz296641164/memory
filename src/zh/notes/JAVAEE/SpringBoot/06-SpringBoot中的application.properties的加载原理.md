@@ -1,5 +1,5 @@
 ---
-title: 06_SpringBoot中的application.properties的加载原理
+title: 06_SpringBoot中application.properties的加载原理
 category:
   - SpringBoot
 date: 2024-03-03

@@ -1,5 +1,5 @@
 ---
-title: 07_SpringBoot源码分析之bootstrap.properties文件加载的原理
+title: 07_SpringBoot中bootstrap.properties文件加载原理
 category:
   - SpringBoot
 date: 2024-03-04
