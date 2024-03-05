@@ -42,7 +42,7 @@ export const zhNavbar = navbar([
     link: "/zh/notes/SpringCloud/",
   },
   {
-    text: "面试区",
+    text: "面试专区",
     icon: "/icon/interview.svg",
     link: "/zh/notes/Interview/",
   },

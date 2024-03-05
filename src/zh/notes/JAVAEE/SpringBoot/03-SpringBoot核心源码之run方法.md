@@ -466,14 +466,74 @@ public class StartApp {
 14. 完成对应的事件广播
 15. 返回应用上下文对象。
 
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/1a31ed73413f62bf.png)
 
-到此SpringBoot项目的启动初始化的代码的主要流程就介绍完成了。细节部分后面详细讲解。
+到此SpringBoot项目的启动初始化的代码的主要流程就介绍完成了。先挑几个关键的步骤介绍下他们的作用，细节部分后面详细讲解。
+
+**启动&停止计时器**：在代码中，用到stopWatch来进行计时。所以在最开始先要启动计时，在最后要停止计时。这个计时就是最终用来统计启动过程的时长的。最终在应用启动信息输出的实时打印出来，如以下内容：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/a3f15832492de46b.png)
+
+**获取和启动监听器**：这一步从spring.factories中解析初始所有的SpringApplicationRunListener 实例，并通知他们应用的启动过程已经开始。
+
+**装配环境参数**：这一步主要是用来做参数绑定的，prepareEnvironment 方法会加载应用的外部配置。这包括application.properties 或 application.yml 文件中的属性，环境变量，系统属性等。所以，我们自定义的那些参数就是在这一步被绑定的。
+
+**打印Banner**：这一步的作用很简单，就是在控制台打印应用的启动横幅Banner。如以下内容：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/3612b9148554c737.png)
+
+**创建应用上下文：**到这一步就真的开始启动了，第一步就是先要创建一个Spring的上下文出来，只有有了这个上
+下文才能进行Bean的加载、配置等工作。
+
+**准备上下文：**这一步非常关键，很多核心操作都是在这一步完成的
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/50e5d274fbe9d2a2.png)
+
+在这一步，会打印启动的信息日志，主要内容如下：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/fc58fe21ba715ad5.png)
+
+**刷新上下文**：这一步，是Spring启动的核心步骤了，这一步骤包括了实例化所有的 Bean、设置它们之间的依赖关系以及执行其他的初始化任务。
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/1338f00a2b2c8f26.png)
+
+所以，这一步中，主要就是创建BeanFactory，然后再通过BeanFactory来实例化Bean。
+
+但是，很多人都会忽略一个关键的步骤(网上很多介绍SpringBoot启动流程的都没提到)，那就是Web容器的启动，及Tomcat的启动其实也是在这个步骤。
+
+在refresh->onRefresh中，这里会调用到ServletWebServerApplicationontext的onRefresh中：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/3e64907d69cafe42.png)
+
+这里面的==createWebserver==方法中，调用到`factory.getWebServer(getSelflnitializer();`的时候，factory有三种实现，分别是：
+
+1. JettyServletWebServerFactory、
+2. TomcatServletWebServerFactory、
+3. UndertowServletWebServerFactory
+
+**默认使用TomcatServletWebServerFactory。**
+
+TomcatServletWebServerFactory的getWebServer方法如下，这里会创建一个Tomcat
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/2f1f8fd25d1dfc89.png)
+
+在最后一步`getTomcatWebServer(tomcat);`的代码中，会创建一个TomcatServer，并且把他启动：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/0a26d26f6870a91e.png)
+
+接下来在initialize中完成了tomcat的启动。
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/a802c88a3d8d3940.png)
+
+最后，SpringBoot的启动过程主要流程如下：
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/7c0adc379cf09736.png)
 
 ---
 
 ## 四、SpringApplication构造器
 
-前面给大家介绍了SpringBoot启动的核心流程，本文开始给大家详细的来介绍SpringBoot启动中的具体实现的相关细节。 https://www.processon.com/view/link/61eab8f47d9c085d604e614d
+前面给大家介绍了SpringBoot启动的核心流程，本文开始给大家详细的来介绍SpringBoot启动中的具体实现的相关细节。 
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/bbd83244f823974b.png)
 
