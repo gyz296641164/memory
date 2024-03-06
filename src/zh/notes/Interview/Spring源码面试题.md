@@ -1,6 +1,13 @@
-# Spring源码面试题
+---
+title: Spring源码面试题
+category:
+  - Spring
+date: 2024-02-28
+---
 
-## 谈谈你对Spring框架的理解?
+<!-- more -->
+
+## 1. 谈谈你对Spring框架的理解?
 
 Spring 是一个开源的应用程序框架，它起源于 Rod Johnson 在其著名的 Spring Framework 专著中提出的一个轻量级框架的观念。下面是 Spring 的发展历史：
 
@@ -19,7 +26,7 @@ Spring 是一个开源的应用程序框架，它起源于 Rod Johnson 在其著
 
 ---
 
-## Spring Framework的IoC容器实现原理是什么？
+## 2. Spring Framework的IoC容器实现原理是什么？
 
 1. 控制翻转
 2. Spring中IoC的实现：管理Bean对象的容器 ==》 容器是如何管理Bean对象 ==》 容器创建添加Bean对象 ==》Bean的定义。Bean定义的管理。Bean的生命周期
@@ -38,7 +45,7 @@ Spring 是一个开源的应用程序框架，它起源于 Rod Johnson 在其著
 
 ---
 
-## Spring Framework的Bean生命周期是怎样的？
+## 3. Spring Framework的Bean生命周期是怎样的？
 
 Spring的Bean的生命周期
 
@@ -54,9 +61,23 @@ Vue 生命周期
 
 ![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202402/5b5eb174a8950aa9.png)
 
+### 简化版本
+
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202403/202403061928549.png)
+
+**检查Aware(感知接口)：**
+
+- Aware接口也称为感知接口，当bean实现了这些感知接口时，Spring在实例化这些bean的时候，就会调用感知接口中的方法注入相应的数据。
+- 如果同时满足以下两点的话：
+  - 一是bean的属性对应的类，是否实现了BeanNameAware、BeanFactoryAware或BeanClassLoaderAware中的某个接口；
+  - 二是这个bean属性对应的setter方法，在这三个感知接口中是否也存在相同的方法。
+- 方法`isSetterDefinedInInterface`就会返回true，Spring在自动装配也就是创建这个bean时，就不会给该属性注入值了。[案例参考](https://www.yznotes.cn/zh/notes/Spring/01-spring-source-code-deeply/04-Spring%E5%88%9D%E7%BA%A7%E5%AE%B9%E5%99%A8%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9A%E5%BF%BD%E7%95%A5%E6%8C%87%E5%AE%9A%E6%8E%A5%E5%8F%A3%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8A%9F%E8%83%BD.html#spring%E4%B8%AD%E7%9A%84%E6%84%9F%E7%9F%A5%E6%8E%A5%E5%8F%A3%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88%E5%91%A2)
+
+
+
 ---
 
-## Spring Framework AOP的实现原理是什么？
+## 4. Spring Framework AOP的实现原理是什么？
 
 AOP：面向切面编程，  ==补充==》OOP：面向对象编程
 
@@ -76,7 +97,7 @@ AOP：面向切面编程，  ==补充==》OOP：面向对象编程
 
 ---
 
-## Spring Framework事务管理的实现原理是什么？
+## 5. Spring Framework事务管理的实现原理是什么？
 
 1、事务特性--》 事务的传播属性和事务的隔离级别  serviceA  事务管理a(){serviceB.b()}   serviceB   b();
 
@@ -92,7 +113,7 @@ serviceA  a(){proxy.b();}  b()
 
 ---
 
-## Spring Framework的事件机制是怎样的？
+## 6. Spring Framework的事件机制是怎样的？
 
 1、设计模式：发布订阅模式【观察者模式】
 
@@ -108,7 +129,7 @@ serviceA  a(){proxy.b();}  b()
 
 ---
 
-## Spring Framework中常用的设计模式有哪些？
+## 7. Spring Framework中常用的设计模式有哪些？
 
 Spring框架是一个基于多种设计模式的框架，以下是Spring中常用的几种设计模式：
 
@@ -123,7 +144,7 @@ Spring框架是一个基于多种设计模式的框架，以下是Spring中常�
 
 ---
 
-## Spring Framework中常用的注解有哪些？
+## 8. Spring Framework中常用的注解有哪些？
 
 Spring框架中常用的注解有：
 
@@ -141,7 +162,7 @@ Spring框架中常用的注解有：
 
 ---
 
-## Spring Framework中如何处理循环依赖问题？
+## 9. Spring Framework中如何处理循环依赖问题？
 
 1、什么是循环依赖？ A--》 B    B--》 A
 

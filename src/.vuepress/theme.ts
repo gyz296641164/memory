@@ -4,11 +4,11 @@ import { enSidebar, zhSidebar } from "./sidebar/index.js";
 
 
 export default hopeTheme({
-  hostname: "https://yznotes.cn",
+  hostname: "https://www.yznotes.cn/",
 
   author: {
     name: "gong_yz",
-    url: "https://yznotes.cn",
+    url: "https://www.yznotes.cn/",
   },
 
   iconAssets: "iconfont",

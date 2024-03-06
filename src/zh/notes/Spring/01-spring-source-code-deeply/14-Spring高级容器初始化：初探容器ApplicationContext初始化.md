@@ -30,7 +30,7 @@ ApplicationContext在初级容器的基础之上，扩展了非常多的高级�
 
 首先，我们先来看下ApplicationContext是如何使用的吧：
 
-![image.png](https://studyimages.oss-cn-beijing.aliyuncs.com/images/Spring/202304/202304111942629.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/images/Spring/202304/202304111942629.png)
 
 可以看到，同样是解析xml文件，如果我们使用ApplicationContext来解析的话，也就是将之前的XmlBeanFactory替换成了ApplicationContext的实现类ClassPathXmlApplicationContext，运行一下和XmlBeanFactory一样，可以在控制台上打印出字符串“ruyuan ”。
 

@@ -161,7 +161,7 @@ public class BeanFactoryDemo {
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202211081509422.png" />
 
-通过方法上的注释，我们大概可以知道**`ignoreDependencyInterface`方法**的功能，就是**在自动装配时忽略指定接口的依赖**，简单看注释确实还看不出什么，我们直接来看下`ignoredDependencyInterfaces`集合在代码中的作用吧。
+通过方法上的注释，我们大概可以知道**`ignoreDependencyInterface`**方法的功能，就是**在自动装配时忽略指定接口的依赖**，简单看注释确实还看不出什么，我们直接来看下`ignoredDependencyInterfaces`集合在代码中的作用吧。
 
 简单找了下发现，`ignoredDependencyInterfaces`集合只在方法`isExcludedFromDependencyCheck`中被调用了，我们来看下：
 
@@ -171,7 +171,7 @@ public class BeanFactoryDemo {
 
 > 也就是说你有一个bean，bean中的某个属性是否能被注入对应的依赖，还得要看你这个属性对应的类是否实现了BeanNameAware、BeanFactoryAware、BeanClassLoaderAware这些接口。
 
-但是，这也只是我们的初步猜测，我们还得要到`AutowireUtils`类中的`isSetterDefinedInInterface`方法中，进一步分析一下*：*
+但是，这也只是我们的初步猜测，我们还得要到`AutowireUtils`类中的`isSetterDefinedInInterface`方法中，进一步分析一下：
 
 <img src="https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/202211081509424.png" />
 

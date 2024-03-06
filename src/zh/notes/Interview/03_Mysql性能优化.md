@@ -7,7 +7,7 @@ date: 2024-03-05
 
 <!-- more -->
 
-## 索引下推是什么？
+## 1. 索引下推是什么？
 
 索引下推是索引下推是 MySQL 5.6 及以上版本上推出的，用于对查询进行优化。
 
@@ -51,7 +51,7 @@ set optimizer_switch='index_condition_pushdown=off';  -- 关闭索引下推
 set optimizer_switch='index_condition_pushdown=on';  -- 开启索引下推
 ```
 
-### 分库分表
+### 1.1. 分库分表
 
 垂直分库，减少并发压力。水平分表，解决存储瓶颈。
 
@@ -69,11 +69,11 @@ set optimizer_switch='index_condition_pushdown=on';  -- 开启索引下推
 
 ---
 
-## 如何进行慢SQL查询
+## 2. 如何进行慢SQL查询
 
 [`https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html`](https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html)
 
-### 打开慢日志开关**
+### 2.1. 打开慢日志开关**
 
 因为开启慢查询日志是有代价的（跟 bin log、optimizer-trace 一样），所以它默认是关闭的：
 
@@ -123,7 +123,7 @@ select sleep(10);
 SELECT * FROM `user_innodb` where phone = '136';
 ```
 
-### 慢日志分析
+### 2.2. 慢日志分析
 
 **1、日志内容**
 
@@ -165,7 +165,7 @@ mysqldumpslow -s t -t 10 -g 'select' /var/lib/mysql/localhost-slow.log
 
 除了慢查询日志之外，还有一个 SHOW PROFILE 工具可以使用
 
-## 如何查看执行计划
+## 3. 如何查看执行计划
 
 你们的导向图：https://www.processon.com/view/link/643c031f6dcb245472ab26c9
 
@@ -244,7 +244,7 @@ select version();
 show variables like '%engine%';
 ```
 
-### id
+### 3.1. id
 
 ```
 id 是查询序列编号。
@@ -308,7 +308,7 @@ id 值相同时，表的查询顺序是
 如果 ID 有相同也有不同，就是 ID 不同的先大后小，ID 相同的从上往下。
 ```
 
-### select type查询类型
+### 3.2. select type查询类型
 
 ```
 这里并没有列举全部（其它：DEPENDENT UNION、DEPENDENT SUBQUERY、MATERIALIZED、UNCACHEABLE SUBQUERY、UNCACHEABLE UNION）。
@@ -376,7 +376,7 @@ FROM
 
 主要是显示哪些表之间存在 UNION 查询。<union2,3>代表 id=2 和 id=3 的查询存在 UNION。同上例。
 
-### type 连接类型
+### 3.3. type 连接类型
 
 https://dev.mysql.com/doc/refman/5.7/en/explain-output.html#explain-join-types
 
@@ -539,7 +539,7 @@ Full Table Scan，如果没有索引或者没有用到索引，type 就是 ALL�
 
 ALL（全表扫描）和 index（查询全部索引）都是需要优化的。
 
-### possible_key、key
+### 3.4. possible_key、key
 
 可能用到的索引和实际用到的索引。如果是 NULL 就代表没有用到索引。
 
@@ -566,7 +566,7 @@ explain select phone from user_innodb where phone='126';
 
 如果通过分析发现没有用到索引，就要检查 SQL 或者创建索引。
 
-### key_len
+### 3.5. key_len
 
 索引的长度（使用的字节数）。跟索引字段的类型、长度有关。
 
@@ -578,19 +578,19 @@ explain select phone from user_innodb where phone='126';
 explain select * from user_innodb where name ='jim';
 ```
 
-### rows
+### 3.6. rows
 
 MySQL 认为扫描多少行才能返回请求的数据，是一个预估值。一般来说行数越少越好。
 
-### filtered
+### 3.7. filtered
 
 这个字段表示存储引擎返回的数据在 server 层过滤后，剩下多少满足查询的记录数量的比例，它是一个百分比。
 
-### ref
+### 3.8. ref
 
 使用哪个列或者常数和索引一起从表中筛选数据。
 
-### Extra
+### 3.9. Extra
 
 执行计划给出的额外的信息说明。
 
@@ -663,11 +663,11 @@ EXPLAIN select t.tid from teacher t join course c on t.tid = c.tid group by t.ti
 
 ---
 
-## 我们为什么需要分库分表
+## 4. 我们为什么需要分库分表
 
 在分库分表之前，就需要考虑为什么需要拆分。我们做一件事，肯定是有充分理由的。所以得想好分库分表的理由是什么。我们现在就从两个维度去思考它，**为什么要分库？为什么要分表？**
 
-### 为什么要分库
+### 4.1. 为什么要分库
 
 如果业务量剧增，数据库可能会出现性能瓶颈，这时候我们就需要考虑拆分数据库。从这两方面来看：
 
@@ -677,7 +677,7 @@ EXPLAIN select t.tid from teacher t join course c on t.tid = c.tid group by t.ti
 
 当前非常火的微服务架构出现，就是为了应对高并发。它把订单、用户、商品等不同模块，拆分成多个应用，并且把单个数据库也拆分成多个不同功能模块的数据库（订单库、用户库、商品库），以分担读写压力。
 
-### 为什么要分表
+### 4.2. 为什么要分表
 
 假如你的单表数据量非常大，存储和查询的性能就会遇到瓶颈了，如果你做了很多优化之后还是无法提升效率的时候，就需要考虑做分表了。一般千万级别数据量，就需要分表。
 
@@ -695,7 +695,7 @@ InnoDB存储引擎最小储存单元是页，一页大小就是16k。B+树叶子
 
 ---
 
-## 什么时候考虑分库分表？
+## 5. 什么时候考虑分库分表？
 
 对于MySQL，InnoDB存储引擎的话，单表最多可以存储10亿级数据。但是的话，如果真的存储这么多，性能就会非常差。一般数据量千万级别，B+树索引高度就会到3层以上了，查询的时候会多查磁盘的次数，SQL就会变慢。
 
@@ -717,7 +717,7 @@ MySQL服务器如果配置更好，是不是可以超过这个500万这个量级
 
 ---
 
-## 如何选择分表键
+## 6. 如何选择分表键
 
 分表键，即用来分库/分表的字段，换种说法就是，你以哪个维度来分库分表的。比如你按用户ID分表、按时间分表、按地区分表，这些用户ID、时间、地区就是分表键。
 
@@ -729,7 +729,7 @@ MySQL服务器如果配置更好，是不是可以超过这个500万这个量级
 
 ---
 
-## 非分表键如何查询
+## 7. 非分表键如何查询
 
 分库分表后，有时候无法避免一些业务场景，需要通过非分表键来查询。
 
@@ -743,9 +743,9 @@ MySQL服务器如果配置更好，是不是可以超过这个500万这个量级
 
 ---
 
-## 分表策略如何选择
+## 8. 分表策略如何选择
 
-### range范围
+### 8.1. range范围
 
 `range`，即范围策略划分表。比如我们可以将表的主键 `order_id`，按照从 `0~300万`的划分为一个表，`300万~600万`划分到另外一个表。
 
@@ -755,7 +755,7 @@ MySQL服务器如果配置更好，是不是可以超过这个500万这个量级
 
 缺点： 可能会有热点问题。因为订单id是一直在增大的，也就是说最近一段时间都是汇聚在一张表里面的。比如最近一个月的订单都在300万~600万之间，平时用户一般都查最近一个月的订单比较多，请求都打到order_1表啦。
 
-### hash取模
+### 8.2. hash取模
 
 hash取模策略：
 
@@ -778,7 +778,7 @@ Math.abs(orderId.hashCode()) % table_number
 
 **缺点：**如果未来某个时候，表数据量又到瓶颈了，需要扩容，就比较麻烦。所以一般建议提前规划好，一次性分够。（可以考虑一致性哈希）
 
-### 一致性Hash
+### 8.3. 一致性Hash
 
 如果用hash方式分表，前期规划不好，需要扩容二次分表，表的数量需要增加，所以hash值需要重新计算，这时候需要迁移数据了。
 
@@ -792,7 +792,7 @@ Math.abs(orderId.hashCode()) % table_number
 
 ---
 
-## 分库后，事务问题如何解决
+## 9. 分库后，事务问题如何解决
 
 分库分表后，假设两个表在不同的数据库，那么**本地事务已经无效**啦，需要使用**分布式事务**了。
 
@@ -807,7 +807,7 @@ Math.abs(orderId.hashCode()) % table_number
 
 ---
 
-## 跨节点Join关联问题
+## 10. 跨节点Join关联问题
 
 在单库未拆分表之前，我们如果要使用join关联多张表操作的话，简直so easy啦。但是分库分表之后，两张表可能都不在同一个数据库中了，那么如何跨库join操作呢？
 
@@ -820,13 +820,13 @@ Math.abs(orderId.hashCode()) % table_number
 
 ---
 
-## order by,group by等聚合函数问题
+## 11. order by,group by等聚合函数问题
 
 跨节点的 `count,order by,group by`以及聚合函数等问题，都是一类的问题，它们一般都需要基于全部数据集合进行计算。可以分别在各个节点上得到结果后，再在应用程序端进行合并。
 
 ---
 
-## 分库分表后的分页问题
+## 12. 分库分表后的分页问题
 
 **方案1（全局视野法）：**
 
@@ -842,7 +842,7 @@ Math.abs(orderId.hashCode()) % table_number
 
 ---
 
-## 分库分表选择哪种中间件
+## 13. 分库分表选择哪种中间件
 
 目前流行的分库分表中间件比较多：
 
@@ -855,7 +855,7 @@ Math.abs(orderId.hashCode()) % table_number
 
 ---
 
-## 如何评估分库数量
+## 14. 如何评估分库数量
 
 对于MySQL来说的话，一般单库超过5千万记录，DB的压力就非常大了。所以分库数量多少，需要看单库处理记录能力有关。
 
@@ -865,7 +865,7 @@ Math.abs(orderId.hashCode()) % table_number
 
 ---
 
-## 垂直分库、水平分库、垂直分表、水平分表的区别
+## 15. 垂直分库、水平分库、垂直分表、水平分表的区别
 
 水平分库：以字段为依据，按照一定策略（hash、range等），将一个库中的数据拆分到多个库中。
 
@@ -877,7 +877,7 @@ Math.abs(orderId.hashCode()) % table_number
 
 ---
 
-## 分表要停服嘛？不停服怎么做？
+## 16. 分表要停服嘛？不停服怎么做？
 
 不用停服。不停服的时候，应该怎么做呢，主要分五个步骤：
 
