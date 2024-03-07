@@ -248,7 +248,7 @@ public class BeanFactoryDemo {
 
 而这个结果，其实就是Spring内部调用了BeanNameAware接口的setBeanName方法，为BeanNameAwareImpl设置了beanName属性的值。
 
-> 分析到这里也就真相大白了，也就是说如果一个bean实现了BeanName、BeanFactoryAware或BeanClassLoaderAware接口的话，那这个bean中的属性如果想要通过Spring进行自动装配赋值的话，这个属性对应的setter方法，就不能和感知接口中的方法相同。
+> 分析到这里也就真相大白了，也就是说如果一个bean实现了BeanNameAware、BeanFactoryAware或BeanClassLoaderAware接口的话，那这个bean中的属性如果想要通过Spring进行自动装配赋值的话，这个属性对应的setter方法，就不能和感知接口中的方法相同。
 >
 > 如果相同的话，Spring就不会为该属性自动装配赋值，而是让Spring内部调用这些感知接口的方法，来为这些属性设置值。
 

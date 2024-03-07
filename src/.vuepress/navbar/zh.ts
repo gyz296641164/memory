@@ -43,36 +43,36 @@ export const zhNavbar = navbar([
   },
   {
     text: "面试专区",
-    icon: "/icon/interview.svg",
+    icon: "/icon/Interview.svg",
     link: "/zh/notes/Interview/",
   },
   {
     text: "工具",
-    icon: "/icon/interview.svg",
+    icon: "/icon/tools.svg",
     children: [
       {
         text: "JSON格式化",
-        icon: "note",
+        icon: "/icon/json.svg",
         link: "https://tools.fun/json.html",
       },
       {
         text: "iP地址归属地查询",
-        icon: "note",
+        icon: "/icon/ip.svg",
         link: "https://www.ip138.com/", 
       },
       {
         text: "UUID在线生成器",
-        icon: "note",
+        icon: "/icon/uuid.svg",
         link: "https://www.zxgj.cn/g/uuid",
       },
       {
         text: "在线对比工具",
-        icon: "note",
+        icon: "/icon/compare.svg",
         link: "https://www.fly63.com/tool/textdiff/",
       },
       {
         text: "在线Nginx配置工具",
-        icon: "note",
+        icon: "/icon/vscode-icons--folder-type-nginx.svg",
         link: "https://www.digitalocean.com/community/tools/nginx?global.app.lang=zhCN",
       },
     ],

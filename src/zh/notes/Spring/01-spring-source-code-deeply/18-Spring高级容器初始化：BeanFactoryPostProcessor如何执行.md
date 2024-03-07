@@ -199,7 +199,11 @@ date: 2023-03-31
 
 并且，在处理的最后会清理beanFactory的元数据缓存，毕竟在工厂级别的后处理器BeanFactoryPostProcessor中，各种元数据的修改那都是在所难免的。
 
-可以看到，在这个环节当中主要处理容器beanFactory中，单纯实现接口BeanFactoryPostProcessor的实现类，和处理接口BeanDefinitionRegistryPostProcessor实现类一样，BeanFactoryPostProcessor的处理分为三种类型来处理，分别是实现了PriorityOrdered接口、Ordered接口以及这两种接口都没实现的普通类，也就是无序的。
+可以看到，在这个环节当中主要处理容器beanFactory中，单纯实现接口BeanFactoryPostProcessor的实现类，和处理接口BeanDefinitionRegistryPostProcessor实现类一样，BeanFactoryPostProcessor的处理分为三种类型来处理，
+
+- 分别是实现了PriorityOrdered接口、
+- Ordered接口
+- 以及这两种接口都没实现的普通类，也就是无序的。
 
 ------
 
