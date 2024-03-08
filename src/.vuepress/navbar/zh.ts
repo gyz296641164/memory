@@ -43,7 +43,7 @@ export const zhNavbar = navbar([
   },
   {
     text: "面试专区",
-    icon: "/icon/Interview.svg",
+    icon: "/icon/interview.svg",
     link: "/zh/notes/Interview/",
   },
   {
@@ -57,7 +57,7 @@ export const zhNavbar = navbar([
       },
       {
         text: "iP地址归属地查询",
-        icon: "/icon/ip.svg",
+        icon: "/icon/IP.svg",
         link: "https://www.ip138.com/", 
       },
       {
