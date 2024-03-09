@@ -1,3 +1,13 @@
+---
+title: 00_Spring源码总结
+category:
+  - Spring源码
+star: true
+date: 2024-03-09
+---
+
+<!-- more -->
+
 下文是我在看源码过程中的个人总结，列举了每个过程中最重要的操作。存在误差的地方会不断修正。
 
 ## Spring容器初始化图示
@@ -20,6 +30,17 @@
 
 ## Bean生命周期
 
-setter循环依赖
+代码入口就是我们获取bean的getBean()方法：
 
-通过别名缓存aliasMp获取实际beanName
+```java
+public class ApplicationContextDemo {
+
+	public static void main(String[] args) throws Exception {
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		TestA testA = (TestA) context.getBean("testA");
+		System.out.println(testA);
+	}
+}
+```
+
+![Bean生命周期](https://studyimages.oss-cn-beijing.aliyuncs.com/img/mysql/202403/9cf81540ad7a7d40.svg)

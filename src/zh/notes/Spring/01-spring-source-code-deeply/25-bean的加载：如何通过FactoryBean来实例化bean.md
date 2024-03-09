@@ -208,9 +208,7 @@ public class StudentFactoryBeanDemo {
 
 可以看到逻辑并不复杂，如果获取到的单例beanInstance是NullBean的实例就直接返回，接着会判断，如果beanInstance不是FactoryBean的实现类，此时就会抛出一个异常。
 
-从这里我们可以总结出在Spring中，如果一个单例bean的名称以“&”为前缀，那它必须是FactoryBean接口的实现类，这是Spring内部的一个约定，否则就会报错。
-
-------
+从这里我们可以总结出**在Spring中，如果一个单例bean的名称以“&”为前缀，那它必须是FactoryBean接口的实现类，这是Spring内部的一个约定，否则就会报错**。
 
 接下来我们可以看到，如果name以“&”为前缀，且同时是FactoryBean接口的实例，此时就会将单例beanInstance返回了，和我们刚才案例中看到的结果是一致的，直接就返回这个FactoryBean的实现类了。
 
@@ -224,8 +222,6 @@ public class StudentFactoryBeanDemo {
 
 从这里，我们同样可以得到一些信息，也就是说在默认情况下，我们是不需要根据FactoryBean来实例化bean的，只有当我们需要全权控制bean的实例化时，才需要像案例中一样自定义FactoryBean的实现类，并且在getObject方法中定义好bean的实例化的逻辑。
 
-------
-
 那现在，我们就假设当前的bean在业务当中非常的特殊，Spring默认的实例化bean的方式已经满足不了需求了，必须得要自己来定义bean的实例化过程，这个时候，我们再来看下Spring会怎样处理：
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/2022-11/20221129181317.png)
@@ -234,15 +230,11 @@ public class StudentFactoryBeanDemo {
 
 前面我们也看到了参数mbd的值为null，所以mbd.isFactoryBean = true 的这行代码，在本次的逻辑中是不会执行的，而是执行方法getCachedObjectForFactoryBean。
 
-------
-
 通过方法getCachedObjectForFactoryBean的名称我们可以猜到，这里应该是尝试先从缓存中，获取FactoryBean实例化好的bean实例，我们可以进去看下：
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/2022-11/20221129181319.png)
 
 可以看到，这里就是通过beanName到缓存factoryBeanObjectCache中获取单例，第一次来获取，缓存中当然也是没有的，所以返回结果为空。
-
-------
 
 我们接着往后面看：
 

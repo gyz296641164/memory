@@ -106,8 +106,6 @@ public class TestA {
 
 我们简单点，TestA也只有一个字段student，类型为Student。
 
-------
-
 接下来，我们的重点就是来关注下TestA中的属性student，到底如何结合Spring的四种自动装配模式来注入相应值的，和之前一样，我们再创建一个xml文件applicationContext.xml：
 
 ```xml
@@ -128,8 +126,6 @@ public class TestA {
 在实例化testA对应的bean时，Spring默认会根据testA中的属性名称，去xml中匹配名称相同的bean，然后给属性注入相应的值，这里的名称我们既可以用属性id也可以用属性name来设置。
 
 大家应该也发现了，TestA中的属性名称为student，刚好和xml中id为“student”的bean，在名称上能匹配的上，所以Spring在实例化testA时会实例化id为“student”的bean，然后将实例化好的bean为testA进行属性赋值，也就是根据属性的名称自动寻找并装配属性的值。
-
-------
 
 接下来，我们通过代码来验证一下：
 
@@ -152,8 +148,6 @@ public class ApplicationContextDemo {
 
 果然，TestA中属性student自动装配成功了。
 
-------
-
 那如果根据自动装配模式AUTOWIRE_BY_TYPE，也就是根据类型来自动装配会怎样呢？我们调整下xml配置来看下：
 
 ```xml
@@ -173,15 +167,11 @@ public class ApplicationContextDemo {
 
 现在的话，当Spring实例化testA时，如果发现autowired属性的值为“byType”，Spring就会根据属性的类型Student到xml中匹配所有bean，如果匹配到了其他bean中存在Student的类型，同样会将该bean实例化好并拿来为属性student赋值。
 
-------
-
 了解完过程之后，我们将刚才的代码运行一下，结果依然和刚才一样：
 
 ![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Spring/2022-12/202212261755530.png)
 
-另外需要提一点的就是，不论是根据名称进行自动装配，还是根据类型进行自动装配，底层都是bean中存在属性的setter方法，在TestA中也就是需要setStudent方法来完成该属性值的自动装配，大家可以尝试下将TestA中的setStudent方法删除掉，看下属性值是否都能装配成功。
-
-------
+另外需要提一点的就是，==不论是根据名称进行自动装配，还是根据类型进行自动装配，底层都是bean中存在属性的setter方法==，在TestA中也就是需要setStudent方法来完成该属性值的自动装配，大家可以尝试下将TestA中的setStudent方法删除掉，看下属性值是否都能装配成功。
 
 而第三种装配方式，也就是通过通过构造方法来自动装配，我们也来看下：
 
