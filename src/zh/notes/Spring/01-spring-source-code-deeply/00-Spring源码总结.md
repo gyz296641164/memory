@@ -24,7 +24,7 @@ date: 2024-03-09
     }
 ```
 
-![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/mysql/202403/ee1043c3728c3290.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202403/174d43bac8b16f10.png)
 
 ---
 
@@ -43,4 +43,4 @@ public class ApplicationContextDemo {
 }
 ```
 
-![Bean生命周期](https://studyimages.oss-cn-beijing.aliyuncs.com/img/mysql/202403/9cf81540ad7a7d40.svg)
+![Bean](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202403/d2131b3d220cb49c.png)

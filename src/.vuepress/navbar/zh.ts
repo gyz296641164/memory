@@ -56,11 +56,6 @@ export const zhNavbar = navbar([
         link: "https://tools.fun/json.html",
       },
       {
-        text: "iP地址归属地查询",
-        icon: "/icon/IP.svg",
-        link: "https://www.ip138.com/", 
-      },
-      {
         text: "UUID在线生成器",
         icon: "/icon/uuid.svg",
         link: "https://www.zxgj.cn/g/uuid",

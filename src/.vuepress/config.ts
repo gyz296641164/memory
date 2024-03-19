@@ -61,7 +61,7 @@ export default defineUserConfig({
       {
         name: "description",
         content:
-          "Memory's Notes：不积跬步，无以至千里；不积小流，无以成江海。",
+          "YZ's Notes：不积跬步，无以至千里；不积小流，无以成江海。",
       },
     ],
   ],
