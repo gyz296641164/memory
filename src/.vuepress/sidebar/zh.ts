@@ -87,6 +87,12 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: [
         {
+          text: "计算机网络",
+          prefix: "NetWork/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
           text: "Servlet",
           prefix: "Servlet/",
           collapsible: true,
