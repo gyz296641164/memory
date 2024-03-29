@@ -13,15 +13,14 @@ export const zhNavbar = navbar([
     prefix: "/zh/notes/",
     children: [
       {
-        text: "JVM",
+        text: "网络安全",
         icon: "edit",
-        prefix: "JVM/",
+        prefix: "BASE/Safety-Concept/",
         children: [
-          { text: "1_JVM发展史和Java体系结构", icon: "note", link: "01-JVM-devlopment/README.md" },
-          { text: "2_内存结构", icon: "note", link: "02-JVM-memory/README.md" },
-          { text: "3_垃圾回收", icon: "note", link: "03-JVM-garbage-collection/README.md" },
-          { text: "4_类加载与字节码技术", icon: "edit", link: "04-ClassLoader-ByteCode/README.md" },
-          { text: "5_细节补充", icon: "note", link: "05-JVM-detail-analyse/README.md" },
+          { text: "HTTPS_TLS1.2握手流程-及证书链", icon: "note", link: "浅析TLS协议的握手流程及证书链路验证过程.md" },
+          { text: "密钥-加密算法-数字证书等相关概念", icon: "note", link: "密钥-加密算法-数字证书等相关概念.md" },
+          { text: "密码学-公钥密码系统", icon: "note", link: "密码学-公钥密码系统.md" },
+          { text: "密码学-数字证书与PKI", icon: "note", link: "密码学-数字证书与PKI.md" },
         ],
       },
       {
