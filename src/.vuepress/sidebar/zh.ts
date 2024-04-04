@@ -300,6 +300,33 @@ export const zhSidebar = sidebar({
       ],
     },
     {
+      text: "分布式",
+      icon: "/icon/分布式.svg",
+      prefix: "notes/distributed_system/",
+      collapsible: true,
+      children: [
+        {
+          text: "分布式基础概念",
+          prefix: "distributed-base/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "分布式事务",
+          prefix: "distributed-transaction/",
+          collapsible: true,
+          children: "structure",
+        },
+      ],
+    },
+    {
+      text: "高可用",
+      icon: "/icon/高可用.svg",
+      prefix: "notes/high_concurrency/",
+      collapsible: true,
+      children: "structure",
+    },
+    {
       text: "Maven基础",
       icon: "/icon/maven.svg",
       prefix: "notes/Maven/",

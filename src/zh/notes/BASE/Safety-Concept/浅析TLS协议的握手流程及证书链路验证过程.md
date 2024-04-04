@@ -234,7 +234,7 @@ CA 证书由权威的证书颁发机构 CA（Certificate Authority）签发，�
 
 #### 3.4.1. 证书链路
 
-![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202403/292506cbbb2d8e45.webp)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202403/0395027b7f8adaeb.jpg)
 
 > [根证书、中间证书、服务器证书生成过程讲解](https://blog.csdn.net/ARV000/article/details/134694724)
 >
@@ -274,7 +274,7 @@ CA 证书由权威的证书颁发机构 CA（Certificate Authority）签发，�
 
 #### 3.4.2. 证书验证
 
-![img](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202403/954e989054f12e10.webp)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Interview/202403/577c500bef1a43f2.png)
 
 1. 首先，客户端会从服务器获取证书链。证书链通常包括服务器证书、一个或多个中间证书。
 2. 客户端首先会检查服务器证书的有效性，包括证书的有效期、证书的颁发机构等。
