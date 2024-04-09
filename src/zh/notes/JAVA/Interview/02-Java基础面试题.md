@@ -566,7 +566,7 @@ public class FuneDemo06 extends Thread{
 
 线程的生命周期：线程对象(Thread)从开始到销毁的全过程
 
-![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/1462/1675489410098/1980f488416e4f27873341478f928eda.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/NetWork/202403/d09b1b95bc531ea6.png)
 
 **线程的状态：**
 
