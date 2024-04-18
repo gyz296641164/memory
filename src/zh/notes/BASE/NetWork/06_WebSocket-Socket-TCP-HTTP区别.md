@@ -1,3 +1,12 @@
+---
+title: WebSocket-Socket-TCP-HTTP区别
+category:
+  - 计算机网络
+date: 2024-04-10
+---
+
+<!-- more -->
+
 ## WebSocket 和 HTTP 的区别
 
 HTTP 是一个无状态的协议，使客户端向服务器请求资源，并从服务器接收响应。客户端使用 HTTP 请求/响应语法，即请求发送到服务器之后，服务器向客户端返回 HTML 文件、图像和其他媒体内容。

@@ -1,3 +1,12 @@
+---
+title: 网络通信协议-WebSocket
+category:
+  - 计算机网络
+date: 2024-04-10
+---
+
+<!-- more -->
+
 ## 开篇
 
 文章来源：[有了Socket协议，为什么还要WebSocket协议？](https://www.cnblogs.com/ToTigerMountain/articles/17543461.html)
