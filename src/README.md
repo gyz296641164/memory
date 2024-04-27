@@ -4,7 +4,7 @@ title: 主页
 icon: home
 heroImage: /logo2.svg
 bgImage: https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/d5adf0a15e3e661a.svg
-heroText: YZ's Notes
+heroText: Yǔ Zhuó Notes
 tagline: 不积跬步,无以至千里；不积小流,无以成江海✊
 actions:
   - text: 开始阅读 🧭
@@ -15,14 +15,14 @@ actions:
     link: /zh/BlogHome.md
 
 features:
-  - title: Spring Cloud && Spring Cloud Alibaba 基础教程
+  - title: SpringCloudAlibaba教程
     icon: fab fa-markdown
     details: Eureka、Nacos、Gateway、Sentinel、OpenFeign、Sleuth等常见组件使用。
     link: /zh/notes/SpringCloud/
 
   - title: 谷粒商城
     icon: person-chalkboard
-    details: 谷粒商城是一个B2C模式的电商平台，采用SpringCloud全新的解决方案，应用监控、限流、网关、熔断降级等分布式方案，全方位涉及。
+    details: 采用SpringCloud全新的解决方案，应用监控、限流、网关、熔断降级等分布式方案，全方位涉及。
     link: /zh/notes/cfmall-notes/
 
   - title: MySQL
