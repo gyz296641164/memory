@@ -102,7 +102,7 @@ export default hopeTheme({
 
     //版权信息
     copyright:{
-      author: "gong_yuzhuo",
+      author: "gong_yz",
       license: "MIT",
       global: true,
     },

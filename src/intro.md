@@ -7,7 +7,7 @@ icon: "/icon/introduce.svg"
 
 ::: info
 
-本仓库仅供学习使用，毫无其它用意！
+本仓库仅供学习使用，毫无其它用意！如有侵权行为，请联系我删除指定文章。
 
 :::
 
@@ -15,10 +15,9 @@ icon: "/icon/introduce.svg"
 
 记录学习过程中的点点滴滴！内容持续完善中。本人能力有限，文中有误之处还希望帮忙予以纠正。
 
-### 在线阅读地址
+如果想获取资料或者沟通可以在文章底部留言或者联系我的QQ！
 
-[进入](https://www.yznotes.cn/)
 
-### 联系方式
+### 联系方式QQ
 
-QQ: 3355327159
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/NetWork/202403/9b426ca43b57e186.png)

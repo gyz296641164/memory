@@ -10,7 +10,7 @@ export default defineUserConfig({
   locales: {
     "/": {
       lang: "zh-CN",
-      title: "Memory",
+      title: "YZ",
       description: "vuepress-theme-hope 的博客演示",
     },
   },

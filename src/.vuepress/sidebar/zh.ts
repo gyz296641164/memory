@@ -4,21 +4,23 @@ export const zhSidebar = sidebar({
   "/zh/": [
     // "", //侧边栏“首页”
     "intro",
-    {
-      text: "如何使用",
-      icon: "/icon/use.svg",
-      prefix: "demo/",
-      link: "demo/",
-      collapsible: true, //侧边栏折叠 
-      children: "structure",
-    },
     // {
-    //   text: "文章",
-    //   icon: "note",
-    //   prefix: "posts/",
-    //   collapsible: true, //侧边栏折叠
+    //   text: "如何使用",
+    //   icon: "/icon/use.svg",
+    //   prefix: "demo/",
+    //   link: "demo/",
+    //   collapsible: true, //侧边栏折叠 
     //   children: "structure",
     // },
+
+    {
+      text: "杂文",
+      icon: "/icon/use.svg",
+      prefix: "posts/",
+      collapsible: true, //侧边栏折叠
+      children: "structure",
+    },
+
     // "slides", //幻灯片页
     {
       text: "JAVA",
