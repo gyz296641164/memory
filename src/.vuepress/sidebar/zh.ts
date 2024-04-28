@@ -9,58 +9,60 @@ export const zhSidebar = sidebar({
       icon: "/icon/interview.svg",
       prefix: "notes/Interview/",
       collapsible: true,
-      children: [
-        {
-          text: "网络基础",
-          prefix: "notes/BASE/NetWork/",
-          collapsible: true,
-          children: ["04_TCP", "03_HTTPS原理", "05_网络通信协议-WebSocket", "06_WebSocket-Socket-TCP-HTTP区别"],
-        },   
+      children: [ 
         {
           text: "Java基础",
-          prefix: "notes/Interview/JavaSE/",
+          prefix: "JavaSE/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         },   
         {
           text: "JVM",
-          prefix: "notes/Interview/JVM/",
+          prefix: "JVM/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         }, 
         {
           text: "并发编程",
-          prefix: "notes/Interview/Concurrent_Programming/",
+          prefix: "Concurrent_Programming/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         }, 
         {
           text: "MySQL",
-          prefix: "notes/Interview/MySQL/",
+          prefix: "MySQL/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         }, 
         {
           text: "Redis",
-          prefix: "notes/Interview/Redis/",
+          prefix: "Redis/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         }, 
         {
           text: "MQ",
-          prefix: "notes/Interview/MQ/",
+          prefix: "MQ/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         }, 
         {
           text: "框架",
-          prefix: "notes/Interview/JavaEE/",
+          prefix: "JavaEE/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         }, 
         {
           text: "系统设计",
-          prefix: "notes/Interview/Architecture/",
+          prefix: "Architecture/",
+          icon: "note",
           collapsible: true,
           children: "structure"
         }, 
@@ -229,7 +231,7 @@ export const zhSidebar = sidebar({
       ],
     },
     {
-      text: "Linux常用命令",
+      text: "Linux命令",
       icon: "/icon/linux.svg",
       link: "notes/Linux.md",
     },

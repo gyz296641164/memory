@@ -3,7 +3,7 @@
 
 联系方式QQ：3355327159
 
-本仓库地址：[Memory's notes](https://github.com/gyz296641164/memory)
+本仓库地址：[https://github.com/gyz296641164/memory](https://github.com/gyz296641164/memory)
 :::
 
 ## JAVA
