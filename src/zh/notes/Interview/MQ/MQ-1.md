@@ -125,7 +125,7 @@ rabbitmq里创建用户，必须要被指派给至少一个vhost，并且只能�
 
 消息广播到绑定的队列，不管队列绑定了什么路由键，消息经过交换器，每个队列都有一份。
 
-![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/5983/1687697834027/24ea01dc45f840768e1337feadb06880.png)
+![](https://studyimages.oss-cn-beijing.aliyuncs.com/img/NetWork/202403/abe690083caf6c41.png)
 
 #### 6.1.3. Topic
 

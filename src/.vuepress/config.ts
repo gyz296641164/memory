@@ -10,7 +10,7 @@ export default defineUserConfig({
   locales: {
     "/": {
       lang: "zh-CN",
-      title: "YZ",
+      title: "Memory",
       description: "vuepress-theme-hope 的博客演示",
     },
   },
@@ -61,7 +61,7 @@ export default defineUserConfig({
       {
         name: "description",
         content:
-          "YZ's Notes：不积跬步，无以至千里；不积小流，无以成江海。",
+          "Memory's Notes：不积跬步，无以至千里；不积小流，无以成江海。",
       },
     ],
   ],

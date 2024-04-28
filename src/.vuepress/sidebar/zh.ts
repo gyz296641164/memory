@@ -3,15 +3,69 @@ import { sidebar } from "vuepress-theme-hope";
 export const zhSidebar = sidebar({
   "/zh/": [
     // "", //侧边栏“首页”
-    "intro",
-    // {
-    //   text: "如何使用",
-    //   icon: "/icon/use.svg",
-    //   prefix: "demo/",
-    //   link: "demo/",
-    //   collapsible: true, //侧边栏折叠 
-    //   children: "structure",
-    // },
+
+    {
+      text: "面试专区",
+      icon: "/icon/interview.svg",
+      prefix: "notes/Interview/",
+      collapsible: true,
+      children: [
+        {
+          text: "网络基础",
+          prefix: "notes/BASE/NetWork/",
+          collapsible: true,
+          children: ["04_TCP", "03_HTTPS原理", "05_网络通信协议-WebSocket", "06_WebSocket-Socket-TCP-HTTP区别"],
+        },   
+        {
+          text: "Java基础",
+          prefix: "notes/Interview/JavaSE/",
+          collapsible: true,
+          children: "structure"
+        },   
+        {
+          text: "JVM",
+          prefix: "notes/Interview/JVM/",
+          collapsible: true,
+          children: "structure"
+        }, 
+        {
+          text: "并发编程",
+          prefix: "notes/Interview/Concurrent_Programming/",
+          collapsible: true,
+          children: "structure"
+        }, 
+        {
+          text: "MySQL",
+          prefix: "notes/Interview/MySQL/",
+          collapsible: true,
+          children: "structure"
+        }, 
+        {
+          text: "Redis",
+          prefix: "notes/Interview/Redis/",
+          collapsible: true,
+          children: "structure"
+        }, 
+        {
+          text: "MQ",
+          prefix: "notes/Interview/MQ/",
+          collapsible: true,
+          children: "structure"
+        }, 
+        {
+          text: "框架",
+          prefix: "notes/Interview/JavaEE/",
+          collapsible: true,
+          children: "structure"
+        }, 
+        {
+          text: "系统设计",
+          prefix: "notes/Interview/Architecture/",
+          collapsible: true,
+          children: "structure"
+        }, 
+      ]
+    }, 
 
     {
       text: "杂文",
@@ -22,6 +76,7 @@ export const zhSidebar = sidebar({
     },
 
     // "slides", //幻灯片页
+
     {
       text: "JAVA",
       icon: "/icon/java.svg",
@@ -69,13 +124,6 @@ export const zhSidebar = sidebar({
           text: "JAVA集合",
           icon: "star",
           prefix: "JAVA_Collection/",
-          collapsible: true,
-          children: "structure",
-        },
-        {
-          text: "JAVA基础面试题",
-          icon: "star",
-          prefix: "Interview/",
           collapsible: true,
           children: "structure",
         },
@@ -139,13 +187,6 @@ export const zhSidebar = sidebar({
           text: "5_细节补充",
           icon: "star",
           link: "05-JVM-detail-analyse/README.md",
-        },
-        {
-          text: "JVM面试题",
-          icon: "star",
-          prefix: "06_JVM面试题/",
-          collapsible: true,
-          children: "structure",
         },
       ],
     },
@@ -290,12 +331,6 @@ export const zhSidebar = sidebar({
         {
           text: "六、共享模型之工具",
           prefix: "六、共享模型之工具/",
-          collapsible: true,
-          children: "structure",
-        },
-        {
-          text: "七、并发编程面试题",
-          prefix: "七、并发编程面试题/",
           collapsible: true,
           children: "structure",
         },

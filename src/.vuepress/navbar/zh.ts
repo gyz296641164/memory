@@ -1,12 +1,7 @@
 import { navbar } from "vuepress-theme-hope";
 
 export const zhNavbar = navbar([
-  {
-    text: "谷粒商城",
-    icon: "/icon/mall.svg",
-    link: "/zh/notes/cfmall-notes/",
-    // activeMatch: "^/zh/notes/cfmall-notes",
-  },
+
   {
     text: "博文",
     icon: "/icon/note-pad.svg",
@@ -36,14 +31,14 @@ export const zhNavbar = navbar([
     link: "/zh/notes/Spring/01-spring-source-code-deeply/",
   },
   {
-    text: "SpringCloud基础教程",
+    text: "Spring Cloud Alibaba基础教程",
     icon: "/icon/springcloud.svg",
     link: "/zh/notes/SpringCloud/",
   },
   {
-    text: "面试专区",
-    icon: "/icon/interview.svg",
-    link: "/zh/notes/Interview/",
+    text: "谷粒商城",
+    icon: "/icon/mall.svg",
+    link: "/zh/notes/cfmall-notes/"
   },
   {
     text: "工具",

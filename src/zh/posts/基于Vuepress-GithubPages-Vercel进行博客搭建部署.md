@@ -1,5 +1,5 @@
 ---
-title: 基于Vuepress+GithubPages+Vercel进行博客搭建部署
+title: Vuepress+GithubPages+Vercel进行博客搭建部署
 category:
   - 文章
 date: 2024-04-27

@@ -1,5 +1,5 @@
 ---
-title: 微服务面试-组件
+title: 微服务框架组件
 category:
   - 微服务
 date: 2024-02-28
