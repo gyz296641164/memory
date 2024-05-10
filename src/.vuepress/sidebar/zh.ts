@@ -457,6 +457,12 @@ export const zhSidebar = sidebar({
           collapsible: true,
           children: "structure",
         },
+        {
+          text: "六、运维篇",
+          prefix: "六-运维篇/",
+          collapsible: true,
+          children: "structure",
+        },
       ],
     }
   ],
