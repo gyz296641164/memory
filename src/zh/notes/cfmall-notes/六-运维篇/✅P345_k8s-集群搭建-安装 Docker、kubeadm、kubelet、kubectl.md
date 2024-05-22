@@ -16,41 +16,65 @@ Kubernetes 默认 CRI（容器运行时）为 Docker，因此先安装 Docker。
 
 ---
 
-## 1、安装 docker
+## 安装 docker
 
-1、卸载系统之前的 docker
+### 卸载系统之前的 docker
 
 ```
 sudo yum remove docker \
-docker-client \
-docker-client-latest \
-docker-common \
-docker-latest \
-docker-latest-logrotate \
-docker-logrotate \
-docker-engine
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
 ```
 
-2、安装 Docker-CE
+在卸载后，通过`docker info`看下版本信息，查看是否真正卸载掉了！这个时候，我们需要再看下还有没有未删除的文件：
 
 ```
+sudo yum list installed  | grep docker
+```
+
+并执行命令删除：
+
+```
+sudo yum -y remove containerd.io.x86_64
+```
+
+![](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202405/5afd3829fc4ce2de.png)
+
+> [CentOS Docker卸载不掉]([centos docker卸载不掉_mob64ca12f6aae1的技术博客_51CTO博客](https://blog.51cto.com/u_16213458/8929102))
+
+### 安装 Docker-CE
+
 安装必须的依赖
+
+```
 sudo yum install -y yum-utils \
 	device-mapper-persistent-data \
 	lvm2
 ```
 
-```
 设置 docker repo 的 yum 位置。（不要换行，直接按如下一行命令执行即可，否则yum源添加不成功）
+
+```
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 ```
 
-```
 安装 docker，以及 docker-cli
-sudo yum install -y docker-ce docker-ce-cli containerd.io
+
+> 注意：要指定Docker安装版本，否则在后续**部署 k8s-master**时，会发生Docker版本与k8s版本不兼容问题！
+
+```
+#注释掉sudo yum install -y docker-ce docker-ce-cli containerd.io
+sudo yum install -y docker-ce-19.03.13 docker-ce-cli-19.03.13 containerd.io
 ```
 
-3、配置 docker 加速（全部复制，回车执行即可）
+### 配置 docker 加速
+
+全部复制，回车执行即可
 
 ```
 sudo mkdir -p /etc/docker
@@ -63,7 +87,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
-4、启动 docker & 设置 docker 开机自启
+### 启动 docker & 设置 docker 开机自启
 
 ```
 systemctl enable docker
@@ -73,7 +97,7 @@ systemctl enable docker
 
 ---
 
-## 2、添加阿里云 yum 源
+## 添加阿里云 yum 源
 
 ```
 $ cat > /etc/yum.repos.d/kubernetes.repo << EOF
@@ -90,7 +114,7 @@ EOF
 
 ---
 
-## 3、安装 kubeadm，kubelet 和 kubectl
+## 安装 kubeadm，kubelet 和 kubectl
 
 ```
 yum list|grep kube
