@@ -14,7 +14,17 @@ date: 2024-05-11
 
 需要重新生成MAC地址，配置不同的网卡IP。前提是节点关机才能操作
 
-![](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202405/b067c995c6cecde5.png)
+1、全局设定，创建NAT网络
+
+![image-20241204071723784](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Dubbo/202411/image-20241204071723784.png)
+
+2、==每个节点==都设置为NAT网络，并重新生成MAC地址
+
+![image-20241204072025007](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Dubbo/202411/image-20241204072025007.png)
+
+![image-20241204071940811](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Dubbo/202411/image-20241204071940811.png)
+
+![image-20241204071915765](https://studyimages.oss-cn-beijing.aliyuncs.com/img/Dubbo/202411/image-20241204071915765.png)
 
 重启三个节点后查看默认网卡eth0如下
 
@@ -44,7 +54,7 @@ date: 2024-05-11
 
 - `swapoff -a`：临时
 - `sed -ri 's/.*swap.*/#&/' /etc/fstab`： 永久
-- `free -g` 验证，swap 必须为 0；
+- `free -g` 验证，swap->used 必须为 0；
 
 添加主机名与 IP 对应关系：
 
@@ -62,7 +72,7 @@ date: 2024-05-11
 >
 > (编辑上方文件就不用执行此命令了)
 
-将桥接的 IPv4 流量传递到 iptables 的链：
+将桥接的 IPv4 流量传递到 iptables 的链，k8s-node1、k8s-node2、k8s-node3都需要执行如下命令：
 
 ```
 cat > /etc/sysctl.d/k8s.conf << EOF
