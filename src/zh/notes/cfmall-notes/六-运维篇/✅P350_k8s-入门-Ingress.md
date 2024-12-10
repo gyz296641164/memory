@@ -1,5 +1,5 @@
 ---
-title: ✅P340_k8s-入门-Ingress
+title: ✅P350_k8s-入门-Ingress
 category:
   - 谷粒商城
 order: 1
@@ -10,6 +10,8 @@ date: 2024-06-14
 
 ## Ingress
 
+官方文档：[Ingress](https://kubernetes.io/zh-cn/docs/concepts/services-networking/ingress/)
+
 通过Ingress发现pod进行关联。基于域名访问；
 
 通过Ingress controller实现POD负载均衡；
@@ -19,26 +21,13 @@ date: 2024-06-14
 - Ingress管理多个service
 - service管理多个pod
 
+---
+
 ## 案例
 
 ### 部署Ingress controller
 
-执行`k8s/ingress-controller.yaml`
-
-```yaml
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-	name: web
-spec:
-	rules:
-	- host:tomcat6.atguigu.com
-	  http:
-	  	paths:
-	  		-backend:
-	  			serviceName: tomcat6
-	  			servicePort: 80
-```
+执行k8s文件夹下的`ingress-controller.yaml`文件，内容如下：
 
 ```shell
 [root@k8s-node1 k8s]# kubectl apply -f ingress-controller.yaml
@@ -96,15 +85,15 @@ kube-system     kube-scheduler-k8s-node1            1/1     Running             
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: web
+	name: web
 spec:
-  rules:
-  - host: tomcat6.kubenetes.com
-    http:
-       paths: 
-          - backend: 
-              serviceName: tomcat6
-              servicePort: 80
+	rules:
+	- host:tomcat6.atguigu.com
+	  http:
+	  	paths:
+	  		-backend:
+	  			serviceName: tomcat6
+	  			servicePort: 80
 ```
 
 ```
@@ -120,9 +109,9 @@ ingress.extensions/web created
 修改本机的hosts文件(`vi /etc/hosts`)，添加如下的域名转换规则：
 
 ```
-192.168.56.102 tomcat6.kubenetes.com
+192.168.56.102 tomcat6.atguigu.com
 ```
 
-测试: http://tomcat6.kubenetes.com/
+测试: http://tomcat6.atguigu.com/
 
 并且集群中即便有一个节点不可用，也不影响整体的运行。
