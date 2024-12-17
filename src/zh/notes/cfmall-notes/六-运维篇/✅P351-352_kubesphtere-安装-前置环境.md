@@ -283,7 +283,7 @@ NOTES：
 
 - Console: http://192.168.56.100:30880
 - Account: admin
-- Password: P@88w0rd
+- Password: P@88w0rd 【修改为：Gyz111111@】
 
 ![image-20241211002004987](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202412/image-20241211002004987.png)
 
