@@ -20,6 +20,10 @@ date: 2024-12-14
 
 ## 定制kubeSphere插件
 
+官网：https://kubesphere.io/zh/docs/v3.4/pluggable-components/overview/
+
+参考：[KubeSphere v2.1 可插拔功能组件概览](https://www.bookstack.cn/read/kubesphere-2.1/e4b69badc7bc71ad.md)
+
 ### 方法一
 
 编辑 Kubernetes 中名为 `ks-installer` 的 ConfigMap
@@ -55,3 +59,15 @@ kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l app=
 ## 页面介绍
 
 官网：https://kubesphere.io/zh/docs/v4.1/04-platform-management/01-platform-features/
+
+---
+
+## 问题解决
+
+### Failed to pull image "kubesphere/jenkins-uc:v2.1.1"
+
+https://ask.kubesphere.io/forum/d/1770-arm
+
+![image-20241220071139598](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202412/image-20241220071139598.png)
+
+![image-20241220071145858](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202412/image-20241220071145858.png)

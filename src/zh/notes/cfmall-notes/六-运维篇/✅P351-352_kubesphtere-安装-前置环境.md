@@ -1,5 +1,5 @@
 ---
-title: ✅P351_kubesphtere-安装-前置环境
+title: ✅P351-352_kubesphtere-安装-前置环境
 category:
   - 谷粒商城
 order: 1
@@ -41,7 +41,9 @@ curl -L https://git.io/get_helm.sh | bash
 
 ### 安装方式2
 
-手动下载Helm的安装包，地址：https://github.com/helm/helm/releases?page=11，选择v2.16.2版本下载
+手动下载Helm的安装包，地址：https://github.com/helm/helm/releases?page=11
+
+选择v2.16.2版本下载
 
 ![image-20241214165338567](https://cfmall-hello.oss-cn-beijing.aliyuncs.com/img/202412/image-20241214165338567.png)
 
@@ -231,6 +233,8 @@ openebs-snapshot-promoter    volumesnapshot.external-storage.k8s.io/snapshot-pro
 ## 安装 kubesphere
 
 官网：https://kubesphere.io/zh/docs/v3.4/installing-on-kubernetes/introduction/overview/
+
+[KubeSphere v2.1 使用手册](https://www.bookstack.cn/books/kubesphere-2.1)
 
 最小化安装，适用于低版本Kubernetes：[ks-installer-v2.1.1安装教程](https://github.com/kubesphere/ks-installer/tree/v2.1.1?tab=readme-ov-file)
 
