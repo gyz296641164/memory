@@ -1,6 +1,7 @@
 import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
-import { searchProPlugin } from "vuepress-plugin-search-pro";
+import { docsearchPlugin } from '@vuepress/plugin-docsearch'
+import { photoSwipePlugin } from '@vuepress/plugin-photo-swipe'
 import commonjs from '@rollup/plugin-commonjs';
 
 
@@ -22,7 +23,7 @@ export default defineUserConfig({
   head: [
     // 添加百度统计
     [
-        'script', {}, `
+      'script', {}, `
         var _hmt = _hmt || [];
         (function() {
           var hm = document.createElement("script");
@@ -32,11 +33,11 @@ export default defineUserConfig({
         })();
         `
     ],
-    
-    //SEO优化：供百度等收录
 
+    //SEO优化：供百度等收录
     ["meta", { name: "robots", content: "all" }],
     ["meta", { name: "author", content: "gong_yz" }],
+
     //禁用浏览器缓存
     [
       "meta",
@@ -47,6 +48,7 @@ export default defineUserConfig({
     ],
     ["meta", { "http-equiv": "Pragma", content: "no-cache" }],
     ["meta", { "http-equiv": "Expires", content: "0" }],
+
     //关键词被搜索
     [
       "meta",
@@ -71,22 +73,30 @@ export default defineUserConfig({
     commonjs() as any, // 要放在第一行，否则不生效
 
     //搜索插件
-    searchProPlugin({
-      // 索引全部内容
-      indexContent: true,
-      hotReload: true,
-      // 为分类和标签添加索引
-      customFields: [
-        {
-          getter: ({ frontmatter }): string[] => <string[]>frontmatter["tag"],
-          formatter: `Tag: $content`,
+    docsearchPlugin({
+      appId: '<APP_ID>',
+      apiKey: '<API_KEY>',
+      indexName: '<INDEX_NAME>',
+      locales: {
+        '/': {
+          placeholder: '搜索文档',
+          translations: {
+            button: {
+              buttonText: '搜索文档',
+            },
+          },
         },
-        {
-          getter: ({ frontmatter }): string[] => <string[]>frontmatter["category"],
-          formatter: `Category: $content`,
+        '/zh/': {
+          placeholder: '搜索文档',
+          translations: {
+            button: {
+              buttonText: '搜索文档',
+            },
+          },
         },
-      ],
+      },
     }),
+
   ],
   shouldPrefetch: false,
 });

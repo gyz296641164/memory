@@ -21,10 +21,7 @@ export default hopeTheme({
 
   blog: {
     medias: {
-      // Email: "https://example.com",
-      // Gitee: "https://example.com",
       GitHub: "https://github.com/gyz296641164/memory",
-      // QQ: "https://example.com",
     },
   },
 
