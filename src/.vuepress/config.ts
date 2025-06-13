@@ -1,7 +1,8 @@
 import { defineUserConfig } from "vuepress";
-import theme from "./theme.js";
+import { defaultTheme } from '@vuepress/theme-default'
 import { docsearchPlugin } from '@vuepress/plugin-docsearch'
 import { photoSwipePlugin } from '@vuepress/plugin-photo-swipe'
+import { viteBundler } from '@vuepress/bundler-vite'
 import commonjs from '@rollup/plugin-commonjs';
 
 
@@ -16,7 +17,14 @@ export default defineUserConfig({
     },
   },
 
-  theme,
+  bundler: viteBundler({
+    viteOptions: {},
+    vuePluginOptions: {},
+  }),
+
+  theme: defaultTheme({
+    // 在这里添加主题配置
+  }),
 
   port: 8099, //自定义项目启动端口号  
 
