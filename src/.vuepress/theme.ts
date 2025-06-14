@@ -44,11 +44,6 @@ export default hopeTheme({
         description: "一个后端开发者",
         intro: "/zh/intro.html",
       },
-
-      // page meta
-      // metaLocales: {
-      //   editLink: "在 GitHub 上编辑此页",
-      // },
     },
 
     "/en/": {
