@@ -26,6 +26,7 @@
     "vuepress-theme-hope": "2.0.0-rc.92"
   },
   "dependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7"
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "bcryptjs": "^3.0.2"
   }
 }
