@@ -15,6 +15,7 @@
     "@vuepress/client": "^2.0.0-rc.23",
     "@vuepress/plugin-docsearch": "^2.0.0-rc.108",
     "@vuepress/plugin-photo-swipe": "^2.0.0-rc.108",
+    "@vuepress/plugin-pwa": "^2.0.0-rc.107",
     "@vuepress/plugin-shiki": "2.0.0-rc.108",
     "@vuepress/theme-default": "^2.0.0-rc.108",
     "browserslist": "^4.23.0",

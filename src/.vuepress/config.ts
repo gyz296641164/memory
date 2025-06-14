@@ -1,5 +1,6 @@
 import { defineUserConfig } from "vuepress";
-import { defaultTheme } from '@vuepress/theme-default'
+import theme from "./theme.js";
+
 import { docsearchPlugin } from '@vuepress/plugin-docsearch'
 import { photoSwipePlugin } from '@vuepress/plugin-photo-swipe'
 import { viteBundler } from '@vuepress/bundler-vite'
@@ -22,9 +23,7 @@ export default defineUserConfig({
     vuePluginOptions: {},
   }),
 
-  theme: defaultTheme({
-    // 在这里添加主题配置
-  }),
+  theme,
 
   port: 8099, //自定义项目启动端口号  
 
@@ -81,29 +80,29 @@ export default defineUserConfig({
     commonjs() as any, // 要放在第一行，否则不生效
 
     //搜索插件
-    docsearchPlugin({
-      appId: '4NV8BYBQU3',
-      apiKey: '98b3b31573a7ebde53a068a8b0e0ce1a',
-      indexName: 'yzcn',
-      locales: {
-        '/': {
-          placeholder: '搜索文档',
-          translations: {
-            button: {
-              buttonText: '搜索文档',
-            },
-          },
-        },
-        '/zh/': {
-          placeholder: '搜索文档',
-          translations: {
-            button: {
-              buttonText: '搜索文档',
-            },
-          },
-        },
-      },
-    }),
+    // docsearchPlugin({
+    //   appId: '4NV8BYBQU3',
+    //   apiKey: '98b3b31573a7ebde53a068a8b0e0ce1a',
+    //   indexName: 'yzcn',
+    //   locales: {
+    //     '/': {
+    //       placeholder: '搜索文档',
+    //       translations: {
+    //         button: {
+    //           buttonText: '搜索文档',
+    //         },
+    //       },
+    //     },
+    //     '/zh/': {
+    //       placeholder: '搜索文档',
+    //       translations: {
+    //         button: {
+    //           buttonText: '搜索文档',
+    //         },
+    //       },
+    //     },
+    //   },
+    // }),
 
   ],
   shouldPrefetch: false,

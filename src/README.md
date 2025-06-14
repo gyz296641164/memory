@@ -3,7 +3,7 @@ home: true
 title: 主页
 icon: home
 heroImage: /logo2.svg
-bgImage: https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/d5adf0a15e3e661a.svg
+# bgImage: https://studyimages.oss-cn-beijing.aliyuncs.com/img/SpringBoot/202403/d5adf0a15e3e661a.svg
 heroText: Memory's Notes
 tagline: 不积跬步,无以至千里；不积小流,无以成江海✊
 actions:
