@@ -80,7 +80,6 @@ export default defineUserConfig({
     //解决打包问题
     commonjs() as any, // 要放在第一行，否则不生效
 
-
     //搜索插件
     // docsearchPlugin({
     //   appId: '4NV8BYBQU3',
