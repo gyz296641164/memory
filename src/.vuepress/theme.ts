@@ -72,14 +72,14 @@ export default hopeTheme({
   fullscreen: true, //全屏按钮
 
   //文章加密
-  // encrypt: {
-  //   config: {
-  //     "/demo/encrypt.html": ["1234"],
-  //     "/zh/demo/encrypt.html": ["1234"],
-  //     "/zh/notes/MySQL/02-deep-understand-mysql/": ["Gyz111111@"],
-  //     "/zh/notes/Spring/01-spring-source-code-deeply/": ["Gyz111111@"],
-  //   },
-  // },
+  encrypt: {
+    config: {
+      "/demo/encrypt.html": ["1234"],
+      "/zh/demo/encrypt.html": ["1234"],
+      "/zh/notes/MySQL/02-deep-understand-mysql/": ["Gyz111111@"],
+      "/zh/notes/Spring/01-spring-source-code-deeply/": ["Gyz111111@"],
+    },
+  },
 
   plugins: {
     // 开启博客
