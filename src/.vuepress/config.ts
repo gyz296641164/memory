@@ -1,6 +1,5 @@
 import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
-
 import { docsearchPlugin } from '@vuepress/plugin-docsearch'
 import { photoSwipePlugin } from '@vuepress/plugin-photo-swipe'
 import { viteBundler } from '@vuepress/bundler-vite'
@@ -10,6 +9,7 @@ import commonjs from '@rollup/plugin-commonjs';
 export default defineUserConfig({
 
   base: '/',
+
   locales: {
     "/": {
       lang: "zh-CN",
@@ -23,8 +23,8 @@ export default defineUserConfig({
     vuePluginOptions: {},
   }),
 
+  // 主题
   theme,
-
 
   port: 8099, //自定义项目启动端口号  
 
@@ -79,6 +79,7 @@ export default defineUserConfig({
   plugins: [
     //解决打包问题
     commonjs() as any, // 要放在第一行，否则不生效
+
 
     //搜索插件
     // docsearchPlugin({

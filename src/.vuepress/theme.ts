@@ -43,6 +43,7 @@ export default hopeTheme({
         description: "一个后端开发者",
         intro: "/zh/intro.html",
       },
+
     },
 
     "/en/": {
@@ -81,13 +82,15 @@ export default hopeTheme({
   // },
 
   plugins: {
+    // 开启博客
     blog: true,
 
-    docsearch:({
+    // 搜索插件Algolia
+    docsearch: ({
       appId: "4NV8BYBQU3",
       apiKey: "98b3b31573a7ebde53a068a8b0e0ce1a",
       indexName: "yzcn",
-  
+
       locales: {
         "/": {
           placeholder: "搜索文档",
@@ -132,7 +135,6 @@ export default hopeTheme({
         },
       },
     }),
-
 
     //版权信息
     copyright: {

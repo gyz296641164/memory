@@ -12,7 +12,6 @@
   },
   "devDependencies": {
     "@vuepress/bundler-vite": "^2.0.0-rc.23",
-    "@vuepress/client": "^2.0.0-rc.23",
     "@vuepress/plugin-docsearch": "^2.0.0-rc.108",
     "@vuepress/plugin-photo-swipe": "^2.0.0-rc.108",
     "@vuepress/plugin-pwa": "^2.0.0-rc.107",

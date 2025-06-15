@@ -1,5 +1,6 @@
 ---
 icon: "/icon/introduce.svg"
+sidebar: false
 ---
 
 

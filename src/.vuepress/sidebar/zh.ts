@@ -4,70 +4,81 @@ export const zhSidebar = sidebar({
   "/zh/": [
     // "", //侧边栏“首页”
 
+    // {
+    //   text: "首页",
+    //   icon: "home",
+    //   link: "/home",
+    // },
+    // {
+    //   text: "介绍",
+    //   icon: "info",
+    //   link: "/intro",
+    // },
+
     {
       text: "面试专区",
       icon: "/icon/interview.svg",
       prefix: "notes/Interview/",
       collapsible: true,
-      children: [ 
+      children: [
         {
           text: "Java基础",
           prefix: "JavaSE/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        },   
+        },
         {
           text: "JVM",
           prefix: "JVM/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        }, 
+        },
         {
           text: "并发编程",
           prefix: "Concurrent_Programming/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        }, 
+        },
         {
           text: "MySQL",
           prefix: "MySQL/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        }, 
+        },
         {
           text: "Redis",
           prefix: "Redis/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        }, 
+        },
         {
           text: "MQ",
           prefix: "MQ/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        }, 
+        },
         {
           text: "框架",
           prefix: "JavaEE/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        }, 
+        },
         {
           text: "系统设计",
           prefix: "Architecture/",
           icon: "note",
           collapsible: true,
           children: "structure"
-        }, 
+        },
       ]
-    }, 
+    },
 
     {
       text: "杂文",
@@ -117,7 +128,7 @@ export const zhSidebar = sidebar({
             {
               text: "总结",
               icon: "star",
-              link: "总结/README.md" 
+              link: "总结/README.md"
 
             },
           ],
@@ -401,7 +412,7 @@ export const zhSidebar = sidebar({
       children: "structure",
     },
   ],
-  
+
   "/zh/notes/SpringCloud/": [
     {
       text: "Spring Cloud && Spring Cloud Alibaba ",
