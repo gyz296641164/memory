@@ -367,6 +367,12 @@ export const zhSidebar = sidebar({
           collapsible: true,
           children: "structure",
         },
+        {
+          text: "Elasticsearch入门",
+          prefix: "Elasticsearch-Base/",
+          collapsible: true,
+          children: "structure",
+        },
       ],
     },
     {
