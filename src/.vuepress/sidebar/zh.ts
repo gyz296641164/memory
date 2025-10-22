@@ -417,6 +417,13 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: "structure",
     },
+    {
+      text: "DDD",
+      icon: "/icon/ddd.svg",
+      prefix: "notes/DDD/DDD领域驱动模型设计/",
+      collapsible: true,
+      children: "structure",
+    },
   ],
 
   "/zh/notes/SpringCloud/": [
