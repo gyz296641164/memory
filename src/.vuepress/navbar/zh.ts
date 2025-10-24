@@ -28,12 +28,12 @@ export const zhNavbar = navbar([
   {
     text: "Spring源码",
     icon: "/icon/spring.svg",
-    link: "/zh/notes/Spring/01-spring-source-code-deeply/",
+    link: "/zh/notes/JAVAEE/Spring/01-spring-source-code-deeply/",
   },
   {
     text: "Spring Cloud Alibaba基础教程",
     icon: "/icon/springcloud.svg",
-    link: "/zh/notes/SpringCloud/",
+    link: "/zh/notes/JAVAEE/SpringCloud/",
   },
   {
     text: "谷粒商城",
@@ -50,19 +50,9 @@ export const zhNavbar = navbar([
         link: "https://tools.fun/json.html",
       },
       {
-        text: "UUID在线生成器",
-        icon: "/icon/uuid.svg",
-        link: "https://www.zxgj.cn/g/uuid",
-      },
-      {
-        text: "在线对比工具",
+        text: "在线工具箱",
         icon: "/icon/compare.svg",
-        link: "https://www.fly63.com/tool/textdiff/",
-      },
-      {
-        text: "在线Nginx配置工具",
-        icon: "/icon/vscode-icons--folder-type-nginx.svg",
-        link: "https://www.digitalocean.com/community/tools/nginx?global.app.lang=zhCN",
+        link: "https://tools.gzyunke.cn/",
       },
     ],
   },

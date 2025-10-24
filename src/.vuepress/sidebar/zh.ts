@@ -9,76 +9,12 @@ export const zhSidebar = sidebar({
     //   icon: "home",
     //   link: "/home",
     // },
+
     // {
     //   text: "介绍",
     //   icon: "info",
     //   link: "/intro",
     // },
-
-    {
-      text: "面试专区",
-      icon: "/icon/interview.svg",
-      prefix: "notes/Interview/",
-      collapsible: true,
-      children: [
-        {
-          text: "Java基础",
-          prefix: "JavaSE/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-        {
-          text: "JVM",
-          prefix: "JVM/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-        {
-          text: "并发编程",
-          prefix: "Concurrent_Programming/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-        {
-          text: "MySQL",
-          prefix: "MySQL/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-        {
-          text: "Redis",
-          prefix: "Redis/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-        {
-          text: "MQ",
-          prefix: "MQ/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-        {
-          text: "框架",
-          prefix: "JavaEE/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-        {
-          text: "系统设计",
-          prefix: "Architecture/",
-          icon: "note",
-          collapsible: true,
-          children: "structure"
-        },
-      ]
-    },
 
     {
       text: "杂文",
@@ -99,6 +35,12 @@ export const zhSidebar = sidebar({
         {
           text: "JAVASE",
           prefix: "JAVASE/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "JAVA集合",
+          prefix: "JAVA_Collection/",
           collapsible: true,
           children: "structure",
         },
@@ -133,13 +75,7 @@ export const zhSidebar = sidebar({
             },
           ],
         },
-        {
-          text: "JAVA集合",
-          icon: "star",
-          prefix: "JAVA_Collection/",
-          collapsible: true,
-          children: "structure",
-        },
+
       ],
     },
 
@@ -164,6 +100,20 @@ export const zhSidebar = sidebar({
         {
           text: "过滤器与监听器",
           prefix: "FilterAndListener/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "Nginx",
+          icon: "/icon/nginx.svg",
+          prefix: "Nginx/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "Maven基础",
+          icon: "/icon/maven.svg",
+          prefix: "Maven/",
           collapsible: true,
           children: "structure",
         },
@@ -203,108 +153,43 @@ export const zhSidebar = sidebar({
         },
       ],
     },
+
     {
-      text: "Docker",
-      icon: "/icon/docker.svg",
-      prefix: "notes/Docker/",
+      text: "数据库",
+      icon: "/icon/数据库.svg",
+      prefix: "notes/Database/",
       collapsible: true,
       children: [
         {
-          text: "1_Docker简介 & 安装 & 常用命令",
-          icon: "star",
-          link: "01-docker-base1",
-        },
-        {
-          text: "2_Docker镜像",
-          icon: "star",
-          link: "02-docker-base2",
-        },
-        {
-          text: "3_本地镜像发布&容器数据卷",
-          icon: "star",
-          link: "03-docker-base3",
-        },
-        {
-          text: "4_Docker复杂安装详说",
-          icon: "star",
-          link: "04-docker-high1",
-        },
-        {
-          text: "5_DockerFile & 网络",
-          icon: "star",
-          link: "05-docker-high2",
-        },
-        {
-          text: "6_Docker-compose & 可视化工具",
-          icon: "star",
-          link: "06-docker-high3",
-        },
-      ],
-    },
-    {
-      text: "Linux命令",
-      icon: "/icon/linux.svg",
-      link: "notes/Linux.md",
-    },
-    {
-      text: "MySQL",
-      icon: "/icon/mysql.svg",
-      prefix: "notes/MySQL/",
-      collapsible: true,
-      children: [
-        {
-          text: "散记MySQL",
-          prefix: "01-random-mysql-notes/",
-          collapsible: true,
-          children: [
-            "01-mysql-framework",
-            "02-mysql-lock",
-            "03-mysql-index",
-            "04-sharding-jdbc",
-            "05-mysql-procedure",
-            "06-mysql-skill",
-          ],
-        },
-        {
-          text: "深入理解Mysql",
-          prefix: "02-deep-understand-mysql/",
+          text: "MySQL",
+          icon: "/icon/mysql.svg",
+          prefix: "MySQL/",
           collapsible: true,
           children: [
             {
-              text: "第一部分01-33",
-              prefix: "01-33/",
+              text: "散记MySQL",
+              prefix: "01-random-mysql-notes/",
               collapsible: true,
               children: "structure",
             },
             {
-              text: "第二部分34-63",
-              prefix: "34-63/",
-              collapsible: true,
-              children: "structure",
-            },
-            {
-              text: "第三部分64-108",
-              prefix: "64-108/",
-              collapsible: true,
-              children: "structure",
-            },
-            {
-              text: "第四部分109-132",
-              prefix: "109-132/",
+              text: "深入理解Mysql",
+              prefix: "02-deep-understand-mysql/",
               collapsible: true,
               children: "structure",
             },
           ],
         },
-      ],
+        {
+          text: "Redis",
+          icon: "/icon/redis.svg",
+          prefix: "Redis/",
+          collapsible: true,
+          children: "structure"
+        },
+      ]
     },
-    {
-      text: "Redis",
-      icon: "/icon/redis.svg",
-      prefix: "notes/Redis/",
-      collapsible: true,
-      children: "structure"
-    },
+
     {
       text: "并发编程",
       icon: "/icon/lock.svg",
@@ -382,41 +267,52 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: "structure",
     },
+
+
     {
-      text: "Maven基础",
-      icon: "/icon/maven.svg",
-      prefix: "notes/Maven/",
+      text: "基础框架",
+      icon: "/icon/基础框架.svg",
+      prefix: "notes/JAVAEE/",
       collapsible: true,
-      children: "structure",
+      children: [
+        {
+          text: "Spring源码",
+          icon: "/icon/spring.svg",
+          prefix: "Spring/01-spring-source-code-deeply/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "SpringMVC",
+          icon: "/icon/SpringMVC.svg",
+          prefix: "SpringMVC/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "Mybatis",
+          icon: "/icon/Mybatis.svg",
+          prefix: "Mybatis/SourceCode/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "SpringBoot",
+          icon: "/icon/SPRINGBOOT.svg",
+          prefix: "SpringBoot/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "Spring Cloud",
+          icon: "/icon/springcloud.svg",
+          prefix: "SpringCloud/",
+          collapsible: true,
+          children: "structure",
+        },
+      ]
     },
-    {
-      text: "Nginx",
-      icon: "/icon/nginx.svg",
-      prefix: "notes/Nginx/",
-      collapsible: true,
-      children: "structure",
-    },
-    {
-      text: "SpringBoot",
-      icon: "/icon/SPRINGBOOT.svg",
-      prefix: "notes/JAVAEE/SpringBoot/",
-      collapsible: true,
-      children: "structure",
-    },
-    {
-      text: "SpringMVC",
-      icon: "/icon/SpringMVC.svg",
-      prefix: "notes/JAVAEE/SpringMVC/",
-      collapsible: true,
-      children: "structure",
-    },
-    {
-      text: "Mybatis",
-      icon: "/icon/Mybatis.svg",
-      prefix: "notes/JAVAEE/Mybatis/SourceCode/",
-      collapsible: true,
-      children: "structure",
-    },
+
     {
       text: "DDD",
       icon: "/icon/ddd.svg",
@@ -424,9 +320,109 @@ export const zhSidebar = sidebar({
       collapsible: true,
       children: "structure",
     },
+    {
+      text: "中间件",
+      icon: "/icon/中间件.svg",
+      prefix: "notes/Middle_Ware/",
+      collapsible: true,
+      children: [
+        {
+          text: "RocketMQ",
+          prefix: "RocketMQ/",
+          collapsible: true,
+          children: "structure",
+        },
+      ]
+    },
+
+    {
+      text: "运维部署",
+      icon: "/icon/deployment.svg",
+      prefix: "notes/OperationsAndDeployment/",
+      collapsible: true,
+      children: [
+        {
+          text: "Docker",
+          icon: "/icon/docker.svg",
+          prefix: "Docker/",
+          collapsible: true,
+          children: "structure",
+        },
+        {
+          text: "Linux命令",
+          icon: "/icon/linux.svg",
+          link: "Linux.md",
+        },
+      ]
+    },
+
+    {
+      text: "面试专区",
+      icon: "/icon/interview.svg",
+      prefix: "notes/Interview/",
+      collapsible: true,
+      children: [
+        {
+          text: "Java基础",
+          prefix: "JavaSE/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+        {
+          text: "JVM",
+          prefix: "JVM/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+        {
+          text: "并发编程",
+          prefix: "Concurrent_Programming/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+        {
+          text: "MySQL",
+          prefix: "MySQL/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+        {
+          text: "Redis",
+          prefix: "Redis/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+        {
+          text: "MQ",
+          prefix: "MQ/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+        {
+          text: "框架",
+          prefix: "JavaEE/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+        {
+          text: "系统设计",
+          prefix: "Architecture/",
+          icon: "note",
+          collapsible: true,
+          children: "structure"
+        },
+      ]
+    },
   ],
 
-  "/zh/notes/SpringCloud/": [
+  "/zh/notes/JAVAEE/SpringCloud/": [
     {
       text: "Spring Cloud && Spring Cloud Alibaba ",
       icon: "/icon/springcloud.svg",
@@ -435,7 +431,7 @@ export const zhSidebar = sidebar({
     }
   ],
 
-  "/zh/notes/Spring/": [
+  "/zh/notes/JAVAEE/Spring/": [
     {
       text: "Spring源码",
       icon: "/icon/spring.svg",
