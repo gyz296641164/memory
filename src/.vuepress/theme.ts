@@ -85,13 +85,13 @@ export default hopeTheme({
     blog: true,
 
     // 水印配置
-    watermark: {
-      watermarkOptions: {
-        content: "gong_yuzhuo",
-        // 水印流动效果
-        // movable: true,
-      },
-    },
+    // watermark: {
+    //   watermarkOptions: {
+    //     content: "gong_yuzhuo",
+    //     // 水印流动效果
+    //     // movable: true,
+    //   },
+    // },
 
     // 搜索插件Algolia
     docsearch: ({
