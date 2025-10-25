@@ -18,7 +18,7 @@ features:
   - title: SpringCloudAlibaba教程
     icon: "/icon/springcloud.svg"
     details: Eureka、Nacos、Gateway、Sentinel、OpenFeign、Sleuth等常见组件使用。
-    link: /zh/notes/SpringCloud/
+    link: /zh/notes/JAVAEE/SpringCloud/
 
   - title: 谷粒商城
     icon: "/icon/mall.svg"
@@ -28,7 +28,7 @@ features:
   - title: MySQL
     icon: "/icon/mysql.svg"
     details: 内容分为：散记MySQL和深入理解MySQL两部分，详细介绍了索引优化和MySQL系统架构各种细节。
-    link: /zh/notes/MySQL/
+    link: /zh/notes/Database/MySQL/
 
   - title: 面试专区
     icon: "/icon/interview.svg"

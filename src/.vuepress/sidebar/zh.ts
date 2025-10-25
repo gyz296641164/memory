@@ -330,7 +330,20 @@ export const zhSidebar = sidebar({
           text: "RocketMQ",
           prefix: "RocketMQ/",
           collapsible: true,
-          children: "structure",
+          children: [
+            {
+              text: "RocketMQ概念篇",
+              prefix: "RocketMQ概念篇/",
+              collapsible: true,
+              children: "structure",
+            },
+            {
+              text: "RocketMQ实战与源码",
+              prefix: "RocketMQ实战与源码/",
+              collapsible: true,
+              children: "structure",
+            },
+          ]
         },
       ]
     },

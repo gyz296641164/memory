@@ -8,7 +8,7 @@ export default hopeTheme({
   hostname: "https://www.yznotes.cn/",
 
   author: {
-    name: "gong_yz",
+    name: "gong_yuzhuo",
     url: "https://www.yznotes.cn/",
   },
 
@@ -74,10 +74,8 @@ export default hopeTheme({
   //文章加密
   encrypt: {
     config: {
-      "/demo/encrypt.html": ["1234"],
-      "/zh/demo/encrypt.html": ["1234"],
-      "/zh/notes/MySQL/02-deep-understand-mysql/": ["Gyz111111@"],
-      "/zh/notes/Spring/01-spring-source-code-deeply/": ["Gyz111111@"],
+      "/zh/notes/Database/MySQL/02-deep-understand-mysql/": ["Gyz111111@"],
+      "/zh/notes/JAVAEE/Spring/01-spring-source-code-deeply/": ["Gyz111111@"],
       "/zh/notes/DDD/DDD领域驱动模型设计/": ["Gyz111111@"],
     },
   },
@@ -85,6 +83,15 @@ export default hopeTheme({
   plugins: {
     // 开启博客
     blog: true,
+
+    // 水印配置
+    watermark: {
+      watermarkOptions: {
+        content: "gong_yuzhuo",
+        // 水印流动效果
+        // movable: true,
+      },
+    },
 
     // 搜索插件Algolia
     docsearch: ({
@@ -139,7 +146,7 @@ export default hopeTheme({
 
     //版权信息
     copyright: {
-      author: "gong_yz",
+      author: "gong_yuzhuo",
       license: "MIT",
       global: true,
     },
@@ -153,40 +160,7 @@ export default hopeTheme({
       categoryId: "DIC_kwDOLY-oVM4Cdk7T" //对应自己的分类Id
     },
 
+    // 图片预览
     photoSwipe: true,
-
-
-
-    // pwa: {
-    //   favicon: "/favicon2.ico",
-    //   cachePic: true,
-    //   cacheHTML: true,
-    //   manifest: {
-    //     icons: [
-    //       {
-    //         src: "/assets/icon/chrome-mask-512.png",
-    //         sizes: "512x512",
-    //         purpose: "maskable",
-    //         type: "image/png",
-    //       },
-    //       {
-    //         src: "/assets/icon/chrome-mask-192.png",
-    //         sizes: "192x192",
-    //         purpose: "maskable",
-    //         type: "image/png",
-    //       },
-    //       {
-    //         src: "/assets/icon/chrome-512.png",
-    //         sizes: "512x512",
-    //         type: "image/png",
-    //       },
-    //       {
-    //         src: "/assets/icon/chrome-192.png",
-    //         sizes: "192x192",
-    //         type: "image/png",
-    //       },
-    //     ],
-    //   }
-    // }
   },
 });

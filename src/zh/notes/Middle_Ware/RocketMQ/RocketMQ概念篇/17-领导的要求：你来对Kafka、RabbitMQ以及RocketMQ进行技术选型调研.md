@@ -1,5 +1,5 @@
 ---
-title: ✅17、领导的要求：你来对 Kafka、RabbitMQ 以及 RocketMQ 进行技术选型调研
+title: ✅17、领导的要求:你来对Kafka、RabbitMQ以及RocketMQ进行技术选型调研
 category:
   - RocketMQ
 date: 2025-10-24
@@ -7,7 +7,6 @@ date: 2025-10-24
 
 <!-- more -->
 
-**领导的要求：**
 
 **你来对 Kafka、RabbitMQ 以及 RocketMQ 进行技术选型调研**
 

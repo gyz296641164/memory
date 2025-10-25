@@ -16,6 +16,7 @@
     "@vuepress/plugin-photo-swipe": "^2.0.0-rc.108",
     "@vuepress/plugin-pwa": "^2.0.0-rc.107",
     "@vuepress/plugin-shiki": "2.0.0-rc.108",
+    "@vuepress/plugin-watermark": "^2.0.0-rc.115",
     "@vuepress/theme-default": "^2.0.0-rc.108",
     "browserslist": "^4.23.0",
     "caniuse-lite": "^1.0.30001593",
