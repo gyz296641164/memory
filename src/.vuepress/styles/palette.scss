@@ -1,2 +1,16 @@
 // you can change colors here 
 $theme-color:#096dd9;
+
+// 字体：思源宋体
+$vp-font: '"Noto Serif SC", serif';
+
+// 字体：衬线体首选
+// $vp-font: 'Georgia, -apple-system, "Nimbus Roman No9 L", "PingFang SC", "Hiragino Sans GB", "Noto Serif SC", "Microsoft Yahei", "WenQuanYi Micro Hei", "ST Heiti", sans-serif';
+
+// 示例：扩展背景颜色变量 $vp-c-bg
+$vp-c-bg: (
+  // 日间模式：米白色
+  light: #F8F4E9,
+  // 夜间模式
+  dark: #000,
+);

@@ -27,6 +27,21 @@ export default defineUserConfig({
   port: 8099, //自定义项目启动端口号  
 
   head: [
+
+    // 字体：导入思源宋体相应链接
+    ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+    [
+      "link",
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+    ],
+    [
+      "link",
+      {
+        href: "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap",
+        rel: "stylesheet",
+      },
+    ],
+
     // 添加百度统计
     [
       'script', {}, `
