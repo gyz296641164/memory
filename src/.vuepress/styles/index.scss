@@ -53,3 +53,13 @@ body.page-home .navbar img {
 nav .site-name {
   display: none !important;
 }
+
+// 向下移动hero区域和内容区域
+header.vp-hero-info-wrapper {
+  margin-top: 100px !important; // 可以根据需要调整这个值，单位可以是px、rem等
+}
+
+// 如果还需要调整整个主页容器的位置
+body.page-home .vp-page {
+  padding-top: 0 !important;
+}
