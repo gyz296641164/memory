@@ -1,2 +1,55 @@
 // place your custom styles here
 
+// 首页图标3D横向旋转动画（像陀螺一样横向旋转）
+@keyframes rotate-gyroscope {
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(360deg);
+  }
+}
+
+// 排除导航栏logo，禁止其旋转
+.vp-nav-logo,
+.navbar .logo img,
+nav img.vp-nav-logo,
+.navbar img[src*="logo2"] {
+  animation: none !important;
+  transform: none !important;
+}
+
+// 只让首页hero区域的图片做3D横向旋转
+// 直接定位 .vp-hero-image 类
+body.page-home .vp-hero-image {
+  animation: rotate-gyroscope 10s linear infinite !important;
+  animation-delay: 0s !important;
+  transform-origin: center center !important;
+  transform-style: preserve-3d !important;
+  will-change: transform !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  // 限制图标大小，使其比例合适（按8:3的宽高比，约200x75像素）
+  max-width: 70px !important;
+  max-height: 75px !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+// 排除首页中的导航栏logo（双重保险）
+body.page-home .vp-nav-logo,
+body.page-home nav img,
+body.page-home .navbar img {
+  animation: none !important;
+  transform: none !important;
+}
+
+// 隐藏导航栏中的Memory文字
+.vp-nav-title,
+.navbar .site-name,
+.vp-site-name,
+nav .site-name {
+  display: none !important;
+}
