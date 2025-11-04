@@ -64,7 +64,8 @@ export default defineUserConfig({
     [
       'script', {}, `
         (function() {
-          function applyRotateAnimation() {
+          // 将函数暴露到全局作用域，以便路由切换时也能调用
+          window.applyRotateAnimation = function() {
             // 排除导航栏logo
             const navLogos = document.querySelectorAll('.vp-nav-logo, nav img, .navbar img');
             navLogos.forEach(function(img) {
@@ -77,6 +78,12 @@ export default defineUserConfig({
             heroImages.forEach(function(img) {
               // 确保不是导航栏的logo
               if (!img.closest('nav') && !img.classList.contains('vp-nav-logo') && !img.closest('.navbar')) {
+                // 针对 Microsoft Edge：先清除动画，强制重新计算样式
+                img.style.animation = 'none';
+                img.style.transform = 'none';
+                // 强制浏览器重新计算样式（解决 Edge 动画不重新应用的问题）
+                void img.offsetWidth;
+                
                 img.style.opacity = '1';
                 img.style.visibility = 'visible';
                 img.style.display = 'block';
@@ -86,22 +93,22 @@ export default defineUserConfig({
                 img.style.willChange = 'transform';
               }
             });
-          }
+          };
           
           // 立即执行
           if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', applyRotateAnimation);
+            document.addEventListener('DOMContentLoaded', window.applyRotateAnimation);
           } else {
-            applyRotateAnimation();
+            window.applyRotateAnimation();
           }
           
           // 使用 MutationObserver 监听 DOM 变化，确保动态加载的元素也能应用样式
-          const observer = new MutationObserver(applyRotateAnimation);
+          const observer = new MutationObserver(window.applyRotateAnimation);
           observer.observe(document.body, { childList: true, subtree: true });
           
           // 延迟检查，确保所有元素都已加载
-          setTimeout(applyRotateAnimation, 100);
-          setTimeout(applyRotateAnimation, 500);
+          setTimeout(window.applyRotateAnimation, 100);
+          setTimeout(window.applyRotateAnimation, 500);
         })();
         `
     ],
