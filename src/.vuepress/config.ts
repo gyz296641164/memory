@@ -60,12 +60,11 @@ export default defineUserConfig({
         })();
         `
     ],
-    // 确保首页图标立即显示并开始3D横向旋转，同时禁止导航栏logo旋转
+      // 确保首页图标立即显示并开始3D横向旋转，同时禁止导航栏logo旋转
     [
       'script', {}, `
         (function() {
-          // 将函数暴露到全局作用域，以便路由切换时也能调用
-          window.applyRotateAnimation = function() {
+          function applyRotateAnimation() {
             // 排除导航栏logo
             const navLogos = document.querySelectorAll('.vp-nav-logo, nav img, .navbar img');
             navLogos.forEach(function(img) {
@@ -78,12 +77,6 @@ export default defineUserConfig({
             heroImages.forEach(function(img) {
               // 确保不是导航栏的logo
               if (!img.closest('nav') && !img.classList.contains('vp-nav-logo') && !img.closest('.navbar')) {
-                // 针对 Microsoft Edge：先清除动画，强制重新计算样式
-                img.style.animation = 'none';
-                img.style.transform = 'none';
-                // 强制浏览器重新计算样式（解决 Edge 动画不重新应用的问题）
-                void img.offsetWidth;
-                
                 img.style.opacity = '1';
                 img.style.visibility = 'visible';
                 img.style.display = 'block';
@@ -93,26 +86,26 @@ export default defineUserConfig({
                 img.style.willChange = 'transform';
               }
             });
-          };
+          }
           
           // 立即执行
           if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', window.applyRotateAnimation);
+            document.addEventListener('DOMContentLoaded', applyRotateAnimation);
           } else {
-            window.applyRotateAnimation();
+            applyRotateAnimation();
           }
           
           // 使用 MutationObserver 监听 DOM 变化，确保动态加载的元素也能应用样式
-          const observer = new MutationObserver(window.applyRotateAnimation);
+          const observer = new MutationObserver(applyRotateAnimation);
           observer.observe(document.body, { childList: true, subtree: true });
           
           // 延迟检查，确保所有元素都已加载
-          setTimeout(window.applyRotateAnimation, 100);
-          setTimeout(window.applyRotateAnimation, 500);
+          setTimeout(applyRotateAnimation, 100);
+          setTimeout(applyRotateAnimation, 500);
         })();
         `
     ],
-
+    
     //SEO优化：供百度等收录
     ["meta", { name: "robots", content: "all" }],
     ["meta", { name: "author", content: "gong_yz" }],
